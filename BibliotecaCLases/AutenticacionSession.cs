@@ -15,8 +15,8 @@ namespace BibliotecaCLases
             // Inicializar la lista de administradores (puedes cargarla desde una base de datos u otra fuente de datos)
             usuarios = new List<Usuario>
         {
-            new Administrador("Alexis", "Aranda", "alexisaranda", "111", "111"),
-            new Administrador("Hora", "Barrios",  "horabarrios","222", "222")
+            new Administrador("Alexis", "Aranda", "111", "alexisaranda", "111"),
+            new Administrador("Hora", "Barrios","222","horabarrios", "222")
 
             // Agregar más administradores según sea necesario
         };
@@ -29,6 +29,9 @@ namespace BibliotecaCLases
             Usuario? admin = usuarios.FirstOrDefault(a => a.Dni == dni);
 
             // Verificar si la contraseña proporcionada coincide con la contraseña almacenada
+            if (admin == null) {
+                return false;
+            }
             if (admin.Clave == contrasena)
             {
                 // Autenticación exitosa
