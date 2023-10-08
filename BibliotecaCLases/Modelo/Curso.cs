@@ -84,6 +84,8 @@ namespace BibliotecaCLases.Modelo
             }
         }
 
+
+
         /// <summary>
         /// Devuelve una representación en formato de cadena del curso.
         /// </summary>

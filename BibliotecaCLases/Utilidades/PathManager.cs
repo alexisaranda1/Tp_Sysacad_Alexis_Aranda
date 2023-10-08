@@ -6,53 +6,66 @@ using System.Threading.Tasks;
 
 namespace BibliotecaCLases.Utilidades
 {
+
+    /// <summary>
+    /// Clase que proporciona métodos para administrar rutas de archivos y carpetas.
+    /// </summary>
     public class PathManager
     {
         public string nombreArchivo;
         public string nameFolder;
 
-        // Número de niveles a retroceder en la jerarquía de directorios
-        public int nivelesARetroceder; //Cambia esto según la cantidad de niveles que desees retroceder (4 para hubicar la carpeta Data)
-        public static string ObtenerRuta(string nameFolder,string nombreArchivo, int nivelesARetroceder)
+
+
+        public int nivelesARetroceder;// Del directoirio actual retrocede el valor que se asigne aca
+
+
+        /// <summary>
+        /// Obtiene la ruta de un archivo ubicado en un nivel de retroceso específico.
+        /// </summary>
+        /// <param name="nameFolder">Nombre de la carpeta donde se encuentra el archivo.</param>
+        /// <param name="nombreArchivo">Nombre del archivo.</param>
+        /// <param name="nivelesARetroceder">Número de niveles para retroceder desde el directorio actual.</param>
+        /// <returns>La ruta completa del archivo.</returns>
+        public static string ObtenerRuta(string nameFolder, string nombreArchivo, int nivelesARetroceder)
         {
-            
-            // Obtener el directorio de trabajo actual del programa
+
+
             string directorioDeTrabajo = Directory.GetCurrentDirectory();
-            // Retroceder los niveles especificados
+            string path = directorioDeTrabajo;
+
+            for (int i = 0; i < nivelesARetroceder; i++)
+            {
+                path = Directory.GetParent(path).FullName;
+            }
+
+            path = Path.Combine(path, nameFolder);
+            string rutaArchivo = Path.Combine(path, nombreArchivo);
+            return rutaArchivo;
+
+        }
+
+
+        /// <summary>
+        /// Obtiene la ruta de un archivo ubicado en un nivel de retroceso predeterminado (4 niveles).- (SOBRECARGA)
+        /// </summary>
+        /// <param name="nameFolder">Nombre de la carpeta donde se encuentra el archivo.</param>
+        /// <param name="nombreArchivo">Nombre del archivo.</param>
+        /// <returns>La ruta completa del archivo.</returns>
+        public static string ObtenerRuta(string nameFolder, string nombreArchivo)
+        {
+            int nivelesARetroceder = 4;
+            string directorioDeTrabajo = Directory.GetCurrentDirectory();
             string path = directorioDeTrabajo;
             for (int i = 0; i < nivelesARetroceder; i++)
             {
                 path = Directory.GetParent(path).FullName;
             }
 
-            // Agregar el nombre de la carpeta a la ruta
             path = Path.Combine(path, nameFolder);
-            // Combinar la ruta con el nombre del archivo
-            string rutaArchivo = Path.Combine(path, nombreArchivo);
-            return rutaArchivo;
-
-        }
-        public static string ObtenerRuta(string nameFolder, string nombreArchivo)
-        { 
-            int nivelesARetroceder = 4;
-            // Obtener el directorio de trabajo actual del programa
-            string directorioDeTrabajo = Directory.GetCurrentDirectory();
-            // Retroceder los niveles especificados
-                string path = directorioDeTrabajo;
-            for (int i = 0; i<nivelesARetroceder; i++)
-            {
-                path = Directory.GetParent(path).FullName;
-            }
-            // Agregar el nombre de la carpeta a la ruta
-            path = Path.Combine(path, nameFolder);
-            // Combinar la ruta con el nombre del archivo
             string rutaArchivo = Path.Combine(path, nombreArchivo);
             return rutaArchivo;
         }
 
-internal void ObtenerRuta(string v1, object value, string v2)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

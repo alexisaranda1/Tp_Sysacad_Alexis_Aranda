@@ -27,11 +27,10 @@ namespace BibliotecaCLases.Controlador
             {
                 return false;
             }
-            string patronCorreo = @"^[\w\.-]+@[\w\.-]+\.\w+$";
+            string patronCorreo = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
             Regex regex = new Regex(patronCorreo);
 
             return regex.IsMatch(correo);
-
         }
 
 

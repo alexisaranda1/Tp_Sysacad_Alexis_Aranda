@@ -6,8 +6,20 @@ using Newtonsoft.Json;
 
 namespace BibliotecaCLases.Utilidades
 {
+    /// <summary>
+    /// Clase estática que proporciona métodos para serializar y deserializar objetos a/desde JSON.
+    /// </summary>
     public static class Serializador
     {
+
+
+
+        /// <summary>
+        /// Guarda un diccionario genérico como JSON en un archivo.
+        /// </summary>
+        /// <typeparam name="T">El tipo de los valores en el diccionario.</typeparam>
+        /// <param name="objetoAGuardar">El diccionario que se va a guardar como JSON con Int  y tipo de dato generico .</param>
+        /// <param name="path">La ubicación del archivo en la que se guardará el JSON.</param>
         public static void GuardarAJson<T>(Dictionary<int, T> objetoAGuardar, string path)
         {
             try
@@ -26,6 +38,13 @@ namespace BibliotecaCLases.Utilidades
             }
         }
 
+
+        /// <summary>
+        /// Guarda un diccionario en formato JSON en un archivo especificado. - (SOBRECARGA)
+        /// </summary>
+        /// <typeparam name="T">Tipo de datos de los valores del diccionario.</typeparam>
+        /// <param name="objetoAGuardar">Diccionario a guardar como JSON.con String y tipo de dato generico </param>
+        /// <param name="path">Ruta del archivo donde se guardará el JSON.</param>
         public static void GuardarAJson<T>(Dictionary<string, T> objetoAGuardar, string path)
         {
             try
@@ -44,6 +63,12 @@ namespace BibliotecaCLases.Utilidades
             }
         }
 
+
+        // <summary>
+        /// Guarda un valor entero en formato JSON en un archivo especificado.(SOBRECARGA)
+        /// </summary>
+        /// <param name="valorAGuardar">El valor entero a ser serializado y guardado.</param>
+        /// <param name="path">La ruta del archivo donde se guardará el JSON.</param>
         public static void GuardarAJson(int valorAGuardar, string path)
         {
             try
@@ -63,6 +88,13 @@ namespace BibliotecaCLases.Utilidades
         }
 
 
+
+        /// <summary>
+        /// Guarda una lista genérica en formato JSON en un archivo especificado.(SOBRECARGA)
+        /// </summary>
+        /// <typeparam name="T">El tipo de elementos contenidos en la lista.</typeparam>
+        /// <param name="objetoAGuardar">La lista genérica que se va a serializar y guardar.</param>
+        /// <param name="path">La ruta del archivo donde se guardará el JSON.</param>
         public static void GuardarAJson<T>(List<T> objetoAGuardar, string path)
         {
             try
@@ -198,11 +230,31 @@ namespace BibliotecaCLases.Utilidades
         }
 
 
-   
 
-        public static void EliminarJson() // Puedes implementar esto según tus necesidades.
+
+        /// <summary>
+        /// Elimina un archivo JSON en la ubicación especificada.- (NO IMPLEMENTADO LA BAJA FISICA)
+        /// </summary>
+        /// <param name="path">La ubicación del archivo JSON que se desea eliminar.</param>
+        public static void EliminarJson(string path)
         {
-            // Implementa la lógica de eliminación si es necesario.
+            try
+            {
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                    Console.WriteLine($"El archivo JSON en la ruta {path} se ha eliminado correctamente.");
+                }
+                else
+                {
+                    Console.WriteLine($"El archivo JSON no existe en la ruta: {path}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al eliminar el archivo JSON: {ex.Message}");
+            }
         }
     }
+    
 }

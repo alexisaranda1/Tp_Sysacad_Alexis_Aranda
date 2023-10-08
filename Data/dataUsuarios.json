@@ -115,5 +115,19 @@
     "Clave": "$2a$08$GTV99pDY.VCtwk.9YmaTVe.QdtMdr4fmMaq1XtDxWnIqijQg1MwG2",
     "TipoUsuario": 1,
     "Legajo": 1035
+  },
+  "1036": {
+    "Debecambiar": false,
+    "Direccion": "san marcos",
+    "Telefono": "15554552",
+    "CursosInscriptos": [],
+    "EstadoDePago": "pendiente",
+    "Nombre": "lili",
+    "Apellido": "jurai",
+    "Correo": "lili@gmail.com",
+    "Dni": "31465257",
+    "Clave": "$2a$08$TzNXohiL5mlebOXiaejQjO0dC7SAjpkavuYJ4Ble7jSQPOP7GdDO6",
+    "TipoUsuario": 1,
+    "Legajo": 1036
   }
 }

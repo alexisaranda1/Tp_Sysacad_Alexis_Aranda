@@ -12,8 +12,16 @@ using MimeKit;
 
 namespace BibliotecaCLases.Modelo
 {
+
+    /// <summary>
+    /// Class Mail --- Correo Electronico
+    /// </summary>
     public static class Email
     {
+
+
+
+
         /// <summary>
         /// Envia un email de confirmacion al usuario registrado
         /// </summary>
