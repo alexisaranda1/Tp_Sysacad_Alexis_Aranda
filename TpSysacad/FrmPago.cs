@@ -1,4 +1,5 @@
 ﻿using BibliotecaCLases.Controlador;
+using BibliotecaCLases.Interfaces;
 using BibliotecaCLases.Modelo;
 using System;
 using System.Collections.Generic;
@@ -14,180 +15,149 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Formularios
 {
-    public partial class FrmPago : Form
+    public partial class FrmPago : Form, IPagoVista
     {
+        private PagoPresentador _presentador;
 
-        private GestorPagoLogic _gestorPago;
         private Usuario _usuario;
-        private int _totalAPagar = 0;
-        private List<ConceptoPago> conceptoPagos = new List<ConceptoPago>();
 
-        MetodoPago metodoPagoCredito = new("Tarjeta de crédito");
-        MetodoPago metodoPagoDebito = new("Tarjeta de débito");
-        MetodoPago metodoPagoBancaria = new("Transferencia bancaria");
 
         public FrmPago(Usuario usuario)
         {
             InitializeComponent();
-            _gestorPago = new GestorPagoLogic();
-            _usuario = usuario;
-
             CmboxCuota.Visible = false;
             TbxNumeroTarjeta.Visible = false;
             TbxNombreTitular.Visible = false;
             TbxFechaVencimiento.Visible = false;
             TbxCvv.Visible = false;
 
-        }
-
-        private void FrmPago_Load(object sender, EventArgs e)
-        {
-            MostrarConceptosPagoPendientes();
-            MostrarMetodosPAgo();
+            _presentador = new PagoPresentador(this, usuario);
+            _usuario = usuario;
 
         }
 
-        /// <summary>
-        /// Muestra los conceptos de pago pendientes en el control ListBox.
-        /// </summary>
-        private void MostrarConceptosPagoPendientes()
+        public event EventHandler MetodoPagoSeleccionado
         {
-            conceptoPagos.Add(new ConceptoPago("Matrícula", 500));
-            conceptoPagos.Add(new ConceptoPago("Cargos Administrativos", 600));
-            conceptoPagos.Add(new ConceptoPago("Libros de Texto", 200));
+            add { CmboxMetodoPago.SelectedIndexChanged += value; }
+            remove { CmboxMetodoPago.SelectedIndexChanged -= value; }
+        }
 
+        public event EventHandler PagarClicked
+        {
+            add { btnPagar.Click += value; }
+            remove { btnPagar.Click -= value; }
+        }
 
+        public void MostrarConceptosPagoPendientes(List<ConceptoPago> conceptosPago)
+        {
             dtgvConceptoPago.Rows.Clear();
-            foreach (var concepto in conceptoPagos)
+
+            foreach (var concepto in conceptosPago)
             {
                 dtgvConceptoPago.Rows.Add(concepto.Nombre, concepto.MontoPagar, "");
             }
 
         }
-        private void MostrarMetodosPAgo()
-        {
-            CmboxMetodoPago.Items.Add(metodoPagoCredito.Nombre);
-            CmboxMetodoPago.Items.Add(metodoPagoDebito.Nombre);
-            CmboxMetodoPago.Items.Add(metodoPagoBancaria.Nombre);
 
-            CmboxMetodoPago.SelectedIndexChanged += CmboxMetodoPago_SelectedIndexChanged;
+        public void MostrarMetodosPago(List<string> metodosPago)
+        {
+            CmboxMetodoPago.Items.AddRange(metodosPago.ToArray());
         }
 
-        private void CmboxMetodoPago_SelectedIndexChanged(object sender, EventArgs e)
+        public void MostrarMensaje(string mensaje)
         {
+            MessageBox.Show(mensaje);
+        }
+        public void MostrarComprobantePago(string comprobante)
+        {
+            MessageBox.Show(comprobante, "Comprobante de Pago", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
 
-            string metodoSeleccionado = CmboxMetodoPago.SelectedItem.ToString();
+        public void MostrarTotalPagar(decimal total)
+        {
+            // Lógica para mostrar el total a pagar en tu formulario
+            // Por ejemplo, podrías actualizar un label con el total
+        }
+        public string ObtenerMetodoPagoSeleccionado()
+        {
+            if (CmboxMetodoPago.SelectedItem != null)
+            {
+
+                return CmboxMetodoPago.SelectedItem.ToString();
+            }
+
+            return null;
+        }
+
+        public void MostrarCamposTarjetaCredito()
+        {
+            TbxNumeroTarjeta.Visible = true;
+            TbxNombreTitular.Visible = true;
+            TbxFechaVencimiento.Visible = true;
+            TbxCvv.Visible = true;
+            CmboxCuota.Items.Clear();
+            CmboxCuota.Visible = true;
+            CmboxCuota.Items.Add("3 cuotas");
+            CmboxCuota.Items.Add("6 cuotas");
+            CmboxCuota.Items.Add("12 cuotas");
+        }
+
+        public void MostrarCamposTarjetaDebito()
+        {
             CmboxCuota.Visible = false;
-
-            if (metodoSeleccionado == "Tarjeta de crédito" || metodoSeleccionado == "Tarjeta de débito")
-            {
-
-                TbxNumeroTarjeta.Visible = true;
-                TbxNombreTitular.Visible = true;
-                TbxFechaVencimiento.Visible = true;
-                TbxCvv.Visible = true;
-
-                if (metodoSeleccionado == "Tarjeta de crédito")
-                {
-
-                    CmboxCuota.Items.Clear();
-                    CmboxCuota.Visible = true;
-                    CmboxCuota.Items.Add("3 cuotas");
-                    CmboxCuota.Items.Add("6 cuotas");
-                    CmboxCuota.Items.Add("12 cuotas");
-
-                }
-
-            }
-
-            else if (metodoSeleccionado == "Transferencia bancaria")
-            {
-
-                TbxNumeroTarjeta.Visible = false;
-                TbxNombreTitular.Visible = false;
-                TbxFechaVencimiento.Visible = false;
-                TbxCvv.Visible = false;
-
-            }
-
+            TbxNumeroTarjeta.Visible = true;
+            TbxNombreTitular.Visible = true;
+            TbxFechaVencimiento.Visible = true;
+            TbxCvv.Visible = true;
         }
 
-        private void dtgvConceptoPago_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        public void MostrarInformacionTransferenciaBancaria()
         {
-            if (e.ColumnIndex == 2 && e.RowIndex >= 0 && e.RowIndex < conceptoPagos.Count)
+            TbxNumeroTarjeta.Visible = false;
+            TbxNombreTitular.Visible = false;
+            TbxFechaVencimiento.Visible = false;
+            TbxCvv.Visible = false;
+            CmboxCuota.Visible = false;
+        }
+
+        public string ObtenerNumeroTarjeta()
+        {
+            return TbxNumeroTarjeta.Text;
+        }
+
+        public string ObtenerFechaVencimiento()
+        {
+            return TbxFechaVencimiento.Text;
+        }
+
+        public string ObtenerCVV()
+        {
+            return TbxCvv.Text;
+        }
+
+
+        public List<decimal> ObtenerValoresCelda()
+        {
+            List<decimal> valores = new List<decimal>();
+
+            foreach (DataGridViewRow row in dtgvConceptoPago.Rows)
             {
-                DataGridViewCell cell = dtgvConceptoPago.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                object cellValue = row.Cells[2].Value;
 
-                string valorIngresado = cell.EditedFormattedValue.ToString();
-
-                if (!string.IsNullOrWhiteSpace(valorIngresado))
+                if (cellValue != null && !string.IsNullOrWhiteSpace(cellValue.ToString()))
                 {
-                    if (decimal.TryParse(valorIngresado, out decimal valorCelda))
+                    if (decimal.TryParse(cellValue.ToString(), out decimal valorCelda))
                     {
-                        conceptoPagos[e.RowIndex].MontoIngresado = valorCelda;
-
+                        valores.Add(valorCelda);
                     }
                     else
                     {
-                        MessageBox.Show("Por favor, ingrese un valor numérico válido en esta celda.");
-                        dtgvConceptoPago.CancelEdit();
-                        dtgvConceptoPago.Rows[e.RowIndex].Cells[e.ColumnIndex].Value = conceptoPagos[e.RowIndex].MontoIngresado;
+                        // Manejo de error, si es necesario
                     }
                 }
             }
-        }
 
-        private void CmboxMetodoPago_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            e.Handled = true;
-        }
-
-        private void btnPagar_Click(object sender, EventArgs e)
-        {
-            string metodoSeleccionado = CmboxMetodoPago.SelectedItem?.ToString(); // El operador ? evita una excepción si es nulo
-
-            if (string.IsNullOrEmpty(metodoSeleccionado))
-            {
-                MessageBox.Show("Por favor, seleccione un método de pago válido antes de continuar.");
-                return;
-            }
-
-            List<MetodoPago> metodosDePago = new List<MetodoPago>
-            {
-                metodoPagoCredito,
-                metodoPagoDebito,
-                metodoPagoBancaria
-            };
-            MetodoPago metodoPagoSeleccionado = metodosDePago.FirstOrDefault(mp => mp.Nombre == metodoSeleccionado);
-
-            if (metodoPagoSeleccionado != null)
-            {
-                if (metodoSeleccionado == "Tarjeta de crédito" || metodoSeleccionado == "Tarjeta de débito")
-                {
-                    string numeroTarjeta = TbxNumeroTarjeta.Text;
-                    string fechaVencimiento = TbxFechaVencimiento.Text;
-                    string cvv = TbxCvv.Text;
-
-                    if (_gestorPago.ValidarDatosTarjeta(numeroTarjeta, fechaVencimiento, cvv))
-                    {
-                        _gestorPago.RegistrarPago(_usuario, conceptoPagos, metodoPagoSeleccionado);
-                        MessageBox.Show(_gestorPago.GenerarComprobanteDePago());
-                    }
-                    else
-                    {
-                        MessageBox.Show("Por favor, ingrese datos de tarjeta válidos.");
-                    }
-                }
-                else if (metodoSeleccionado == "Transferencia bancaria")
-                {
-                    _gestorPago.RegistrarPago(_usuario, conceptoPagos, metodoPagoSeleccionado);
-                    MessageBox.Show(_gestorPago.GenerarDatosTransferenciaBancaria());
-                }
-            }
-            else
-            {
-                MessageBox.Show("Método de pago no válido");
-            }
+            return valores;
         }
 
         private void btnVolver_Click(object sender, EventArgs e)
@@ -201,6 +171,13 @@ namespace Formularios
 
             formPanelUsuario.Show();
             this.Hide();
+        }
+        public void RecargarPrograma()
+        {
+
+            FrmPago frmPago = new FrmPago(_usuario);
+            frmPago.Show();
+            this.Close();
         }
     }
 }

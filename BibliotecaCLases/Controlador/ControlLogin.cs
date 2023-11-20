@@ -9,6 +9,7 @@ namespace BibliotecaCLases.Controlador
     /// </summary>
     public class ControlLogin
     {
+        Serializador serializador = new Serializador();
         private Usuario? _usuario;
         private readonly Dictionary<int, Usuario> dictUsuarios;
         private string _path;
@@ -27,37 +28,12 @@ namespace BibliotecaCLases.Controlador
             int nivelesARetroceder = 4;
             _path = PathManager.ObtenerRuta("Data", "DataUsuarios.json", nivelesARetroceder);
 
-            dictUsuarios = Serializador.LeerJson<Dictionary<int, Usuario>>(_path);
+            dictUsuarios = serializador.LeerJson<Dictionary<int, Usuario>>(_path);
 
             _existeUsuario = true;
             if (dictUsuarios == null || dictUsuarios.Count == 0)
             {
-
-                string pathUltimoLegajo = PathManager.ObtenerRuta("Data", "Legajo.json");
-                int ultimoLegajoEnArchivo = Serializador.LeerJson<int>(pathUltimoLegajo);
-                ultimoLegajoEnArchivo++;
-
                 _existeUsuario = false;
-
-                dictUsuarios = new Dictionary<int, Usuario>();
-                String contrasena  =PasswordHashing.GetHash("11");
-                
-                Administrador administrador = new Administrador("matias", "cantero", "011", "correo@nuevo.com",contrasena);
-                String contrasenaDos = PasswordHashing.GetHash("11");
-
-                Administrador administradorDos = new Administrador("dian", "iry", "022", "correo@nuevo.com", contrasenaDos);
-                ultimoLegajoEnArchivo++;
-                administrador.Legajo = ultimoLegajoEnArchivo;
-                ultimoLegajoEnArchivo++;
-                administradorDos.Legajo = ultimoLegajoEnArchivo;
-                int dniadmin1 = int.Parse(administrador.Dni);
-                int dniadmin2 = int.Parse(administradorDos.Dni);
-                dictUsuarios.Add(administrador.Legajo, administrador);
-                dictUsuarios.Add(administradorDos.Legajo, administradorDos);
-              
-
-                Serializador.GuardarAJson(ultimoLegajoEnArchivo, pathUltimoLegajo);
-                Serializador.GuardarAJson(dictUsuarios, _path);
             }
 
         }
@@ -70,6 +46,7 @@ namespace BibliotecaCLases.Controlador
         /// <returns>bool</returns>
         public bool AutenticarUsuario(string dni, string contrasena)
         {
+            //comentario
             _usuario = dictUsuarios.FirstOrDefault(pair => pair.Value.Dni == dni).Value;
 
             if (_usuario != null)

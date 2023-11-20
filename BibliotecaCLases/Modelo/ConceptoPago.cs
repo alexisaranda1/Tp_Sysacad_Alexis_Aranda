@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 /// <summary>
@@ -19,8 +20,9 @@ namespace BibliotecaCLases.Modelo
     public class ConceptoPago
     {
         private string _nombre;
-        private decimal _monto;
-        private decimal _montoIngresado;
+        private decimal _montoPagar;
+        private decimal _montoPendiente;
+     
 
         /// <summary>
         /// Constructor de la clase ConceptoPago.
@@ -30,7 +32,7 @@ namespace BibliotecaCLases.Modelo
         public ConceptoPago(string nombre, decimal monto)
         {
             _nombre = nombre;
-            _monto = monto;
+            _montoPagar = monto;
         }
 
         /// <summary>
@@ -47,18 +49,19 @@ namespace BibliotecaCLases.Modelo
         /// </summary>
         public decimal MontoPagar
         { 
-            get { return _monto; } 
-            set { _monto = value; }
+            get { return _montoPagar; } 
+            set { _montoPagar = value; }
         }
 
+
+ 
         /// <summary>
-        /// Propiedad para obtener o establecer el monto ingresado para el concepto de pago.
+        /// Método para actualizar el monto pendiente restando el monto ingresado.
         /// </summary>
-        public decimal MontoIngresado
-        { 
-            get { return _montoIngresado; }
-            set { _montoIngresado = value; } 
-        }  
+        public void ActualizarMontoPendiente(decimal montoIngresado)
+        {
+            _montoPagar -= montoIngresado;
+        }
 
     }
 }

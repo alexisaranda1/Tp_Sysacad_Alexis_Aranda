@@ -34,8 +34,8 @@ namespace Formularios
                     {
                         this.Close();
                     };
-                    frmPanelUsuario.Show();              
-                
+                    frmPanelUsuario.Show();
+
                     this.Hide();
 
                 }
@@ -56,7 +56,17 @@ namespace Formularios
         }
 
 
+        private void BtnAdministrador_Click(object sender, EventArgs e)
+        {
+            textUsuario.Text = "44000000";
+            textContraseña.Text = "44000000";
+        }
 
+        private void BtnEstudiante_Click_1(object sender, EventArgs e)
+        {
+            textUsuario.Text = "12345678";
+            textContraseña.Text = "$Ide*!3";
 
+        }
     }
 }

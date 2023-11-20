@@ -33,6 +33,8 @@
             BtnLogin = new Button();
             textUsuario = new TextBox();
             textContraseña = new TextBox();
+            BtnEstudiante = new Button();
+            BtnAdministrador = new Button();
             SuspendLayout();
             // 
             // label1
@@ -85,11 +87,33 @@
             textContraseña.Size = new Size(100, 23);
             textContraseña.TabIndex = 4;
             // 
+            // BtnEstudiante
+            // 
+            BtnEstudiante.Location = new Point(43, 353);
+            BtnEstudiante.Name = "BtnEstudiante";
+            BtnEstudiante.Size = new Size(104, 23);
+            BtnEstudiante.TabIndex = 5;
+            BtnEstudiante.Text = "Estudiante";
+            BtnEstudiante.UseVisualStyleBackColor = true;
+            BtnEstudiante.Click += BtnEstudiante_Click_1;
+            // 
+            // BtnAdministrador
+            // 
+            BtnAdministrador.Location = new Point(43, 301);
+            BtnAdministrador.Name = "BtnAdministrador";
+            BtnAdministrador.Size = new Size(104, 23);
+            BtnAdministrador.TabIndex = 6;
+            BtnAdministrador.Text = "Administrador";
+            BtnAdministrador.UseVisualStyleBackColor = true;
+            BtnAdministrador.Click += BtnAdministrador_Click;
+            // 
             // FrmLogin
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(BtnAdministrador);
+            Controls.Add(BtnEstudiante);
             Controls.Add(textContraseña);
             Controls.Add(textUsuario);
             Controls.Add(BtnLogin);
@@ -109,5 +133,7 @@
         private Button BtnLogin;
         private TextBox textUsuario;
         private TextBox textContraseña;
+        private Button BtnEstudiante;
+        private Button BtnAdministrador;
     }
 }

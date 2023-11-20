@@ -3,148 +3,193 @@ using BibliotecaCLases.Utilidades;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BibliotecaCLases.Controlador
 {
-
-    /// <summary>
-    /// Clase que gestiona los pagos de los estudiantes.
-    /// </summary>
     public class GestorPagoLogic
     {
-        private List<Pago> _pagos;
+        private readonly List<Pago> _pagos;
         private Pago _pago;
         private Estudiante _estudiante;
-        private string _path;   
-        private CrudEstudiante _crudEstudiante;
+        private readonly string _path;
+        private readonly CrudEstudiante _crudEstudiante;
+        private List<decimal> _montosIngresados = new();
         private decimal _totalIngresado = 0;
         private decimal _totalAPagar = 0;
 
-        /// <summary>
-        /// Constructor de la clase GestorPagoLogic.
-        /// </summary>
-        public GestorPagoLogic()
-        {
+        public GestorPagoLogic(Usuario usuario)
+        {   
             _crudEstudiante = new CrudEstudiante();
+            _estudiante = _crudEstudiante.ObtenerEstudiantePorLegajo(usuario.Legajo);
             _pagos = new List<Pago>();
             _path = PathManager.ObtenerRuta("Data", "DataUsuarios.json");
-
         }
+        public List<ConceptoPago> ObtenerConceptosPagoPendientes()
+        {
+            return _estudiante.ConceptoPagos; ;
+        }
+        public List<string> ObtenerMetodosPago()
+        {
+            List<string> metodosDePago = new List<string>
+            {
+                "Tarjeta de crédito",
+                "Tarjeta de débito",
+                "Transferencia bancaria"
+            };
 
-        /// <summary>
-        /// Valida los datos de una tarjeta de crédito.
-        /// </summary>
-        /// <param name="numeroTarjeta">Número de tarjeta de crédito.</param>
-        /// <param name="fechaVencimiento">Fecha de vencimiento de la tarjeta.</param>
-        /// <param name="cvv">CVV de la tarjeta.</param>
-        /// <returns>True si los datos son válidos, False en caso contrario.</returns>
+            return metodosDePago;
+        }
         public bool ValidarDatosTarjeta(string numeroTarjeta, string fechaVencimiento, string cvv)
         {
-            bool esTarjetaValida = Validacion.EsNumeroValido(numeroTarjeta,16);
+            bool esTarjetaValida = Validacion.EsNumeroValido(numeroTarjeta, 16);
             bool esFechaValida = Validacion.EsFechaValida(fechaVencimiento);
             bool esCVVValido = Validacion.EsCVVValido(cvv);
 
-            if (esTarjetaValida && esFechaValida && esCVVValido)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-                
-            }
+            return esTarjetaValida && esFechaValida && esCVVValido;
         }
 
-        /// <summary>
-        /// Registra un pago realizado por un usuario.
-        /// </summary>
-        /// <param name="usuario">Usuario que realiza el pago.</param>
-        /// <param name="conceptosPago">Lista de conceptos de pago.</param>
-        /// <param name="metodoPago">Método de pago utilizado.</param>
-        public void RegistrarPago(Usuario usuario, List<ConceptoPago> conceptosPago, MetodoPago metodoPago)
-        {
-            _estudiante = _crudEstudiante.ObtenerEstudiantePorLegajo(usuario.Legajo);
 
-           CalcularMontoTotal(conceptosPago);
+        public bool RealizarPago(Usuario usuario, string metodoPago, string numeroTarjeta, string fechaVencimiento, string cvv)
+        {
+            bool esPagoValido = false;
+
+            List<ConceptoPago> conceptosPago = ObtenerConceptosPagoPendientes();
+
+            if (metodoPago.Contains("Tarjeta"))
+            {
+                esPagoValido = ValidarDatosTarjeta(numeroTarjeta, fechaVencimiento, cvv);
+            }
+            else if (metodoPago == "Transferencia bancaria")
+            {
+                esPagoValido = true;
+            }
+
+            if (esPagoValido)
+            {
+                for (int i = 0; i < conceptosPago.Count && i < _montosIngresados.Count; i++)
+                {
+                    decimal montoIngresado = _montosIngresados[i];
+                    conceptosPago[i].ActualizarMontoPendiente(montoIngresado);
+
+                    // Realiza las operaciones necesarias con montoIngresado
+                }
+
+                // Registrar el pago después de actualizar los montos pendientes
+                RegistrarPago(conceptosPago, metodoPago);
+            }
+
+            return esPagoValido;
+        }
+
+
+
+        public List<decimal> MontosIngresados
+        {
+            get { return _montosIngresados; }
+            set { _montosIngresados = value; }
+        }
+
+        private void RegistrarPago(List<ConceptoPago> conceptosPago, string metodoPago)
+        {
+            CalcularMontoTotal(conceptosPago);          
             _pago = new Pago(_estudiante, conceptosPago, metodoPago, _totalIngresado);
 
-            if (_totalIngresado == _totalAPagar)
+            if (_estudiante.ConceptoPagos.All(concepto => concepto.MontoPagar == 0))
             {
                 _estudiante.EstadoDePago = "pagado";
             }
-          
+
             Serializador.ActualizarJson(_estudiante, _estudiante.Legajo, _path);
+
             _pagos.Add(_pago);
-
         }
 
-        /// <summary>
-        /// Obtiene el historial de pagos realizados.
-        /// </summary>
-        /// <returns>Lista de pagos.</returns>
-        public List<Pago> ObtenerHistorialPagos()
+
+        public List<string> ObtenerHistorialPagos()
         {
-            return _pagos;
+            List<string> comprobantes = new List<string>();
+            foreach (Pago pago in _pagos)
+            {
+                StringBuilder comprobante = new StringBuilder();
+                comprobante.AppendLine("Comprobante de Pago");
+                comprobante.AppendLine("===================");
+                comprobante.AppendLine($"Fecha: {pago.Fecha}");
+                comprobante.AppendLine($"Estudiante: {_estudiante.Nombre}, {_estudiante.Apellido}");
+                comprobante.AppendLine("Conceptos de Pago:");
+
+                for (int i = 0; i < _pago.ConceptosPago.Count && i < _montosIngresados.Count; i++)
+                {
+                    comprobante.AppendLine($"- {_pago.ConceptosPago[i].Nombre}: ${_montosIngresados[i]}");
+                }
+
+
+                comprobante.AppendLine($"Monto Total: ${pago.MontoTotal}");
+                comprobante.AppendLine($"Método de Pago: {pago.MetodoPago}");
+                comprobantes.Add(comprobante.ToString());
+            }
+
+            return comprobantes;
         }
 
-        /// <summary>
-        /// Calcula el monto total ingresado y el monto total a pagar sumando los montos de los conceptos de pago proporcionados.
-        /// </summary>
-        /// <param name="conceptosPago">Lista de conceptos de pago para los cuales se calcularán los montos.</param>
+
         private void CalcularMontoTotal(List<ConceptoPago> conceptosPago)
         {
             foreach (var concepto in conceptosPago)
             {
-                _totalIngresado += concepto.MontoIngresado;
+                
+                _totalIngresado += _montosIngresados[conceptosPago.IndexOf(concepto)];
                 _totalAPagar += concepto.MontoPagar;
             }
-           
         }
 
-        /// <summary>
-        /// Genera un comprobante de pago en formato de texto.
-        /// </summary>
-        /// <returns>Texto del comprobante de pago o un mensaje si no se realizó el pago.</returns>
+        public string GenerarComprobante()
+        {
+            if (_pago.MetodoPago.Contains("Tarjeta"))
+            {
+                return GenerarComprobanteDePago();
+            }
+            else if (_pago.MetodoPago == "Transferencia bancaria")
+            {
+                return GenerarDatosTransferenciaBancaria();
+            }
+
+          
+
+            return "No se pudo generar el comprobante";
+        }
+
         public string GenerarComprobanteDePago()
         {
-
-            if (_pago.MontoTotal != 0)
-            { 
+            if (_totalIngresado != 0)
+            {
                 StringBuilder comprobante = new StringBuilder();
-
                 comprobante.AppendLine("Comprobante de Pago");
                 comprobante.AppendLine("===================");
                 comprobante.AppendLine($"Fecha: {_pago.Fecha}");
                 comprobante.AppendLine($"Estudiante: {_estudiante.Nombre}, {_estudiante.Apellido}");
                 comprobante.AppendLine("Conceptos de Pago:");
 
-                foreach (var concepto in _pago.ConceptosPago)
+                for (int i = 0; i < _pago.ConceptosPago.Count && i < _montosIngresados.Count; i++)
                 {
-                    comprobante.AppendLine($"- {concepto.Nombre}: ${concepto.MontoIngresado}");
+                    comprobante.AppendLine($"- {_pago.ConceptosPago[i].Nombre}: ${_montosIngresados[i]}");
                 }
 
-                comprobante.AppendLine($"Monto Total: ${_pago.MontoTotal}");
-                comprobante.AppendLine($"Método de Pago: {_pago.MetodoPago.Nombre}");
- 
+                comprobante.AppendLine($"Monto Total: ${_totalIngresado}");
+                comprobante.AppendLine($"Método de Pago: {_pago.MetodoPago}");
+
                 return comprobante.ToString();
-       
             }
             else
             {
-                return "No se realizo el pago";
+                return "No se realizó el pago";
             }
         }
 
-        /// <summary>
-        /// Genera los datos de transferencia bancaria en formato de texto.
-        /// </summary>
-        /// <returns>Texto con los datos de la transferencia bancaria o un mensaje si no se ingresó el monto.</returns>
+
         public string GenerarDatosTransferenciaBancaria()
         {
-            if (_pago.MontoTotal != 0)
+            if (_totalIngresado != 0)
             {
                 StringBuilder mensajeTransferencia = new StringBuilder("Por favor, realice la transferencia bancaria con los siguientes datos:\n\n");
                 mensajeTransferencia.AppendLine("Nombre del Banco: Ciudad");
@@ -155,16 +200,20 @@ namespace BibliotecaCLases.Controlador
 
                 foreach (var concepto in _pago.ConceptosPago)
                 {
-                    mensajeTransferencia.AppendLine($"- {concepto.Nombre}: ${concepto.MontoIngresado}");
+                   
+                    int indiceConcepto = _pago.ConceptosPago.IndexOf(concepto);
+                    mensajeTransferencia.AppendLine($"- {concepto.Nombre}: ${_montosIngresados[indiceConcepto]}");
                 }
 
-                mensajeTransferencia.AppendLine($"Monto a Transferir: {_pago.MontoTotal}");
+                mensajeTransferencia.AppendLine($"Monto a Transferir: {_totalIngresado}");
 
                 return mensajeTransferencia.ToString();
-            }else
+            }
+            else
             {
-                return "Ingrese el monto a tranferir";
+                return "Ingrese el monto a transferir";
             }
         }
+
     }
 }

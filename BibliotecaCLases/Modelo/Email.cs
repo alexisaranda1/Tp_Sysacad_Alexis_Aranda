@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 using MailKit;
 using MailKit.Net.Smtp;
 using MimeKit;
-
+using System.Configuration;
+using System;
 namespace BibliotecaCLases.Modelo
 {
     public static class Email
@@ -18,15 +19,17 @@ namespace BibliotecaCLases.Modelo
         /// Envia un email de confirmacion al usuario registrado
         /// </summary>
         /// <param name="email"></param>
-        public static string SendMessageSmtp(string email,string contraseña, string nombre, string apellido)
+        public static string SendMessageSmtp(string email, string contraseña, string nombre, string apellido)
         {
+            string host = ConfigurationManager.AppSettings["mailgunHost"]!;
+            string password = ConfigurationManager.AppSettings["mailgunPassword"]!;
             MimeMessage mail = new MimeMessage();
-            mail.From.Add(new MailboxAddress("Sistema Sysacad", "foo@sandboxa624a102f69e45f99032eb56ad582179.mailgun.org"));
+            mail.From.Add(new MailboxAddress("Sistema Sysacad", $"foo@{host}"));
             mail.To.Add(new MailboxAddress($"{apellido},{nombre}", email));
             mail.Subject = "Registro de alumno";
             mail.Body = new TextPart("plain")
             {
-                Text = @$"Registro exitoso, bienvenido al nuevo SistemaSysacad. Tu contraseña es: {contraseña}",
+                Text = @$"Registro exitoso, bienvenido al nuevo SistemaSysacad. Tu contraseña es: {contraseña} y tu usario es tu DNI",
             };
             try
             {
@@ -36,7 +39,7 @@ namespace BibliotecaCLases.Modelo
 
                     client.Connect("smtp.mailgun.org", 587, false);
                     client.AuthenticationMechanisms.Remove("XOAUTH2");
-                    client.Authenticate("postmaster@sandboxa624a102f69e45f99032eb56ad582179.mailgun.org", "d5727e5f2d6529b1da2e481d429215a4-77316142-c6d8aaa5");
+                    client.Authenticate($"postmaster@{host}", password);
 
                     client.Send(mail);
                     client.Disconnect(true);
@@ -51,3 +54,4 @@ namespace BibliotecaCLases.Modelo
         }
     }
 }
+
