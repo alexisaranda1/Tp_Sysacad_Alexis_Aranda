@@ -11,10 +11,11 @@ namespace BibliotecaCLases.Modelo
     /// </summary>
     public class Pago
     {
+
         private DateTime _fecha;
         private Usuario _estudiante;
         private List<ConceptoPago> _conceptosPago;
-        private MetodoPago _metodoPago;
+        private string _metodoPago;
         private decimal _montoTotal;
 
         /// <summary>
@@ -24,10 +25,10 @@ namespace BibliotecaCLases.Modelo
         /// <param name="conceptosPago">Lista de conceptos de pago asociados al pago.</param>
         /// <param name="metodoPago">El método de pago utilizado para el pago.</param>
         /// <param name="montoTotal">El monto total del pago.</param>
-        public Pago(Usuario estudiante, List<ConceptoPago> conceptosPago, MetodoPago metodoPago, decimal montoTotal)
+        public Pago(Usuario estudiante, List<ConceptoPago> conceptosPago, string metodoPago, decimal montoTotal)
         {
             _fecha = DateTime.Now;
-            _estudiante = estudiante;
+            _estudiante = estudiante;// legajo
             _conceptosPago = conceptosPago;
             _metodoPago = metodoPago;
             _montoTotal = montoTotal;
@@ -63,7 +64,7 @@ namespace BibliotecaCLases.Modelo
         /// <summary>
         /// Propiedad para obtener o establecer el método de pago utilizado para el pago.
         /// </summary>
-        public MetodoPago MetodoPago
+        public string MetodoPago
         {
             get { return _metodoPago; }
             set { _metodoPago = value; }

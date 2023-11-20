@@ -15,6 +15,7 @@ namespace BibliotecaCLases.Modelo
         private string _telefono;
         private bool _debecambiar;
         private List<string> _cursosInscriptos;
+        private List<ConceptoPago> _conceptoPagos;  
         private string _estadoDePago;
 
         /// <summary>
@@ -28,7 +29,7 @@ namespace BibliotecaCLases.Modelo
         /// <param name="telefono">Teléfono del estudiante.</param>
         /// <param name="claveProvisional">Clave provisional del estudiante.</param>
         /// <param name="debeCambiar">Indica si el estudiante debe cambiar su contraseña.</param>
-        public Estudiante(string nombre, string apellido, string dni, string correo, string direccion, string telefono, string claveProvisional, bool debeCambiar)
+        public Estudiante(string nombre, string apellido, string dni, string correo, string direccion, string telefono, string claveProvisional, bool debeCambiar,List<ConceptoPago> conceptoPagos)
             : base(nombre, apellido, dni, correo, claveProvisional, 1)
         {
             _debecambiar = debeCambiar;
@@ -36,6 +37,7 @@ namespace BibliotecaCLases.Modelo
             _telefono = telefono;
 
             _cursosInscriptos = new List<string>();
+            _conceptoPagos = conceptoPagos ;  
             _estadoDePago = "pendiente";
         }
 
@@ -82,6 +84,11 @@ namespace BibliotecaCLases.Modelo
         {
             get { return _estadoDePago; }
             set { _estadoDePago = value; }
+        }
+        public List<ConceptoPago> ConceptoPagos
+        {
+            get { return _conceptoPagos; }
+            set { _conceptoPagos = value; }
         }
 
     }

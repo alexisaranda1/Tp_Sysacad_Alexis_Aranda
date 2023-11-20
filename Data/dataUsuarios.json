@@ -1,114 +1,63 @@
 {
-  "1004": {
+  "1000": {
     "Debecambiar": false,
     "Direccion": null,
     "Telefono": null,
     "CursosInscriptos": [],
     "EstadoDePago": "pendiente",
-    "Nombre": "matias",
-    "Apellido": "cantero",
-    "Correo": "correo@nuevo.com",
-    "Dni": "011",
-    "Clave": "$2a$08$JNgQ4SujdIMEpIYRRvuaQOwsTuACAjKgq.H1w2MV6qBfEzvfckIuK",
+    "ConceptoPagos": null,
+    "Nombre": "Matias",
+    "Apellido": "Cantero",
+    "Correo": "matias@gmail.com",
+    "Dni": "44000000",
+    "Clave": "$2a$08$pLqmedVgoqmDT6vHcPFuSu0SCRNY3n607aWncG1INx/Hngahzu1ku",
     "TipoUsuario": 0,
-    "Legajo": 1004
+    "Legajo": 1000
   },
-  "1005": {
+  "1001": {
     "Debecambiar": false,
     "Direccion": null,
     "Telefono": null,
     "CursosInscriptos": [],
     "EstadoDePago": "pendiente",
-    "Nombre": "dian",
-    "Apellido": "iry",
-    "Correo": "correo@nuevo.com",
-    "Dni": "022",
-    "Clave": "$2a$08$zJ4jWTxKEU/IJ37qNSU.u.0dj0nbKC8S9S2jhT8CdRCJYt4enghHy",
+    "ConceptoPagos": null,
+    "Nombre": "Horacio",
+    "Apellido": "Barrios",
+    "Correo": "horacio@gmail.com",
+    "Dni": "44000001",
+    "Clave": "$2a$08$7JR7ozIVeESfOtWp/25/9./EtfWwKtbuYcpJm5HZ.h0XKhkpdR.ky",
     "TipoUsuario": 0,
-    "Legajo": 1005
+    "Legajo": 1001
   },
-  "1006": {
+  "1003": {
     "Debecambiar": false,
-    "Direccion": "matl",
-    "Telefono": "12312312",
-    "CursosInscriptos": [],
-    "EstadoDePago": "pendiente",
-    "Nombre": "matias",
-    "Apellido": "cantero",
-    "Correo": "correo@gmail.com",
-    "Dni": "123123",
-    "Clave": "$2a$08$g.HLFxeQFzeltKhJYZgHQ.uGIlKq03WwN94Mlf4tWitBfEqckNydy",
-    "TipoUsuario": 1,
-    "Legajo": 1006
-  },
-  "1007": {
-    "Debecambiar": false,
-    "Direccion": "matuk79@gmail.com",
-    "Telefono": "12312312",
-    "CursosInscriptos": [],
-    "EstadoDePago": "pendiente",
-    "Nombre": "asd",
-    "Apellido": "dsa",
-    "Correo": "matuk79@gmail.com",
-    "Dni": "123",
-    "Clave": "$2a$08$cqXJWU7/AiYIAs5tCWCxM.hkUJDM3Uok45gCi2Sd.3p2xq17fJTpa",
-    "TipoUsuario": 1,
-    "Legajo": 1007
-  },
-  "1008": {
-    "Debecambiar": false,
-    "Direccion": "Iguazu 1888",
+    "Direccion": "calle 1213",
     "Telefono": "1162458176",
-    "CursosInscriptos": [],
-    "EstadoDePago": "pendiente",
+    "CursosInscriptos": [
+      "5"
+    ],
+    "EstadoDePago": "pagado",
+    "ConceptoPagos": [
+      {
+        "Nombre": "Matrícula",
+        "MontoPagar": 8990.0
+      },
+      {
+        "Nombre": "Cargos Administrativos",
+        "MontoPagar": 8990.0
+      },
+      {
+        "Nombre": "Libros de Texto",
+        "MontoPagar": 8990.0
+      }
+    ],
     "Nombre": "Alexis",
     "Apellido": "Aranda",
     "Correo": "arandajaraalexis@gmail.com",
     "Dni": "12345678",
-    "Clave": "$2a$08$oiFjYp3xJkowTJdJQOd6MeMAfGDHpJoFb0s047nSAki2HE5C6WYdq",
+    "Clave": "$2a$08$cGz8lTlr0.mQn1xGpA6cHejyp9G0F9pk0BuhchGUqWi07DxYoU6wS",
     "TipoUsuario": 1,
-    "Legajo": 1008
-  },
-  "1009": {
-    "Debecambiar": false,
-    "Direccion": "Iguazu 1888",
-    "Telefono": "1162458176",
-    "CursosInscriptos": [],
-    "EstadoDePago": "pendiente",
-    "Nombre": "Alexis",
-    "Apellido": "Aranda",
-    "Correo": "arandajaraale@gmail.com",
-    "Dni": "12345674",
-    "Clave": "$2a$08$64p5X2Q5dxRqNk5KA/ZV8O9.7IOunM0krmYGDSsNdwq1zXV7WYEm6",
-    "TipoUsuario": 1,
-    "Legajo": 1009
-  },
-  "1010": {
-    "Debecambiar": false,
-    "Direccion": "calle 123",
-    "Telefono": "1162458176",
-    "CursosInscriptos": [],
-    "EstadoDePago": "pendiente",
-    "Nombre": "ALexis",
-    "Apellido": "aranda",
-    "Correo": "sdddsfad@gmail.com",
-    "Dni": "12345612",
-    "Clave": "$2a$08$1JRyqpDdCYej8/BQhVcoBOVuGZDKtjqF4pvv9anbHmG2XaYYa8Xo.",
-    "TipoUsuario": 1,
+
     "Legajo": 1010
-  },
-  "1011": {
-    "Debecambiar": false,
-    "Direccion": "masterclass",
-    "Telefono": "1234567894",
-    "CursosInscriptos": [],
-    "EstadoDePago": "pendiente",
-    "Nombre": "Pequenio",
-    "Apellido": "orejudo",
-    "Correo": "pequeño@orejudo.com",
-    "Dni": "12122323",
-    "Clave": "$2a$08$gK8HWi283bRVynRGHs4HoucT2B1Qwo5Jk2MyyXfF0TeqOnP/dF5yi",
-    "TipoUsuario": 1,
-    "Legajo": 1011
   }
 }

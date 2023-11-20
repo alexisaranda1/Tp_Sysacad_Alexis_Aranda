@@ -174,7 +174,26 @@ namespace BibliotecaCLases.Controlador
                 contrasena.Append(caracterAleatorio);
             }
 
-            return contrasena.ToString(); // Puedes omitir ToString() aquí
+            return contrasena.ToString(); 
+        }
+
+        /// <summary>
+        /// Genera una lista de conceptos de pago predefinidos.
+        /// </summary>
+        /// <returns>Lista de conceptos de pago.</returns>
+        static List<ConceptoPago> GenerarConceptoPago()
+        {
+
+            List<ConceptoPago> conceptoPagos = new List<ConceptoPago>
+            {
+                // agregar cuotas 
+                new ConceptoPago("Matrícula", 500),
+                new ConceptoPago("Cargos Administrativos", 600),
+                new ConceptoPago("Libros de Texto", 200)
+            };
+
+
+            return conceptoPagos;
         }
 
         /// <summary>
@@ -191,11 +210,12 @@ namespace BibliotecaCLases.Controlador
         public string RegistrarEstudiante(string nombre, string apellido, string dni, string correo, string direccion, string telefono, bool debeCambiar)
         {
             int legajo = ObtieneLegajo();
+            List<ConceptoPago> conceptoPagos = GenerarConceptoPago();
 
             string claveProvisional = GenerarContrasenaAleatoria(7, 12);
             string mensaje = Email.SendMessageSmtp(correo, claveProvisional,nombre,apellido);
             String contrasena = PasswordHashing.GetHash(claveProvisional.ToString());
-            Estudiante nuevoEstudiante = new(nombre, apellido, dni, correo, direccion, telefono, contrasena, debeCambiar);
+            Estudiante nuevoEstudiante = new(nombre, apellido, dni, correo, direccion, telefono, contrasena, debeCambiar, conceptoPagos);
             nuevoEstudiante.Legajo = legajo;
 
             dictEstudiantesRegistrados.Add(nuevoEstudiante.Legajo, nuevoEstudiante);
