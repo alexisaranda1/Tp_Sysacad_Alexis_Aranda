@@ -64,8 +64,8 @@ namespace Formularios
 
         private void BtnEstudiante_Click_1(object sender, EventArgs e)
         {
-            textUsuario.Text = "12345678";
-            textContraseña.Text = "$Ide*!3";
+            textUsuario.Text = "12312345";
+            textContraseña.Text = "L=Y6+*3a>aF";
 
         }
     }
