@@ -33,7 +33,9 @@ namespace BibliotecaCLases.Controlador
             _existeUsuario = true;
             if (dictUsuarios == null || dictUsuarios.Count == 0)
             {
+
                 _existeUsuario = false;
+
             }
 
         }
