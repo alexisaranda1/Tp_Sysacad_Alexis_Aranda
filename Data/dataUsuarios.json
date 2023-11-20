@@ -57,7 +57,34 @@
     "Dni": "12345678",
     "Clave": "$2a$08$cGz8lTlr0.mQn1xGpA6cHejyp9G0F9pk0BuhchGUqWi07DxYoU6wS",
     "TipoUsuario": 1,
-
     "Legajo": 1010
+  },
+  "1012": {
+    "Debecambiar": false,
+    "Direccion": "asd",
+    "Telefono": "1231231231",
+    "CursosInscriptos": [],
+    "EstadoDePago": "pendiente",
+    "ConceptoPagos": [
+      {
+        "Nombre": "Matrícula",
+        "MontoPagar": 400.0
+      },
+      {
+        "Nombre": "Cargos Administrativos",
+        "MontoPagar": 500.0
+      },
+      {
+        "Nombre": "Libros de Texto",
+        "MontoPagar": 100.0
+      }
+    ],
+    "Nombre": "asd",
+    "Apellido": "dsa",
+    "Correo": "matuk79@gmail.com",
+    "Dni": "12312345",
+    "Clave": "$2a$08$KYhEhdwHIiH1iMYQon35P.uY0E8RVdpYwZQYWgqKeT2dYwTh1bS66",
+    "TipoUsuario": 1,
+    "Legajo": 1012
   }
 }
