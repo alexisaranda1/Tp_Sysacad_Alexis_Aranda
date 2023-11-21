@@ -1,5 +1,6 @@
 using BibliotecaCLases.Controlador;
 using BibliotecaCLases.Modelo;
+using System.Configuration;
 
 namespace Formularios
 
@@ -58,14 +59,18 @@ namespace Formularios
 
         private void BtnAdministrador_Click(object sender, EventArgs e)
         {
-            textUsuario.Text = "44000000";
-            textContraseña.Text = "44000000";
+            string usuario = ConfigurationManager.AppSettings["administradorUsuario"]!;
+            string password = ConfigurationManager.AppSettings["administradorPassword"]!;
+            textUsuario.Text = usuario;
+            textContraseña.Text = password;
         }
 
         private void BtnEstudiante_Click_1(object sender, EventArgs e)
         {
-            textUsuario.Text = "12312345";
-            textContraseña.Text = "L=Y6+*3a>aF";
+            string usuario = ConfigurationManager.AppSettings["estudianteUsuario"]!;
+            string password = ConfigurationManager.AppSettings["estudiantePassword"]!;
+            textUsuario.Text = usuario;
+            textContraseña.Text = password;
 
         }
     }
