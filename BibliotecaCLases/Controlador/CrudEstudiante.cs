@@ -187,12 +187,13 @@ namespace BibliotecaCLases.Controlador
             List<ConceptoPago> conceptoPagos = new List<ConceptoPago>
             {
                 // agregar cuotas 
-                new ConceptoPago("Matrícula", 500),
-                new ConceptoPago("Cargos Administrativos", 600),
-                new ConceptoPago("Libros de Texto", 200)
+                new ConceptoPago("Noviembre", 22500),
+                new ConceptoPago("Diciembre", 25000),
+                new ConceptoPago("Febrero", 26000)
             };
 
-
+            
+       
             return conceptoPagos;
         }
 
