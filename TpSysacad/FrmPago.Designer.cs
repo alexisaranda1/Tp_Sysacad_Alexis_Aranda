@@ -30,9 +30,6 @@
         {
             label1 = new Label();
             dtgvConceptoPago = new DataGridView();
-            Nombre = new DataGridViewTextBoxColumn();
-            Monto = new DataGridViewTextBoxColumn();
-            IngresarMonton = new DataGridViewTextBoxColumn();
             CmboxMetodoPago = new ComboBox();
             TbxNumeroTarjeta = new TextBox();
             TbxNombreTitular = new TextBox();
@@ -41,6 +38,9 @@
             CmboxCuota = new ComboBox();
             btnPagar = new Button();
             btnVolver = new Button();
+            Nombre = new DataGridViewTextBoxColumn();
+            Monto = new DataGridViewTextBoxColumn();
+            IngresarMonton = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dtgvConceptoPago).BeginInit();
             SuspendLayout();
             // 
@@ -62,24 +62,6 @@
             dtgvConceptoPago.RowTemplate.Height = 25;
             dtgvConceptoPago.Size = new Size(344, 150);
             dtgvConceptoPago.TabIndex = 1;
-
-            // 
-            // Nombre
-            // 
-            Nombre.HeaderText = "Nombre";
-            Nombre.Name = "Nombre";
-            Nombre.ReadOnly = true;
-            // 
-            // Monto
-            // 
-            Monto.HeaderText = "Deuda pendiente";
-            Monto.Name = "Monto";
-            Monto.ReadOnly = true;
-            // 
-            // IngresarMonton
-            // 
-            IngresarMonton.HeaderText = "Ingresar monto";
-            IngresarMonton.Name = "IngresarMonton";
             // 
             // CmboxMetodoPago
             // 
@@ -88,7 +70,6 @@
             CmboxMetodoPago.Size = new Size(184, 23);
             CmboxMetodoPago.TabIndex = 0;
             CmboxMetodoPago.Text = "Seleccionar método de pago";
-          
             // 
             // TbxNumeroTarjeta
             // 
@@ -130,7 +111,6 @@
             CmboxCuota.Size = new Size(174, 23);
             CmboxCuota.TabIndex = 10;
             CmboxCuota.Text = "Seleccione cantidad cuota";
-            
             // 
             // btnPagar
             // 
@@ -140,7 +120,6 @@
             btnPagar.TabIndex = 11;
             btnPagar.Text = "Pagar";
             btnPagar.UseVisualStyleBackColor = true;
-           
             // 
             // btnVolver
             // 
@@ -152,6 +131,23 @@
             btnVolver.Text = "Volver";
             btnVolver.UseVisualStyleBackColor = true;
             btnVolver.Click += btnVolver_Click;
+            // 
+            // Nombre
+            // 
+            Nombre.HeaderText = "Mes";
+            Nombre.Name = "Nombre";
+            Nombre.ReadOnly = true;
+            // 
+            // Monto
+            // 
+            Monto.HeaderText = "Deuda pendiente";
+            Monto.Name = "Monto";
+            Monto.ReadOnly = true;
+            // 
+            // IngresarMonton
+            // 
+            IngresarMonton.HeaderText = "Ingresar monto";
+            IngresarMonton.Name = "IngresarMonton";
             // 
             // FrmPago
             // 
@@ -171,7 +167,6 @@
             Margin = new Padding(3, 2, 3, 2);
             Name = "FrmPago";
             Text = "FrmPago";
-            
             ((System.ComponentModel.ISupportInitialize)dtgvConceptoPago).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -188,9 +183,9 @@
         private TextBox TbxCvv;
         private ComboBox CmboxCuota;
         private Button btnPagar;
+        private Button btnVolver;
         private DataGridViewTextBoxColumn Nombre;
         private DataGridViewTextBoxColumn Monto;
         private DataGridViewTextBoxColumn IngresarMonton;
-        private Button btnVolver;
     }
 }

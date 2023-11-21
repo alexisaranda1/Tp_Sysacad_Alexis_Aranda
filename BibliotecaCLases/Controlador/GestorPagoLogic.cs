@@ -12,7 +12,8 @@ namespace BibliotecaCLases.Controlador
         private readonly List<Pago> _pagos;
         private Pago _pago;
         private Estudiante _estudiante;
-        private readonly string _path;
+        private readonly string _pathEstudiante;
+        private readonly string _pathPago;
         private readonly CrudEstudiante _crudEstudiante;
         private List<decimal> _montosIngresados = new();
         private decimal _totalIngresado = 0;
@@ -22,12 +23,24 @@ namespace BibliotecaCLases.Controlador
         {   
             _crudEstudiante = new CrudEstudiante();
             _estudiante = _crudEstudiante.ObtenerEstudiantePorLegajo(usuario.Legajo);
+           
             _pagos = new List<Pago>();
-            _path = PathManager.ObtenerRuta("Data", "DataUsuarios.json");
+            _pathEstudiante = PathManager.ObtenerRuta("Data", "DataUsuarios.json");
+            _pathPago = PathManager.ObtenerRuta("Data", "Pagos.json");
         }
         public List<ConceptoPago> ObtenerConceptosPagoPendientes()
         {
+            Inicializar();
             return _estudiante.ConceptoPagos; ;
+        }
+        public void  Inicializar()
+        {
+            List<ConceptoPago> conceptopagos =_estudiante.ConceptoPagos;
+            foreach (ConceptoPago conceptoPago in conceptopagos)
+            {
+                _montosIngresados.Add(0);
+            }
+
         }
         public List<string> ObtenerMetodosPago()
         {
@@ -70,9 +83,19 @@ namespace BibliotecaCLases.Controlador
                 for (int i = 0; i < conceptosPago.Count && i < _montosIngresados.Count; i++)
                 {
                     decimal montoIngresado = _montosIngresados[i];
-                    conceptosPago[i].ActualizarMontoPendiente(montoIngresado);
 
-                    // Realiza las operaciones necesarias con montoIngresado
+                    if (montoIngresado != 0)
+                    {
+                        conceptosPago[i].ActualizarMontoPendiente(montoIngresado);
+                      
+                    }
+                    else
+                    {
+                        _montosIngresados[i] = 0;
+                    }
+                 
+
+                  
                 }
 
                 // Registrar el pago después de actualizar los montos pendientes
@@ -100,8 +123,8 @@ namespace BibliotecaCLases.Controlador
                 _estudiante.EstadoDePago = "pagado";
             }
 
-            Serializador.ActualizarJson(_estudiante, _estudiante.Legajo, _path);
-
+            Serializador.ActualizarJson(_estudiante, _estudiante.Legajo, _pathEstudiante);
+            Serializador.ActualizarJson(_pago, _estudiante.Legajo, _pathPago);
             _pagos.Add(_pago);
         }
 
@@ -115,7 +138,7 @@ namespace BibliotecaCLases.Controlador
                 comprobante.AppendLine("Comprobante de Pago");
                 comprobante.AppendLine("===================");
                 comprobante.AppendLine($"Fecha: {pago.Fecha}");
-                comprobante.AppendLine($"Estudiante: {_estudiante.Nombre}, {_estudiante.Apellido}");
+                comprobante.AppendLine($"Estudiante: {pago.NombreUsuario}, {pago.ApellidoUsuario}");
                 comprobante.AppendLine("Conceptos de Pago:");
 
                 for (int i = 0; i < _pago.ConceptosPago.Count && i < _montosIngresados.Count; i++)
@@ -167,7 +190,7 @@ namespace BibliotecaCLases.Controlador
                 comprobante.AppendLine("Comprobante de Pago");
                 comprobante.AppendLine("===================");
                 comprobante.AppendLine($"Fecha: {_pago.Fecha}");
-                comprobante.AppendLine($"Estudiante: {_estudiante.Nombre}, {_estudiante.Apellido}");
+                comprobante.AppendLine($"Estudiante: {_pago.NombreUsuario}, {_pago.ApellidoUsuario}");
                 comprobante.AppendLine("Conceptos de Pago:");
 
                 for (int i = 0; i < _pago.ConceptosPago.Count && i < _montosIngresados.Count; i++)

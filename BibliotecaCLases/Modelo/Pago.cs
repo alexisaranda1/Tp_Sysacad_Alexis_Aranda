@@ -13,7 +13,11 @@ namespace BibliotecaCLases.Modelo
     {
 
         private DateTime _fecha;
-        private Usuario _estudiante;
+       
+        private int _idUsuario;
+        private string _nombreUsuario;
+        private string _apellidoUsuario;
+
         private List<ConceptoPago> _conceptosPago;
         private string _metodoPago;
         private decimal _montoTotal;
@@ -28,7 +32,9 @@ namespace BibliotecaCLases.Modelo
         public Pago(Usuario estudiante, List<ConceptoPago> conceptosPago, string metodoPago, decimal montoTotal)
         {
             _fecha = DateTime.Now;
-            _estudiante = estudiante;// legajo
+            _idUsuario = estudiante.Legajo;
+            _nombreUsuario = estudiante.Nombre;
+            _apellidoUsuario = estudiante.Apellido;
             _conceptosPago = conceptosPago;
             _metodoPago = metodoPago;
             _montoTotal = montoTotal;
@@ -43,14 +49,27 @@ namespace BibliotecaCLases.Modelo
             set { _fecha = value; }
         }
 
-        /// <summary>
-        /// Propiedad para obtener o establecer el estudiante que realizó el pago.
-        /// </summary>
-        public Usuario Estudiante 
+
+
+        public int IdUsuario
         {
-            get { return _estudiante; } 
-            set { _estudiante = value; }
+            get { return _idUsuario; }
+            set { _idUsuario = value; }
         }
+
+        public string NombreUsuario
+        {
+            get { return _nombreUsuario; }
+            set { _nombreUsuario = value; }
+        }
+
+        public string ApellidoUsuario
+        {
+            get { return _apellidoUsuario; }
+            set { _apellidoUsuario = value; }
+        }
+
+   
 
         /// <summary>
         /// Propiedad para obtener o establecer la lista de conceptos de pago asociados al pago.
@@ -60,7 +79,11 @@ namespace BibliotecaCLases.Modelo
             get { return _conceptosPago; }
             set { _conceptosPago = value; }
         }
-
+        public decimal MontoTotal
+        {
+            get { return _montoTotal; }
+            set { _montoTotal = value; }
+        }
         /// <summary>
         /// Propiedad para obtener o establecer el método de pago utilizado para el pago.
         /// </summary>
@@ -73,10 +96,7 @@ namespace BibliotecaCLases.Modelo
         /// <summary>
         /// Propiedad para obtener o establecer el monto total del pago.
         /// </summary>
-        public decimal MontoTotal
-        {
-            get { return _montoTotal; }
-            set { _montoTotal = value; }
-        }
+
+
     }
 }
