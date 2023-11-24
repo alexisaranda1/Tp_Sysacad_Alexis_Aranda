@@ -21,8 +21,9 @@ namespace BibliotecaCLases.Modelo
     {
         private string _nombre;
         private decimal _montoPagar;
-        private decimal _montoPendiente;
-     
+      
+        private decimal _montoPagado;
+
 
         /// <summary>
         /// Constructor de la clase ConceptoPago.
@@ -53,15 +54,22 @@ namespace BibliotecaCLases.Modelo
             set { _montoPagar = value; }
         }
 
+        public decimal MontoPagado
+        {
+            get { return _montoPagado; }
+            set { _montoPagado += value; }
+        }
 
- 
+
+
         /// <summary>
         /// Método para actualizar el monto pendiente restando el monto ingresado.
         /// </summary>
-        public void ActualizarMontoPendiente(decimal montoIngresado)
+        public void ActualizarMontoPendiente()
         {
-            _montoPagar -= montoIngresado;
+            _montoPagar -= MontoPagado;
         }
 
+     
     }
 }

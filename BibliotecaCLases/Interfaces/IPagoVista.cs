@@ -23,7 +23,7 @@ namespace BibliotecaCLases.Interfaces
         public string ObtenerNumeroTarjeta();
         public string ObtenerFechaVencimiento();
         public string ObtenerCVV();
-        public List<decimal> ObtenerValoresCelda();
+        public List<decimal> ObtenerValoresEditados();
 
 
         public void MostrarTotalPagar(decimal total);
