@@ -135,8 +135,7 @@ namespace Formularios
             return TbxCvv.Text;
         }
 
-
-        public List<decimal> ObtenerValoresCelda()
+        public List<decimal> ObtenerValoresEditados()
         {
             List<decimal> valores = new List<decimal>();
 
@@ -146,14 +145,20 @@ namespace Formularios
 
                 if (cellValue != null && !string.IsNullOrWhiteSpace(cellValue.ToString()))
                 {
-                    if (decimal.TryParse(cellValue.ToString(), out decimal valorCelda))
+                    if (decimal.TryParse(cellValue.ToString(), out decimal valorCelda) && valorCelda >= 0)
                     {
                         valores.Add(valorCelda);
                     }
                     else
                     {
-                        // Manejo de error, si es necesario
+                        MessageBox.Show(this, "Ingrese un número válido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return new List<decimal>();
                     }
+                }
+                else
+                {
+                    
+                    valores.Add(0);
                 }
             }
 

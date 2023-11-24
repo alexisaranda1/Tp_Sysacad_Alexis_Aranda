@@ -16,8 +16,8 @@ namespace BibliotecaCLases.Controlador
         private readonly string _pathPago;
         private readonly CrudEstudiante _crudEstudiante;
         private List<decimal> _montosIngresados = new();
-        private decimal _totalIngresado = 0;
         private decimal _totalAPagar = 0;
+       
 
         public GestorPagoLogic(Usuario usuario)
         {   
@@ -68,6 +68,7 @@ namespace BibliotecaCLases.Controlador
             bool esPagoValido = false;
 
             List<ConceptoPago> conceptosPago = ObtenerConceptosPagoPendientes();
+            List<ConceptoPago> conceptosPagopagados = new List<ConceptoPago>();
 
             if (metodoPago.Contains("Tarjeta"))
             {
@@ -80,31 +81,23 @@ namespace BibliotecaCLases.Controlador
 
             if (esPagoValido)
             {
-                for (int i = 0; i < conceptosPago.Count && i < _montosIngresados.Count; i++)
+                foreach (ConceptoPago conceptoPago in conceptosPago)
                 {
-                    decimal montoIngresado = _montosIngresados[i];
-
-                    if (montoIngresado != 0)
+                    decimal montonIngresado = _montosIngresados[conceptosPago.IndexOf(conceptoPago)];
+                    conceptoPago.MontoPagado = montonIngresado;
+                    conceptoPago.ActualizarMontoPendiente();
+                    if (montonIngresado > 0)
                     {
-                        conceptosPago[i].ActualizarMontoPendiente(montoIngresado);
-                      
-                    }
-                    else
-                    {
-                        _montosIngresados[i] = 0;
-                    }
-                 
+                        conceptosPagopagados.Add(conceptoPago);
 
-                  
+                    }
                 }
 
-                // Registrar el pago después de actualizar los montos pendientes
-                RegistrarPago(conceptosPago, metodoPago);
+                RegistrarPago(conceptosPagopagados, metodoPago);
             }
 
             return esPagoValido;
         }
-
 
 
         public List<decimal> MontosIngresados
@@ -113,10 +106,11 @@ namespace BibliotecaCLases.Controlador
             set { _montosIngresados = value; }
         }
 
+
         private void RegistrarPago(List<ConceptoPago> conceptosPago, string metodoPago)
         {
             CalcularMontoTotal(conceptosPago);          
-            _pago = new Pago(_estudiante, conceptosPago, metodoPago, _totalIngresado);
+            _pago = new Pago(_estudiante, conceptosPago, metodoPago, _totalAPagar);
 
             if (_estudiante.ConceptoPagos.All(concepto => concepto.MontoPagar == 0))
             {
@@ -128,6 +122,61 @@ namespace BibliotecaCLases.Controlador
             _pagos.Add(_pago);
         }
 
+        private void CalcularMontoTotal(List<ConceptoPago> conceptosPago)
+        {
+            foreach (var concepto in conceptosPago)
+            {
+                
+                _totalAPagar += _montosIngresados[conceptosPago.IndexOf(concepto)];
+                
+            }
+        }
+
+        public string GenerarComprobante()
+        {
+            if (_pago.MetodoPago.Contains("Tarjeta"))
+            {
+                return GenerarComprobanteDePago();
+            }
+            else if (_pago.MetodoPago == "Transferencia bancaria")
+            {
+                return GenerarDatosTransferenciaBancaria();
+            }
+
+
+            return "No se pudo generar el comprobante";
+        }
+
+        public string GenerarComprobanteDePago()
+        {
+            if (_totalAPagar != 0)
+            {
+                StringBuilder comprobante = new StringBuilder();
+                comprobante.AppendLine("Comprobante de Pago");
+                comprobante.AppendLine("===================");
+                comprobante.AppendLine($"Fecha: {_pago.Fecha}");
+                comprobante.AppendLine($"Estudiante: {_pago.NombreUsuario}, {_pago.ApellidoUsuario}");
+                comprobante.AppendLine("Conceptos de Pago:");
+
+                for (int i = 0; i < _pago.ConceptosPago.Count && i < _montosIngresados.Count; i++)
+                {
+                    if (_montosIngresados[i] > 0)
+                    {
+                        comprobante.AppendLine($"- {_pago.ConceptosPago[i].Nombre}: ${_montosIngresados[i]}");
+                    }
+                }
+
+
+                comprobante.AppendLine($"Monto Total: ${_totalAPagar}");
+                comprobante.AppendLine($"Método de Pago: {_pago.MetodoPago}");
+
+                return comprobante.ToString();
+            }
+            else
+            {
+                return "No se realizó el pago";
+            }
+        }
 
         public List<string> ObtenerHistorialPagos()
         {
@@ -143,7 +192,11 @@ namespace BibliotecaCLases.Controlador
 
                 for (int i = 0; i < _pago.ConceptosPago.Count && i < _montosIngresados.Count; i++)
                 {
-                    comprobante.AppendLine($"- {_pago.ConceptosPago[i].Nombre}: ${_montosIngresados[i]}");
+                    if (_montosIngresados[i] > 0)
+                    {
+                        comprobante.AppendLine($"- {_pago.ConceptosPago[i].Nombre}: ${_montosIngresados[i]}");
+                    }
+                    
                 }
 
 
@@ -156,63 +209,9 @@ namespace BibliotecaCLases.Controlador
         }
 
 
-        private void CalcularMontoTotal(List<ConceptoPago> conceptosPago)
-        {
-            foreach (var concepto in conceptosPago)
-            {
-                
-                _totalIngresado += _montosIngresados[conceptosPago.IndexOf(concepto)];
-                _totalAPagar += concepto.MontoPagar;
-            }
-        }
-
-        public string GenerarComprobante()
-        {
-            if (_pago.MetodoPago.Contains("Tarjeta"))
-            {
-                return GenerarComprobanteDePago();
-            }
-            else if (_pago.MetodoPago == "Transferencia bancaria")
-            {
-                return GenerarDatosTransferenciaBancaria();
-            }
-
-          
-
-            return "No se pudo generar el comprobante";
-        }
-
-        public string GenerarComprobanteDePago()
-        {
-            if (_totalIngresado != 0)
-            {
-                StringBuilder comprobante = new StringBuilder();
-                comprobante.AppendLine("Comprobante de Pago");
-                comprobante.AppendLine("===================");
-                comprobante.AppendLine($"Fecha: {_pago.Fecha}");
-                comprobante.AppendLine($"Estudiante: {_pago.NombreUsuario}, {_pago.ApellidoUsuario}");
-                comprobante.AppendLine("Conceptos de Pago:");
-
-                for (int i = 0; i < _pago.ConceptosPago.Count && i < _montosIngresados.Count; i++)
-                {
-                    comprobante.AppendLine($"- {_pago.ConceptosPago[i].Nombre}: ${_montosIngresados[i]}");
-                }
-
-                comprobante.AppendLine($"Monto Total: ${_totalIngresado}");
-                comprobante.AppendLine($"Método de Pago: {_pago.MetodoPago}");
-
-                return comprobante.ToString();
-            }
-            else
-            {
-                return "No se realizó el pago";
-            }
-        }
-
-
         public string GenerarDatosTransferenciaBancaria()
         {
-            if (_totalIngresado != 0)
+            if (_totalAPagar != 0)
             {
                 StringBuilder mensajeTransferencia = new StringBuilder("Por favor, realice la transferencia bancaria con los siguientes datos:\n\n");
                 mensajeTransferencia.AppendLine("Nombre del Banco: Ciudad");
@@ -223,12 +222,15 @@ namespace BibliotecaCLases.Controlador
 
                 foreach (var concepto in _pago.ConceptosPago)
                 {
-                   
+
                     int indiceConcepto = _pago.ConceptosPago.IndexOf(concepto);
-                    mensajeTransferencia.AppendLine($"- {concepto.Nombre}: ${_montosIngresados[indiceConcepto]}");
+                    if (_montosIngresados[indiceConcepto] > 0)
+                    {
+                        mensajeTransferencia.AppendLine($"- {concepto.Nombre}: ${_montosIngresados[indiceConcepto]}");
+                    }
                 }
 
-                mensajeTransferencia.AppendLine($"Monto a Transferir: {_totalIngresado}");
+                mensajeTransferencia.AppendLine($"Monto a Transferir: {_totalAPagar}");
 
                 return mensajeTransferencia.ToString();
             }

@@ -54,7 +54,7 @@ namespace BibliotecaCLases.Controlador
                 }
                 else
                 {
-                    _vista.MostrarMensaje("Error: No se ha evitado la celda. Por favor, inténtelo nuevamente.");
+                    _vista.MostrarMensaje("Error. Por favor, inténtelo nuevamente.");
                 }
             }
             else
@@ -65,7 +65,7 @@ namespace BibliotecaCLases.Controlador
 
         private bool Vista_CeldaEditada()
         {
-            List<decimal> valoresCelda = _vista.ObtenerValoresCelda();
+            List<decimal> valoresCelda = _vista.ObtenerValoresEditados();
 
             if (valoresCelda.Count > 0)
             {
