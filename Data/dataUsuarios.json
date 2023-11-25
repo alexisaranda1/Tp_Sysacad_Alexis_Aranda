@@ -34,23 +34,22 @@
     "Direccion": "asd",
     "Telefono": "1231231231",
     "CursosInscriptos": [],
-    "EstadoDePago": "pendiente",
+    "EstadoDePago": "pagado",
     "ConceptoPagos": [
       {
         "Nombre": "Noviembre",
-        "MontoPagar": 16860.0,
-        "MontoPagado": 810.0
-
+        "MontoPagar": 22000.0,
+        "MontoPagado": 0.0
       },
       {
         "Nombre": "Diciembre",
-        "MontoPagar": 14652.0,
-        "MontoPagado": 910.0
+        "MontoPagar": 25000.0,
+        "MontoPagado": 0.0
       },
       {
         "Nombre": "Febrero",
-        "MontoPagar": 23960.0,
-        "MontoPagado": 310.0
+        "MontoPagar": 28000.0,
+        "MontoPagado": 0.0
       }
     ],
     "Nombre": "asd",

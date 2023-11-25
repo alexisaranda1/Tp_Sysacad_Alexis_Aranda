@@ -11,7 +11,7 @@ namespace BibliotecaCLases.Interfaces
     {
         event EventHandler MetodoPagoSeleccionado;
         event EventHandler PagarClicked;
-      
+        
         public void MostrarConceptosPagoPendientes(List<ConceptoPago> conceptosPago);
         public void MostrarMetodosPago(List<string> metodosPago);
 
@@ -23,7 +23,7 @@ namespace BibliotecaCLases.Interfaces
         public string ObtenerNumeroTarjeta();
         public string ObtenerFechaVencimiento();
         public string ObtenerCVV();
-        public List<decimal> ObtenerValoresEditados();
+        public List<decimal> ObtenerValoresEditados(List<decimal> montosIngresados);
 
 
         public void MostrarTotalPagar(decimal total);

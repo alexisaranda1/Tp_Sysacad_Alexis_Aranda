@@ -65,9 +65,9 @@ namespace BibliotecaCLases.Modelo
         /// <summary>
         /// Método para actualizar el monto pendiente restando el monto ingresado.
         /// </summary>
-        public void ActualizarMontoPendiente()
+        public void ActualizarMontoPendiente(decimal montoingresado)
         {
-            _montoPagar -= MontoPagado;
+            _montoPagar -= montoingresado;
         }
 
      

@@ -16,6 +16,7 @@ namespace BibliotecaCLases.Controlador
         private readonly string _pathPago;
         private readonly CrudEstudiante _crudEstudiante;
         private List<decimal> _montosIngresados = new();
+        private List<ConceptoPago> _conceptosPendientes = new ();
         private decimal _totalAPagar = 0;
        
 
@@ -30,18 +31,21 @@ namespace BibliotecaCLases.Controlador
         }
         public List<ConceptoPago> ObtenerConceptosPagoPendientes()
         {
-            Inicializar();
-            return _estudiante.ConceptoPagos; ;
-        }
-        public void  Inicializar()
-        {
-            List<ConceptoPago> conceptopagos =_estudiante.ConceptoPagos;
-            foreach (ConceptoPago conceptoPago in conceptopagos)
-            {
-                _montosIngresados.Add(0);
-            }
+            List<ConceptoPago> conceptosPendientes = new List<ConceptoPago>();
 
+            foreach (ConceptoPago conceptoPago in _estudiante.ConceptoPagos)
+            {
+                if (conceptoPago.MontoPagar > 0)
+                {
+                    conceptosPendientes.Add(conceptoPago);
+                    _montosIngresados.Add(0);
+                }
+            }
+            _conceptosPendientes = conceptosPendientes;
+            return conceptosPendientes;
         }
+
+
         public List<string> ObtenerMetodosPago()
         {
             List<string> metodosDePago = new List<string>
@@ -63,12 +67,13 @@ namespace BibliotecaCLases.Controlador
         }
 
 
-        public bool RealizarPago(Usuario usuario, string metodoPago, string numeroTarjeta, string fechaVencimiento, string cvv)
+        public bool RealizarPago(Usuario usuario, string metodoPago, string numeroTarjeta, string fechaVencimiento, string cvv, out string mensaje)
         {
             bool esPagoValido = false;
 
-            List<ConceptoPago> conceptosPago = ObtenerConceptosPagoPendientes();
+            List<ConceptoPago> conceptosPago = _conceptosPendientes;
             List<ConceptoPago> conceptosPagopagados = new List<ConceptoPago>();
+            mensaje = string.Empty;  // Inicializamos la variable de mensaje
 
             if (metodoPago.Contains("Tarjeta"))
             {
@@ -83,21 +88,35 @@ namespace BibliotecaCLases.Controlador
             {
                 foreach (ConceptoPago conceptoPago in conceptosPago)
                 {
-                    decimal montonIngresado = _montosIngresados[conceptosPago.IndexOf(conceptoPago)];
-                    conceptoPago.MontoPagado = montonIngresado;
-                    conceptoPago.ActualizarMontoPendiente();
-                    if (montonIngresado > 0)
+                    decimal montoIngresado = _montosIngresados[conceptosPago.IndexOf(conceptoPago)];
+                    if (montoIngresado > conceptoPago.MontoPagar)
+                    {
+                        mensaje = "El monto ingresado es mayor que el monto a pagar. Se cobrará solo el monto a pagar.";
+                    }
+                     montoIngresado = Math.Min(montoIngresado, conceptoPago.MontoPagar);
+                    conceptoPago.MontoPagado = montoIngresado;
+                    _montosIngresados[conceptosPago.IndexOf(conceptoPago)] = montoIngresado;
+                    if ( conceptoPago.MontoPagar > 0)
+                    {
+                        conceptoPago.ActualizarMontoPendiente(montoIngresado);
+                    }
+                    else
+                    {
+                        mensaje = "Ya esta pagado, no lo puede volver a pagar!";
+                    }
+                    
+
+                    if (montoIngresado > 0)
                     {
                         conceptosPagopagados.Add(conceptoPago);
-
                     }
                 }
-
-                RegistrarPago(conceptosPagopagados, metodoPago);
-            }
-
+              
+                RegistrarPago(conceptosPagopagados, metodoPago);               
+            }       
             return esPagoValido;
         }
+
 
 
         public List<decimal> MontosIngresados
@@ -124,12 +143,7 @@ namespace BibliotecaCLases.Controlador
 
         private void CalcularMontoTotal(List<ConceptoPago> conceptosPago)
         {
-            foreach (var concepto in conceptosPago)
-            {
-                
-                _totalAPagar += _montosIngresados[conceptosPago.IndexOf(concepto)];
-                
-            }
+            _totalAPagar = _montosIngresados.Sum();
         }
 
         public string GenerarComprobante()
@@ -158,7 +172,9 @@ namespace BibliotecaCLases.Controlador
                 comprobante.AppendLine($"Estudiante: {_pago.NombreUsuario}, {_pago.ApellidoUsuario}");
                 comprobante.AppendLine("Conceptos de Pago:");
 
-                for (int i = 0; i < _pago.ConceptosPago.Count && i < _montosIngresados.Count; i++)
+                List<ConceptoPago> conceptos = _conceptosPendientes;
+
+                for (int i = 0; i < conceptos.Count && i < _montosIngresados.Count; i++)
                 {
                     if (_montosIngresados[i] > 0)
                     {
@@ -190,7 +206,9 @@ namespace BibliotecaCLases.Controlador
                 comprobante.AppendLine($"Estudiante: {pago.NombreUsuario}, {pago.ApellidoUsuario}");
                 comprobante.AppendLine("Conceptos de Pago:");
 
-                for (int i = 0; i < _pago.ConceptosPago.Count && i < _montosIngresados.Count; i++)
+                List<ConceptoPago> conceptos = _conceptosPendientes;
+
+                for (int i = 0; i < conceptos.Count && i < _montosIngresados.Count; i++)
                 {
                     if (_montosIngresados[i] > 0)
                     {
@@ -219,11 +237,11 @@ namespace BibliotecaCLases.Controlador
                 mensajeTransferencia.AppendLine("Alias: Utn.fra.2023");
                 mensajeTransferencia.AppendLine("Titular de la Cuenta: UTN-fra");
                 mensajeTransferencia.AppendLine("Referencia:");
-
-                foreach (var concepto in _pago.ConceptosPago)
+                List<ConceptoPago>  conceptos = _conceptosPendientes;
+                foreach (var concepto in conceptos)
                 {
 
-                    int indiceConcepto = _pago.ConceptosPago.IndexOf(concepto);
+                    int indiceConcepto = conceptos.IndexOf(concepto);
                     if (_montosIngresados[indiceConcepto] > 0)
                     {
                         mensajeTransferencia.AppendLine($"- {concepto.Nombre}: ${_montosIngresados[indiceConcepto]}");
@@ -234,10 +252,7 @@ namespace BibliotecaCLases.Controlador
 
                 return mensajeTransferencia.ToString();
             }
-            else
-            {
-                return "Ingrese el monto a transferir";
-            }
+            return "No se realizo el pago";
         }
 
     }
