@@ -37,7 +37,6 @@ namespace BibliotecaCLases.Controlador
             {
                 if (conceptoPago.MontoPagar > 0)
                 {
-
                     conceptosPendientes.Add(conceptoPago);
                     _montosIngresados.Add(0);
                 }
