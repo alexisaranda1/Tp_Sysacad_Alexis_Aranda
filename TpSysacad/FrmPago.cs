@@ -135,7 +135,7 @@ namespace Formularios
             return TbxCvv.Text;
         }
 
-        public List<decimal> ObtenerValoresEditados()
+        public List<decimal> ObtenerValoresEditados(List<decimal> montosIngresados)
         {
             List<decimal> valores = new List<decimal>();
 

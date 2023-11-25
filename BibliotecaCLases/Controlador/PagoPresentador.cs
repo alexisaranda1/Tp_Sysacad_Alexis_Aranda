@@ -39,8 +39,13 @@ namespace BibliotecaCLases.Controlador
             {
                 if (seEvitoCelda)
                 {
-                    bool pagoExitoso = _gestorPagoLogic.RealizarPago(_usuario, metodoSeleccionado, numeroTarjeta, fechaVencimiento, cvv);
-
+                   
+                    string mensaje= "";
+                    bool pagoExitoso = _gestorPagoLogic.RealizarPago(_usuario, metodoSeleccionado, numeroTarjeta, fechaVencimiento, cvv, out mensaje);
+                    if (mensaje != "")
+                    {
+                        _vista.MostrarMensaje(mensaje);
+                    }
                     if (pagoExitoso)
                     {
                         string comprobante = _gestorPagoLogic.GenerarComprobante();
@@ -65,7 +70,7 @@ namespace BibliotecaCLases.Controlador
 
         private bool Vista_CeldaEditada()
         {
-            List<decimal> valoresCelda = _vista.ObtenerValoresEditados();
+            List<decimal> valoresCelda = _vista.ObtenerValoresEditados(_gestorPagoLogic.MontosIngresados);
 
             if (valoresCelda.Count > 0)
             {
