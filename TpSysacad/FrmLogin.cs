@@ -24,11 +24,13 @@ namespace Formularios
 
             if (existeUsuarios)
             {
-
+            
                 verificado = controlLogin.AutenticarUsuario(dni, contraseña);
                 if (verificado)
                 {
+
                     Usuario usuarioActual = controlLogin.GetUsuario;
+
                     FormPanelUsuario frmPanelUsuario = new(usuarioActual);
 
                     frmPanelUsuario.FormClosed += (sender, args) =>
@@ -71,6 +73,7 @@ namespace Formularios
             string password = ConfigurationManager.AppSettings["estudiantePassword"]!;
             textUsuario.Text = usuario;
             textContraseña.Text = password;
+            
 
         }
     }

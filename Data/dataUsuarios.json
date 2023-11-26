@@ -1,5 +1,5 @@
-{
-  "1000": {
+[
+  {
     "Debecambiar": false,
     "Direccion": null,
     "Telefono": null,
@@ -14,7 +14,7 @@
     "TipoUsuario": 0,
     "Legajo": 1000
   },
-  "1001": {
+  {
     "Debecambiar": false,
     "Direccion": null,
     "Telefono": null,
@@ -29,17 +29,50 @@
     "TipoUsuario": 0,
     "Legajo": 1001
   },
-  "1012": {
+  {
     "Debecambiar": false,
     "Direccion": "asd",
     "Telefono": "1231231231",
-    "CursosInscriptos": [],
+    "CursosInscriptos": [
+      "5"
+    ],
     "EstadoDePago": "pagado",
     "ConceptoPagos": [
       {
         "Nombre": "Noviembre",
-        "MontoPagar": 0.0,
-        "MontoPagado": 22000.0
+        "MontoPagar": 21910.0,
+        "MontoPagado": 90.0
+      },
+      {
+        "Nombre": "Diciembre",
+        "MontoPagar": 24608.0,
+        "MontoPagado": 392.0
+      },
+      {
+        "Nombre": "Febrero",
+        "MontoPagar": 27991.0,
+        "MontoPagado": 9.0
+      }
+    ],
+    "Nombre": "ale",
+    "Apellido": "ara",
+    "Correo": "matuk79@gmail.com",
+    "Dni": "12312345",
+    "Clave": "$2a$08$KYhEhdwHIiH1iMYQon35P.uY0E8RVdpYwZQYWgqKeT2dYwTh1bS66",
+    "TipoUsuario": 1,
+    "Legajo": 1012
+  },
+  {
+    "Debecambiar": false,
+    "Direccion": "CALLE",
+    "Telefono": "1162458176",
+    "CursosInscriptos": [],
+    "EstadoDePago": "pendiente",
+    "ConceptoPagos": [
+      {
+        "Nombre": "Noviembre",
+        "MontoPagar": 22500.0,
+        "MontoPagado": 0.0
       },
       {
         "Nombre": "Diciembre",
@@ -48,16 +81,16 @@
       },
       {
         "Nombre": "Febrero",
-        "MontoPagar": 0.0,
-        "MontoPagado": 28000.0
+        "MontoPagar": 26000.0,
+        "MontoPagado": 0.0
       }
     ],
-    "Nombre": "asd",
-    "Apellido": "dsa",
-    "Correo": "matuk79@gmail.com",
-    "Dni": "12312345",
-    "Clave": "$2a$08$KYhEhdwHIiH1iMYQon35P.uY0E8RVdpYwZQYWgqKeT2dYwTh1bS66",
+    "Nombre": "alexis",
+    "Apellido": "aranda",
+    "Correo": "jara@gmail.com",
+    "Dni": "12345008",
+    "Clave": "$2a$08$i4Oy187.pBDSUVrwMTXiretGfZLzLONtos40zOa67wHYZKBLSGDF6",
     "TipoUsuario": 1,
-    "Legajo": 1012
+    "Legajo": 1013
   }
-}
+]

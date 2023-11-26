@@ -113,10 +113,7 @@ namespace BibliotecaCLases.Controlador
         /// </summary>
         /// <param name="estudiante">El número de legajo del estudiante que se desea modificar.</param>
         /// <param name="nuevoNombre">El nuevo nombre que se asignará al estudiante.</param>
-        public void ModificarEstudiante(int estudiante, string nuevoNombre)
-        {          
-            crudEstudiante.ModificarEstudiante(estudiante, nuevoNombre);
-        }
+      
         /// <summary>
         /// Elimina un estudiante utilizando el objeto CrudEstudiante.
         /// </summary>
@@ -134,9 +131,6 @@ namespace BibliotecaCLases.Controlador
             get { return _validado; }
             set { _validado = value; }
         }
-
-
-
 
         /// <summary>
         /// Obtiene o establece el mensaje de error en caso de que la validación de datos falle.

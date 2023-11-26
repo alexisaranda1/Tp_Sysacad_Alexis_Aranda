@@ -1,6 +1,7 @@
-﻿using BibliotecaCLases.Modelo;
+﻿using System.Collections.Generic;
+using System.Linq;
+using BibliotecaCLases.Modelo;
 using BibliotecaCLases.Utilidades;
-
 
 namespace BibliotecaCLases.Controlador
 {
@@ -11,7 +12,7 @@ namespace BibliotecaCLases.Controlador
     {
         Serializador serializador = new Serializador();
         private Usuario? _usuario;
-        private readonly Dictionary<int, Usuario> dictUsuarios;
+        private readonly List<Usuario> listaUsuarios;
         private string _path;
         private bool _existeUsuario;
 
@@ -28,47 +29,38 @@ namespace BibliotecaCLases.Controlador
             int nivelesARetroceder = 4;
             _path = PathManager.ObtenerRuta("Data", "DataUsuarios.json", nivelesARetroceder);
 
-            dictUsuarios = serializador.LeerJson<Dictionary<int, Usuario>>(_path);
+            listaUsuarios = serializador.LeerJson<List<Usuario>>(_path);
 
-            _existeUsuario = true;
-            if (dictUsuarios == null || dictUsuarios.Count == 0)
-            {
-
-                _existeUsuario = false;
-
-            }
-
+            _existeUsuario = listaUsuarios != null && listaUsuarios.Any();
         }
 
         /// <summary>
-        /// verifica si en la lista usuarios uno que coincide con la contraseña y el dni
+        /// Verifica si en la lista de usuarios hay uno que coincide con el DNI y la contraseña.
         /// </summary>
-        /// <param name="dni"></param>
-        /// <param name="contrasena"></param>
-        /// <returns>bool</returns>
+        /// <param name="dni">El DNI del usuario.</param>
+        /// <param name="contrasena">La contraseña del usuario.</param>
+        /// <returns>True si la autenticación es exitosa; de lo contrario, False.</returns>
         public bool AutenticarUsuario(string dni, string contrasena)
         {
-            //comentario
-            _usuario = dictUsuarios.FirstOrDefault(pair => pair.Value.Dni == dni).Value;
+            _usuario = listaUsuarios.FirstOrDefault(u => u.Dni == dni);
 
-            if (_usuario != null)
+            if (_usuario != null && contrasena != null && PasswordHashing.ValidatePassword(contrasena, _usuario.Clave))
             {
-                if (PasswordHashing.ValidatePassword(contrasena, _usuario.Clave))
-                {
-                    return true;
-                }
+                return true;
             }
 
             return false;
         }
 
+
         /// <summary>
-        /// Obtiene el valor usuraio.
+        /// Obtiene el valor del usuario.
         /// </summary>
         public Usuario GetUsuario
         {
             get { return _usuario; }
         }
+
 
         /// <summary>
         /// Obtiene un valor que indica si existe al menos un usuario en la lista.
@@ -76,7 +68,6 @@ namespace BibliotecaCLases.Controlador
         public bool ExisteUsuario
         {
             get { return _existeUsuario; }
-
         }
     }
 }

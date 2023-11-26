@@ -45,7 +45,7 @@ namespace BibliotecaCLases.Controlador
                     }
                     if (pagoExitoso)
                     {
-                        string comprobante = _gestorPagoLogic.GenerarComprobante();
+                        string comprobante = _gestorPagoLogic.GenerarComprobante();                                        
                         _vista.MostrarComprobantePago(comprobante);
                         ActualizarPrograma();
                     }
