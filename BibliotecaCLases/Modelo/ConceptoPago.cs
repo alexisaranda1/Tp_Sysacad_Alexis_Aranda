@@ -36,6 +36,8 @@ namespace BibliotecaCLases.Modelo
             _montoPagar = monto;
         }
 
+
+
         /// <summary>
         /// Propiedad para obtener o establecer el nombre del concepto de pago.
         /// </summary>

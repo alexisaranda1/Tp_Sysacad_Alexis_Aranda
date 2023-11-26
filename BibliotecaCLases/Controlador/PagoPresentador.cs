@@ -45,9 +45,13 @@ namespace BibliotecaCLases.Controlador
                     if (mensaje != "")
                     {
                         _vista.MostrarMensaje(mensaje);
+
+
                     }
                     if (pagoExitoso)
                     {
+
+
                         string comprobante = _gestorPagoLogic.GenerarComprobante();
                         _vista.MostrarComprobantePago(comprobante);
                         ActualizarPrograma();
@@ -67,6 +71,8 @@ namespace BibliotecaCLases.Controlador
                 _vista.MostrarMensaje("Error: Seleccione un método de pago. Por favor, inténtelo nuevamente.");
             }
         }
+
+
 
         private bool Vista_CeldaEditada()
         {
