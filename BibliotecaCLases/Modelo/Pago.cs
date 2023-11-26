@@ -50,9 +50,6 @@ namespace BibliotecaCLases.Modelo
             get { return _fecha; }
             set { _fecha = value; }
         }
-
-
-
         public int IdUsuario
         {
             get { return _idUsuario; }
@@ -64,14 +61,11 @@ namespace BibliotecaCLases.Modelo
             get { return _nombreUsuario; }
             set { _nombreUsuario = value; }
         }
-
         public string ApellidoUsuario
         {
             get { return _apellidoUsuario; }
             set { _apellidoUsuario = value; }
         }
-
-   
 
         /// <summary>
         /// Propiedad para obtener o establecer la lista de conceptos de pago asociados al pago.

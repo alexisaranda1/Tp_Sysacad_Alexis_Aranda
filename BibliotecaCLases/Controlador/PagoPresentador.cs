@@ -17,16 +17,12 @@ namespace BibliotecaCLases.Controlador
             _usuario = usuario;
             _gestorPagoLogic = new GestorPagoLogic(usuario);
             _vista.MetodoPagoSeleccionado += Vista_MetodoPagoSeleccionado;
-            _vista.PagarClicked += Vista_PagarClicked;
-
-
-            
+            _vista.PagarClicked += Vista_PagarClicked;            
             _vista.MostrarConceptosPagoPendientes(_gestorPagoLogic.ObtenerConceptosPagoPendientes());
 
 
             _vista.MostrarMetodosPago(_gestorPagoLogic.ObtenerMetodosPago());
         }
-
         private void Vista_PagarClicked(object sender, EventArgs e)
         {
             string metodoSeleccionado = _vista.ObtenerMetodoPagoSeleccionado();
@@ -38,8 +34,7 @@ namespace BibliotecaCLases.Controlador
             if (metodoSeleccionado != null)
             {
                 if (seEvitoCelda)
-                {
-                   
+                {                   
                     string mensaje= "";
                     bool pagoExitoso = _gestorPagoLogic.RealizarPago(_usuario, metodoSeleccionado, numeroTarjeta, fechaVencimiento, cvv, out mensaje);
                     if (mensaje != "")
@@ -50,8 +45,6 @@ namespace BibliotecaCLases.Controlador
                     }
                     if (pagoExitoso)
                     {
-
-
                         string comprobante = _gestorPagoLogic.GenerarComprobante();
                         _vista.MostrarComprobantePago(comprobante);
                         ActualizarPrograma();
@@ -71,8 +64,6 @@ namespace BibliotecaCLases.Controlador
                 _vista.MostrarMensaje("Error: Seleccione un método de pago. Por favor, inténtelo nuevamente.");
             }
         }
-
-
 
         private bool Vista_CeldaEditada()
         {

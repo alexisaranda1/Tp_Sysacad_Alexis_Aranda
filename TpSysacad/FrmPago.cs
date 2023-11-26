@@ -20,8 +20,6 @@ namespace Formularios
         private PagoPresentador _presentador;
 
         private Usuario _usuario;
-
-
         public FrmPago(Usuario usuario)
         {
             InitializeComponent();
@@ -36,6 +34,8 @@ namespace Formularios
 
         }
 
+
+
         public event EventHandler MetodoPagoSeleccionado
         {
             add { CmboxMetodoPago.SelectedIndexChanged += value; }
@@ -47,6 +47,8 @@ namespace Formularios
             add { btnPagar.Click += value; }
             remove { btnPagar.Click -= value; }
         }
+
+
 
         public void MostrarConceptosPagoPendientes(List<ConceptoPago> conceptosPago)
         {
