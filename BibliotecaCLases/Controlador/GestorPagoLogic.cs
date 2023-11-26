@@ -6,6 +6,7 @@ using System.IO;
 using System.Text;
 
 namespace BibliotecaCLases.Controlador
+
 {
     public class GestorPagoLogic
     {
@@ -19,6 +20,8 @@ namespace BibliotecaCLases.Controlador
         private List<ConceptoPago> _conceptosPendientes = new ();
         private decimal _totalAPagar = 0;
        
+
+
 
         public GestorPagoLogic(Usuario usuario)
         {   

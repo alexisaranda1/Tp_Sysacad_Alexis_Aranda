@@ -12,6 +12,8 @@ namespace BibliotecaCLases.Modelo
     public class Pago
     {
 
+
+
         private DateTime _fecha;
        
         private int _idUsuario;
