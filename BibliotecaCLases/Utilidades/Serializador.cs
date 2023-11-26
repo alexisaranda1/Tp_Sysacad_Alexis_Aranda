@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using BibliotecaCLases.Modelo;
 using Newtonsoft.Json;
@@ -15,6 +16,42 @@ namespace BibliotecaCLases.Utilidades
         {
 
         }
+
+
+        public  void GuardarAJson<T>(List<T> objetoAGuardar, string path)
+        {
+            try
+            {
+                string json = JsonConvert.SerializeObject(objetoAGuardar, Newtonsoft.Json.Formatting.Indented);
+
+                File.WriteAllText(path, json);
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+
+        public  void ActualizarJson<T>(List<T> lista, string path)
+        {
+            try
+            {
+                string jsonResult = JsonConvert.SerializeObject(lista, Newtonsoft.Json.Formatting.Indented);
+
+                File.WriteAllText(path, jsonResult);
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+
         /// <summary>
         /// Guarda un diccionario en formato JSON en el archivo especificado.
         /// </summary>

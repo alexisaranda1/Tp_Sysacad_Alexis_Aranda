@@ -37,7 +37,7 @@
     "Codigo": "5",
     "Descripcion": "Turno Noche - Martes",
     "CupoMaximo": 5,
-    "CuposDisponibles": 4,
+    "CuposDisponibles": 3,
     "Activo": true,
     "Dia": "Martes",
     "Horario": "Noche",

@@ -10,11 +10,11 @@ namespace BibliotecaCLases.Controlador
 {
     public class GestorPagoLogic
     {
-        private readonly List<Pago> _pagos;
+        private List<Pago>  _pagos = new List<Pago>();
         private Pago _pago;
         private Estudiante _estudiante;
-        private readonly string _pathEstudiante;
         private readonly string _pathPago;
+        Serializador serializador = new Serializador();
         private readonly CrudEstudiante _crudEstudiante;
         private List<decimal> _montosIngresados = new();
         private List<ConceptoPago> _conceptosPendientes = new ();
@@ -27,10 +27,12 @@ namespace BibliotecaCLases.Controlador
         {   
             _crudEstudiante = new CrudEstudiante();
             _estudiante = _crudEstudiante.ObtenerEstudiantePorLegajo(usuario.Legajo);
-           
-            _pagos = new List<Pago>();
-            _pathEstudiante = PathManager.ObtenerRuta("Data", "DataUsuarios.json");
+
+
             _pathPago = PathManager.ObtenerRuta("Data", "Pagos.json");
+            _pagos = serializador.LeerJson<List<Pago>>(_pathPago) ?? new List<Pago>();
+
+
         }
         public List<ConceptoPago> ObtenerConceptosPagoPendientes()
         {
@@ -127,17 +129,18 @@ namespace BibliotecaCLases.Controlador
 
         private void RegistrarPago(List<ConceptoPago> conceptosPago, string metodoPago)
         {
-            CalcularMontoTotal(conceptosPago);          
+            CalcularMontoTotal(conceptosPago);
             _pago = new Pago(_estudiante, conceptosPago, metodoPago, _totalAPagar);
-
+          
             if (_estudiante.ConceptoPagos.All(concepto => concepto.MontoPagar == 0))
             {
                 _estudiante.EstadoDePago = "pagado";
             }
+            
+            _crudEstudiante.ModificarEstudiante(_estudiante);
 
-            Serializador.ActualizarJson(_estudiante, _estudiante.Legajo, _pathEstudiante);
-            Serializador.ActualizarJson(_pago, _estudiante.Legajo, _pathPago);
-            _pagos.Add(_pago);
+           
+
         }
 
         private void CalcularMontoTotal(List<ConceptoPago> conceptosPago)
