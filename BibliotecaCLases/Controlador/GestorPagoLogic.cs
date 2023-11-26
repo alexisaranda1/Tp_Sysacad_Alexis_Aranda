@@ -106,9 +106,7 @@ namespace BibliotecaCLases.Controlador
                     else
                     {
                         mensaje = "Ya esta pagado, no lo puede volver a pagar!";
-                    }
-                    
-
+                    }                    
                     if (montoIngresado > 0)
                     {
                         conceptosPagopagados.Add(conceptoPago);
@@ -119,8 +117,6 @@ namespace BibliotecaCLases.Controlador
             }       
             return esPagoValido;
         }
-
-
 
         public List<decimal> MontosIngresados
         {

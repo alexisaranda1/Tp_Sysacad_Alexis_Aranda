@@ -18,6 +18,8 @@ namespace BibliotecaCLases.Modelo
         private List<ConceptoPago> _conceptoPagos;  
         private string _estadoDePago;
 
+
+
         /// <summary>
         /// Constructor de la clase Estudiante.
         /// </summary>

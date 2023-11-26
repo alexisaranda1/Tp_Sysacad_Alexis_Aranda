@@ -135,6 +135,9 @@ namespace BibliotecaCLases.Controlador
             set { _validado = value; }
         }
 
+
+
+
         /// <summary>
         /// Obtiene o establece el mensaje de error en caso de que la validación de datos falle.
         /// </summary>

@@ -38,8 +38,8 @@
     "ConceptoPagos": [
       {
         "Nombre": "Noviembre",
-        "MontoPagar": 22000.0,
-        "MontoPagado": 0.0
+        "MontoPagar": 0.0,
+        "MontoPagado": 22000.0
       },
       {
         "Nombre": "Diciembre",
@@ -48,8 +48,8 @@
       },
       {
         "Nombre": "Febrero",
-        "MontoPagar": 28000.0,
-        "MontoPagado": 0.0
+        "MontoPagar": 0.0,
+        "MontoPagado": 28000.0
       }
     ],
     "Nombre": "asd",

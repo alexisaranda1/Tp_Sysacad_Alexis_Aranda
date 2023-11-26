@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 /// </summary>
 namespace BibliotecaCLases.Modelo
 {
-
     /// /// <summary>
     /// Constructor de la clase ConceptoPago.
     /// </summary>
@@ -24,7 +23,6 @@ namespace BibliotecaCLases.Modelo
       
         private decimal _montoPagado;
 
-
         /// <summary>
         /// Constructor de la clase ConceptoPago.
         /// </summary>
@@ -35,8 +33,6 @@ namespace BibliotecaCLases.Modelo
             _nombre = nombre;
             _montoPagar = monto;
         }
-
-
 
         /// <summary>
         /// Propiedad para obtener o establecer el nombre del concepto de pago.

@@ -25,5 +25,6 @@ namespace BibliotecaCLases.Interfaces
         public void MostrarComprobantePago(string comprobante);
         public string ObtenerMetodoPagoSeleccionado();
         public void RecargarPrograma();
+        // comentario
     }
 }
