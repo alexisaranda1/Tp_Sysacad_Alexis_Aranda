@@ -10,7 +10,7 @@ namespace BibliotecaCLases.Controlador
     public class CrudCurso
     {
         Serializador serializador = new Serializador();
-        private Dictionary<int, Curso> dictCursos;
+        private List<Curso> listaCursos;
         private string _path;
 
         /// <summary>
@@ -18,12 +18,12 @@ namespace BibliotecaCLases.Controlador
         /// </summary>
         public CrudCurso()
         {
-            _path = PathManager.ObtenerRuta("Data", "DictCurso.json");
-            dictCursos = serializador.LeerJson<Dictionary<int, Curso>>(_path);
+            _path = PathManager.ObtenerRuta("Data", "ListaCursos.json");
+            listaCursos = serializador.LeerJson<List<Curso>>(_path) ?? new List<Curso>();
         }
 
         /// <summary>
-        /// Agrega un nuevo curso al diccionario de cursos.
+        /// Agrega un nuevo curso a la lista de cursos.
         /// </summary>
         /// <param name="nombre">Nombre del curso.</param>
         /// <param name="codigo">Código del curso.</param>
@@ -34,18 +34,17 @@ namespace BibliotecaCLases.Controlador
         /// <param name="aula">Aula del curso.</param>
         public void AgregarCurso(string nombre, string codigo, string descripcion, string cupoMaximo, string dia, string horario, string aula)
         {
-            int.TryParse(codigo, out int codigoCurso);
             Curso nuevoCurso = new Curso(nombre, codigo, descripcion, cupoMaximo, dia, horario, aula);
 
-            if (dictCursos != null)
+            if (listaCursos != null)
             {
-                dictCursos.Add(codigoCurso, nuevoCurso);
-                Serializador.ActualizarJson(nuevoCurso, codigoCurso, _path);
+                listaCursos.Add(nuevoCurso);
+                serializador.ActualizarJson(listaCursos, _path);
             }
         }
 
         /// <summary>
-        /// Edita un curso existente en el diccionario de cursos.
+        /// Edita un curso existente en la lista de cursos.
         /// </summary>
         /// <param name="codigo">Código del curso a editar.</param>
         /// <param name="nuevoCodigo">Nuevo código del curso.</param>
@@ -60,13 +59,13 @@ namespace BibliotecaCLases.Controlador
 
             try
             {
-                if (dictCursos.ContainsKey(codigoCurso))
+                if (listaCursos.Any(curso => curso.Codigo == codigo))
                 {
-                    Curso cursoExistente = dictCursos[codigoCurso];
+                    Curso cursoExistente = listaCursos.First(curso => curso.Codigo == codigo);
 
                     if (codigoCurso != nuevoCodigoCurso)
                     {
-                        dictCursos.Remove(codigoCurso);
+                        listaCursos.RemoveAll(curso => curso.Codigo == codigo);
                     }
 
                     cursoExistente.Codigo = nuevoCodigo;
@@ -78,14 +77,12 @@ namespace BibliotecaCLases.Controlador
                         cursoExistente.CuposDisponibles = int.Parse(nuevoCupoMaximo);
                     }
 
-                    dictCursos[nuevoCodigoCurso] = cursoExistente;
-
-                    serializador.ActualizarJson(dictCursos, _path);
+                    serializador.ActualizarJson(listaCursos, _path);
                     return "Se modificó correctamente";
                 }
                 else
                 {
-                    return "El curso no existe en el diccionario.";
+                    return "El curso no existe en la lista.";
                 }
             }
             catch (Exception ex)
@@ -95,7 +92,7 @@ namespace BibliotecaCLases.Controlador
         }
 
         /// <summary>
-        /// Elimina un curso de forma lógica, marcándolo como inactivo en el diccionario de cursos.
+        /// Elimina un curso de forma lógica, marcándolo como inactivo en la lista de cursos.
         /// </summary>
         /// <param name="curso">El curso a eliminar.</param>
         /// <returns>Un mensaje que indica si la eliminación fue exitosa o si ocurrió un error.</returns>
@@ -103,35 +100,31 @@ namespace BibliotecaCLases.Controlador
         {
             int.TryParse(curso.Codigo, out int codigoCurso);
 
-            if (dictCursos.ContainsKey(codigoCurso))
+            if (listaCursos.Any(c => c.Codigo == curso.Codigo))
             {
-                Curso cursoAEliminar = dictCursos[codigoCurso];
-
+                Curso cursoAEliminar = listaCursos.First(c => c.Codigo == curso.Codigo);
                 cursoAEliminar.Activo = false;
 
-                serializador.ActualizarJson(dictCursos, _path);
+                serializador.ActualizarJson(listaCursos, _path);
 
                 return "Se realizó la eliminación lógica del curso";
             }
             else
             {
-                return "El curso no existe en el diccionario.";
+                return "El curso no existe en la lista.";
             }
         }
 
         /// <summary>
-        /// Verifica si un código de curso existe en el diccionario de cursos.
+        /// Verifica si un código de curso existe en la lista de cursos.
         /// </summary>
         /// <param name="codigo">El código de curso a verificar.</param>
         /// <returns>1 si el código de curso existe, 0 si no existe.</returns>
         public int VerificarCodigoCurso(string codigo)
         {
-            if (dictCursos != null)
+            if (listaCursos != null && listaCursos.Any(curso => curso.Codigo == codigo))
             {
-                if (dictCursos.Any(kv => kv.Value.Codigo == codigo))
-                {
-                    return 1;
-                }
+                return 1;
             }
 
             return 0;
@@ -144,17 +137,17 @@ namespace BibliotecaCLases.Controlador
         /// <returns>Un mensaje que indica si la inscripción fue exitosa o si no hay cupos disponibles.</returns>
         public string InscribirEstudianteEnCurso(string codigo)
         {
-            if (dictCursos != null)
+            if (listaCursos != null)
             {
                 int.TryParse(codigo, out int codigoCurso);
-                if (dictCursos.ContainsKey(codigoCurso))
+                if (listaCursos.Any(curso => curso.Codigo == codigo))
                 {
-                    Curso curso = dictCursos[codigoCurso];
+                    Curso curso = listaCursos.First(curso => curso.Codigo == codigo);
 
                     if (curso.CuposDisponibles > 0)
                     {
                         curso.CuposDisponibles--;
-                        serializador.ActualizarJson(dictCursos, _path);
+                        serializador.ActualizarJson(listaCursos, _path);
                         return "Inscripción exitosa.";
                     }
                     else
@@ -164,7 +157,7 @@ namespace BibliotecaCLases.Controlador
                 }
                 else
                 {
-                    return "El curso no existe en el diccionario.";
+                    return "El curso no existe en la lista.";
                 }
             }
             else
@@ -174,13 +167,13 @@ namespace BibliotecaCLases.Controlador
         }
 
         /// <summary>
-        /// Obtiene el diccionario de cursos completo.
+        /// Obtiene la lista de cursos completa.
         /// </summary>
-        /// <returns>El diccionario de cursos.</returns>
-        public Dictionary<int, Curso> ObtenerDictCursos()
+        /// <returns>La lista de cursos.</returns>
+        public List<Curso> ObtenerListaCursos()
         {
-            dictCursos = serializador.LeerJson<Dictionary<int, Curso>>(_path);
-            return dictCursos;
+            listaCursos = serializador.LeerJson<List<Curso>>(_path) ?? new List<Curso>();
+            return listaCursos;
         }
 
         /// <summary>
@@ -192,9 +185,9 @@ namespace BibliotecaCLases.Controlador
         {
             int.TryParse(codigo, out int codigoCurso);
 
-            if (dictCursos.ContainsKey(codigoCurso))
+            if (listaCursos.Any(curso => curso.Codigo == codigo))
             {
-                return dictCursos[codigoCurso];
+                return listaCursos.First(curso => curso.Codigo == codigo);
             }
             else
             {

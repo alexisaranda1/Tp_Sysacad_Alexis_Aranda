@@ -82,27 +82,26 @@ namespace Formularios
 
         private void FrmGestionarCurso_Load(object sender, EventArgs e)
         {
-            Dictionary<int, Curso> dictCursos = null;
+            List<Curso> listaCursos = null;
 
-            string path = PathManager.ObtenerRuta("Data", "DictCurso.json");
+            string path = PathManager.ObtenerRuta("Data", "ListaCursos.json");
 
             try
             {
-                dictCursos = serializador.LeerJson<Dictionary<int, Curso>>(path);
+                listaCursos = serializador.LeerJson<List<Curso>>(path);
             }
             catch (FileNotFoundException ex)
             {
                 MessageBox.Show($"No se encontró el archivo JSON en la ruta: {path}");
             }
 
-            if (dictCursos != null)
+            if (listaCursos != null)
             {
-
-                foreach (KeyValuePair<int, Curso> kvp in dictCursos)
+                foreach (Curso curso in listaCursos)
                 {
-                    if (kvp.Value.Activo)
+                    if (curso.Activo)
                     {
-                        dataGridViewCursos.Rows.Add(kvp.Value.Codigo, kvp.Value.Nombre, kvp.Value.Descripcion, kvp.Value.CuposDisponibles, kvp.Value.CupoMaximo);
+                        dataGridViewCursos.Rows.Add(curso.Codigo, curso.Nombre, curso.Descripcion, curso.CuposDisponibles, curso.CupoMaximo);
                     }
                 }
             }
@@ -173,13 +172,14 @@ namespace Formularios
         {
             dataGridViewCursos.Rows.Clear();
 
-            foreach (KeyValuePair<int, Curso> kvp in _crudCurso.ObtenerDictCursos())
+            foreach (Curso curso in _crudCurso.ObtenerListaCursos())
             {
-                if (kvp.Value.Activo)
+                if (curso.Activo)
                 {
-                    dataGridViewCursos.Rows.Add(kvp.Value.Codigo, kvp.Value.Nombre, kvp.Value.Descripcion, kvp.Value.CuposDisponibles, kvp.Value.CupoMaximo);
+                    dataGridViewCursos.Rows.Add(curso.Codigo, curso.Nombre, curso.Descripcion, curso.CuposDisponibles, curso.CupoMaximo);
                 }
             }
+
             _cursoSeleccionado = null;
         }
 
