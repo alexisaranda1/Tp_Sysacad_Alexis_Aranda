@@ -6,47 +6,53 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
+using BibliotecaCLases.Modelo;
 
 namespace BibliotecaCLases.Utilidades
 {
-    internal class SQLServer
+    public class SQLServer
     {
-        public static SqlConnection conexion;
-        private static string cadenaConexion;
-        private static SqlCommand comando;
+        private static SqlConnection _conexion;
+        private static string _cadenaConexion;
+        private static SqlCommand _comando;
 
         public SQLServer()
         {
             string Server = ConfigurationManager.AppSettings["DataBaseServer"]!;
             string DatabaseName = ConfigurationManager.AppSettings["DataBaseName"]!;
-            cadenaConexion = @$"Server={Server};Database={DatabaseName};Trusted_Connection=True;Encrypt=False;TrustServerCertificate=True;";
-            conexion = new SqlConnection(cadenaConexion);
+            _cadenaConexion = @$"Server={Server};Database={DatabaseName};Trusted_Connection=True;Encrypt=False;TrustServerCertificate=True;";
+            _conexion = new SqlConnection(_cadenaConexion);
 
-            comando = new SqlCommand();
-            comando.CommandType = CommandType.Text;
-            comando.Connection = conexion;
+            _comando = new SqlCommand();
+            _comando.CommandType = CommandType.Text;
+            _comando.Connection = _conexion;
         }
-        public void Guardar(string nombre, string apellido, int edad, int dni, int id)
+        public void Guardar(string nombre, string apellido, int edad, int dni, int id, string nombreDeTabla)
         {
             try
             {
-                conexion.Open();
+                _conexion.Open();
 
                 //var query = $"INSERT INTO personas (nombre) VALUES ('{nombre}')";
                 // Cambiado a una consulta parametrizada y ajuste de los parámetros
-                var query = "INSERT INTO Estudiante (ID, Nombre, Apellido, DNI, Edad) VALUES (@ID, @Nombre, @Apellido, @DNI, @Edad)";
-                comando.CommandText = query;
+                if (!TableExists(_conexion, nombreDeTabla))
+                {
+                    List<Administrador> list = new List<Administrador>();
+                    CreateTable(_conexion, nombreDeTabla, list);
+                }
+                var query = $"INSERT INTO {nombreDeTabla} (ID, Nombre, Apellido, DNI, Edad) VALUES (@ID, @Nombre, @Apellido, @DNI, @Edad)";
+                _comando.CommandText = query;
 
                 // Ajuste de parámetros con valores reales
-                comando.Parameters.AddWithValue("@ID", id);
-                comando.Parameters.AddWithValue("@Nombre", nombre);
-                comando.Parameters.AddWithValue("@Apellido", apellido);
-                comando.Parameters.AddWithValue("@DNI", dni);
-                comando.Parameters.AddWithValue("@Edad", edad);
+                _comando.Parameters.AddWithValue("@ID", id);
+                _comando.Parameters.AddWithValue("@Nombre", nombre);
+                _comando.Parameters.AddWithValue("@Apellido", apellido);
+                _comando.Parameters.AddWithValue("@DNI", dni);
+                _comando.Parameters.AddWithValue("@Edad", edad);
 
                 //comando.Parameters.Clear();
 
-                var filasAfectadas = comando.ExecuteNonQuery();
+                var filasAfectadas = _comando.ExecuteNonQuery();
 
                 Console.WriteLine("Filas afectadas " + filasAfectadas);
             }
@@ -57,8 +63,30 @@ namespace BibliotecaCLases.Utilidades
             }
             finally
             {
-                conexion.Close();
+                _conexion.Close();
             }
         }
+
+        static bool TableExists(SqlConnection conexion, string nombreDeTabla)
+        {
+            string query = $"SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '{nombreDeTabla}'";
+
+            using (SqlCommand command = new SqlCommand(query, conexion))
+            {
+                int tableCount = (int)command.ExecuteScalar();
+                return tableCount > 0;
+            }
+        }
+        static void CreateTable(SqlConnection conexion, string nombreDeTabla, List<Administrador> lista)
+        {
+            string createTableQuery = $"CREATE TABLE {nombreDeTabla} (ID INT PRIMARY KEY, Nombre NVARCHAR(15), Apellido NVARCHAR(15),Dni INT,Edad INT)"; 
+
+            using (SqlCommand command = new SqlCommand(createTableQuery, conexion))
+            {
+                command.ExecuteNonQuery();
+                Console.WriteLine($"Se ha creado la tabla '{nombreDeTabla}'.");
+            }
+        }
+
     }
 }
