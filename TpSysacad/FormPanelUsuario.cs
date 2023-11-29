@@ -112,8 +112,9 @@ namespace Formularios
         private void btnGestionarListasEspera_Click(object sender, EventArgs e)
         {
 
-            FrmGestionListaEspera gestionListasEsperaForm = new();
+            FrmGestionListaEspera gestionListasEsperaForm = new(_usuario);
             gestionListasEsperaForm.Show();
+            this.Hide();
 
         }
     }

@@ -33,6 +33,8 @@
             btnEliminarEstudiante = new Button();
             btnAgregarEstudiante = new Button();
             btnAgregar = new Button();
+            btnSalir = new Button();
+            label = new Label();
             ((System.ComponentModel.ISupportInitialize)dtgvListaEspera).BeginInit();
             SuspendLayout();
             // 
@@ -87,11 +89,32 @@
             btnAgregar.UseVisualStyleBackColor = true;
             btnAgregar.Click += btnAgregar_Click;
             // 
+            // btnSalir
+            // 
+            btnSalir.Location = new Point(12, 370);
+            btnSalir.Name = "btnSalir";
+            btnSalir.Size = new Size(75, 23);
+            btnSalir.TabIndex = 7;
+            btnSalir.Text = "Salir";
+            btnSalir.UseVisualStyleBackColor = true;
+            btnSalir.Click += btnSalir_Click;
+            // 
+            // label
+            // 
+            label.AutoSize = true;
+            label.Location = new Point(247, 58);
+            label.Name = "label";
+            label.Size = new Size(38, 15);
+            label.TabIndex = 8;
+            label.Text = "label1";
+            // 
             // FrmGestionListaEspera
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(label);
+            Controls.Add(btnSalir);
             Controls.Add(btnAgregar);
             Controls.Add(btnAgregarEstudiante);
             Controls.Add(btnEliminarEstudiante);
@@ -101,6 +124,7 @@
             Text = "s";
             ((System.ComponentModel.ISupportInitialize)dtgvListaEspera).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -109,5 +133,7 @@
         private Button btnEliminarEstudiante;
         private Button btnAgregarEstudiante;
         private Button btnAgregar;
+        private Button btnSalir;
+        private Label label;
     }
 }

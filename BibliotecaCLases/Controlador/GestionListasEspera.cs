@@ -52,29 +52,43 @@ namespace BibliotecaCLases.Controlador
 
         public List<int> ObtenerListaEspera(string codigoCurso)
         {
-
             ListaEspera listaEspera = ObtenerListaEsperaPorCodigo(codigoCurso);
-            List<int> listaLegados = listaEspera.LegajosEnEspera;
-            return listaLegados;
+
+            // Verificar si listaEspera es null antes de intentar acceder a sus propiedades
+            if (listaEspera != null)
+            {
+                List<int> listaLegajos = listaEspera.LegajosEnEspera;
+
+                if (listaLegajos != null)
+                {
+                    return listaLegajos;
+                }
+                else
+                {
+                   
+                    return new List<int>(); 
+                }
+            }
+            else
+            {
+               
+                return new List<int>(); 
+            }
         }
+
+
         public void AgregarEstudianteAListaEspera(string codigoCurso, int legajo)
         {
             var listaEsperaModificada = ObtenerListaEsperaPorCodigo(codigoCurso);
 
             if (listaEsperaModificada != null)
             {
-                // Agrega el estudiante a la lista específica
+               
                 listaEsperaModificada.AgregarEstudiante(legajo);
 
-                // Reemplaza la lista específica en la lista completa
-                //listasEspera.RemoveAll(lista => lista.CodigoCurso == codigoCurso);
-                //listasEspera.Add(listaEsperaModificada);
-
-                // O, alternativamente
                 _listasEspera.Remove(listaEsperaModificada);
                 _listasEspera.Add(listaEsperaModificada);
-
-                // Actualiza y guarda la lista completa
+               
                 serializador.ActualizarJson(_listasEspera, _path);
             }
         }
@@ -90,13 +104,14 @@ namespace BibliotecaCLases.Controlador
 
         public void EliminarEstudianteDeListaEspera(string codigoCurso, int legajo)
         {
-            var listaEspera = ObtenerListaEsperaPorCodigo(codigoCurso);
+            var listaEsperaModificada = ObtenerListaEsperaPorCodigo(codigoCurso);
 
-            if (listaEspera != null)
+            if (listaEsperaModificada != null)
             {
-                listaEspera.EliminarEstudiante(legajo);
+                listaEsperaModificada.EliminarEstudiante(legajo);
+                _listasEspera.Remove(listaEsperaModificada);
+                _listasEspera.Add(listaEsperaModificada);
 
-              
                 serializador.ActualizarJson(_listasEspera, _path);
             }
         }
