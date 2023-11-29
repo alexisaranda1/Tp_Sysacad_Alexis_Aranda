@@ -34,14 +34,15 @@
     "Direccion": "asd",
     "Telefono": "1231231231",
     "CursosInscriptos": [
-      "1"
+      "1",
+      "123321"
     ],
     "EstadoDePago": "pagado",
     "ConceptoPagos": [
       {
         "Nombre": "Noviembre",
-        "MontoPagar": 21910.0,
-        "MontoPagado": 90.0
+        "MontoPagar": 16910.0,
+        "MontoPagado": 5090.0
       },
       {
         "Nombre": "Diciembre",
