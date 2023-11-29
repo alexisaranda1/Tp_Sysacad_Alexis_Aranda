@@ -87,6 +87,9 @@ namespace BibliotecaCLases.Modelo
             get { return _estadoDePago; }
             set { _estadoDePago = value; }
         }
+        /// <summary>
+        /// Propiedad para obtener o establecer la lista de conceptos de pago asociados al estudiante.
+        /// </summary>
         public List<ConceptoPago> ConceptoPagos
         {
             get { return _conceptoPagos; }
