@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
 using BibliotecaCLases.Modelo;
+using System.Net;
 
 namespace BibliotecaCLases.Utilidades
 {
@@ -32,14 +33,12 @@ namespace BibliotecaCLases.Utilidades
             try
             {
                 _conexion.Open();
-
-                //var query = $"INSERT INTO personas (nombre) VALUES ('{nombre}')";
-                // Cambiado a una consulta parametrizada y ajuste de los parámetros
+                /*
                 if (!TableExists(_conexion, nombreDeTabla))
                 {
                     List<Administrador> list = new List<Administrador>();
                     CreateTable(_conexion, nombreDeTabla, list);
-                }
+                }*/
                 var query = $"INSERT INTO {nombreDeTabla} (ID, Nombre, Apellido, DNI, Edad) VALUES (@ID, @Nombre, @Apellido, @DNI, @Edad)";
                 _comando.CommandText = query;
 
@@ -65,6 +64,25 @@ namespace BibliotecaCLases.Utilidades
             {
                 _conexion.Close();
             }
+        }
+
+        public void GuardarPorTipo(string nombreDeTabla,Estudiante estudiante)
+        {
+            var query = $"INSERT INTO {nombreDeTabla} (Legajo, Nombre, Apellido, DNI, Direccion) VALUES (@Legajo, @Nombre, @Apellido, @DNI, @Edad)";
+            _comando.CommandText = query;
+
+            // Ajuste de parámetros con valores reales
+            _comando.Parameters.AddWithValue("@Legajo", estudiante.Legajo);
+            _comando.Parameters.AddWithValue("@Nombre", estudiante.Nombre);
+            _comando.Parameters.AddWithValue("@Apellido", estudiante.Apellido);
+            _comando.Parameters.AddWithValue("@DNI", estudiante.Dni);
+            _comando.Parameters.AddWithValue("@Direccion", estudiante.Direccion);
+
+            //comando.Parameters.Clear();
+
+            var filasAfectadas = _comando.ExecuteNonQuery();
+
+            Console.WriteLine("Filas afectadas " + filasAfectadas);
         }
 
         static bool TableExists(SqlConnection conexion, string nombreDeTabla)
