@@ -9,13 +9,13 @@ using System.Configuration;
 using BibliotecaCLases.Modelo;
 using System.Net;
 
-namespace BibliotecaCLases.Utilidades
+namespace BibliotecaCLases.DataBase
 {
     public class SQLServer
     {
-        private static SqlConnection _conexion;
-        private static string _cadenaConexion;
-        private static SqlCommand _comando;
+        public  SqlConnection _conexion;
+        public  string _cadenaConexion;
+        public  SqlCommand _comando;
 
         public SQLServer()
         {
@@ -66,7 +66,7 @@ namespace BibliotecaCLases.Utilidades
             }
         }
 
-        public void GuardarPorTipo(string nombreDeTabla,Estudiante estudiante)
+        public void GuardarPorTipo(string nombreDeTabla, Estudiante estudiante)
         {
             var query = $"INSERT INTO {nombreDeTabla} (Legajo, Nombre, Apellido, DNI, Direccion) VALUES (@Legajo, @Nombre, @Apellido, @DNI, @Edad)";
             _comando.CommandText = query;
@@ -97,7 +97,7 @@ namespace BibliotecaCLases.Utilidades
         }
         static void CreateTable(SqlConnection conexion, string nombreDeTabla, List<Administrador> lista)
         {
-            string createTableQuery = $"CREATE TABLE {nombreDeTabla} (ID INT PRIMARY KEY, Nombre NVARCHAR(15), Apellido NVARCHAR(15),Dni INT,Edad INT)"; 
+            string createTableQuery = $"CREATE TABLE {nombreDeTabla} (ID INT PRIMARY KEY, Nombre NVARCHAR(15), Apellido NVARCHAR(15),Dni INT,Edad INT)";
 
             using (SqlCommand command = new SqlCommand(createTableQuery, conexion))
             {
