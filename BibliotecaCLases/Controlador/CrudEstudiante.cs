@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using BibliotecaCLases.Modelo;
 using BibliotecaCLases.Utilidades;
+using static BibliotecaCLases.Modelo.Usuario;
 
 namespace BibliotecaCLases.Controlador
 {
     public class CrudEstudiante
-    {
-        private static int _contadorLegajos = 1000;
+    {       
         private string _path;
         public string pathUltimoLegajo;
         private int _ultimoLegajoEnArchivo;
@@ -164,12 +164,20 @@ namespace BibliotecaCLases.Controlador
             return mensaje;
         }
 
-        public Dictionary<int, Estudiante> ObtenerEstudiantesRegistrados()
-        {
-            // Método para obtener los estudiantes registrados, si es necesario
-            // Convertir la lista a un diccionario (si es requerido por otros métodos)
-            return listaEstudiantesRegistrados.ToDictionary(estudiante => estudiante.Legajo, estudiante => estudiante);
+        public List<Estudiante> ObtenerEstudiantesRegistrados()
+        {           
+            var estudiantes = listaEstudiantesRegistrados.Where(u => u.TipoUsuario == tipoUsuario.Estudiante);
+         
+            if (estudiantes.Any())
+            {            
+                return estudiantes.Cast<Estudiante>().ToList();
+            }
+            else
+            {
+                return new List<Estudiante>();
+            }
         }
+
 
         public Estudiante ObtenerEstudiantePorLegajo(int legajo)
         {

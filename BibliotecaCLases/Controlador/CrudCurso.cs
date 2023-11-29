@@ -12,7 +12,7 @@ namespace BibliotecaCLases.Controlador
         Serializador serializador = new Serializador();
         private List<Curso> listaCursos;
         private string _path;
-
+        private GestionListasEspera _gestionListasEspera;
         /// <summary>
         /// Constructor de la clase CrudCurso.
         /// </summary>
@@ -20,6 +20,7 @@ namespace BibliotecaCLases.Controlador
         {
             _path = PathManager.ObtenerRuta("Data", "ListaCursos.json");
             listaCursos = serializador.LeerJson<List<Curso>>(_path) ?? new List<Curso>();
+             _gestionListasEspera = new GestionListasEspera();   
         }
 
         /// <summary>
@@ -39,6 +40,7 @@ namespace BibliotecaCLases.Controlador
             if (listaCursos != null)
             {
                 listaCursos.Add(nuevoCurso);
+                _gestionListasEspera.AgregarCurso(codigo);
                 serializador.ActualizarJson(listaCursos, _path);
             }
         }
@@ -76,7 +78,7 @@ namespace BibliotecaCLases.Controlador
                     {
                         cursoExistente.CuposDisponibles = int.Parse(nuevoCupoMaximo);
                     }
-
+                    _gestionListasEspera.ActualizarCodigoCurso(codigo, nuevoCodigo);
                     serializador.ActualizarJson(listaCursos, _path);
                     return "Se modificó correctamente";
                 }
