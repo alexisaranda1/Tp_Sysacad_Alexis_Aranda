@@ -57,16 +57,19 @@ namespace Formularios
             btnRegistrarEstudiante.Visible = false;
             btnConsultarHorario.Visible = false;
             btnRealizarPagos.Visible = false;
+            btnGestionarListasEspera.Visible = false;
             if (usuario.TipoUsuario.ToString() == "Estudiante")
             {
                 btnInscripcionCurso.Visible = true;
                 btnConsultarHorario.Visible = true;
                 btnRealizarPagos.Visible = true;
+
             }
             else if (usuario.TipoUsuario.ToString() == "Administrador")
             {
                 btnRegistrarEstudiante.Visible = true;
                 btnGestionarCursos.Visible = true;
+                btnGestionarListasEspera.Visible = true;
             }
         }
 
@@ -101,6 +104,14 @@ namespace Formularios
 
             frmLogin.Show();
             this.Hide();
+        }
+
+        private void btnGestionarListasEspera_Click(object sender, EventArgs e)
+        {
+
+            FrmGestionListaEspera gestionListasEsperaForm = new();
+            gestionListasEsperaForm.Show();
+
         }
     }
 }

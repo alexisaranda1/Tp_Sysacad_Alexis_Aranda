@@ -36,6 +36,7 @@
             btnConsultarHorario = new Button();
             btnRealizarPagos = new Button();
             btnSalir = new Button();
+            btnGestionarListasEspera = new Button();
             SuspendLayout();
             // 
             // btnRegistrarEstudiante
@@ -123,11 +124,22 @@
             btnSalir.UseVisualStyleBackColor = true;
             btnSalir.Click += btnSalir_Click;
             // 
+            // btnGestionarListasEspera
+            // 
+            btnGestionarListasEspera.Location = new Point(205, 179);
+            btnGestionarListasEspera.Name = "btnGestionarListasEspera";
+            btnGestionarListasEspera.Size = new Size(130, 23);
+            btnGestionarListasEspera.TabIndex = 7;
+            btnGestionarListasEspera.Text = "Gestionar Espera";
+            btnGestionarListasEspera.UseVisualStyleBackColor = true;
+            btnGestionarListasEspera.Click += btnGestionarListasEspera_Click;
+            // 
             // FormPanelUsuario
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(560, 270);
+            Controls.Add(btnGestionarListasEspera);
             Controls.Add(btnSalir);
             Controls.Add(btnRealizarPagos);
             Controls.Add(btnConsultarHorario);
@@ -153,5 +165,6 @@
         private Button btnConsultarHorario;
         private Button btnRealizarPagos;
         private Button btnSalir;
+        private Button btnGestionarListasEspera;
     }
 }

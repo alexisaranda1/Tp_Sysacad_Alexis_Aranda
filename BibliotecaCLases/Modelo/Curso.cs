@@ -17,6 +17,8 @@ namespace BibliotecaCLases.Modelo
         private string _aula;
         private string _dia;
         private string _horario;
+       
+
 
         /// <summary>
         /// Enumeración que define los días de la semana.
@@ -72,6 +74,7 @@ namespace BibliotecaCLases.Modelo
             _aula = aula;
             _horario = horario;
             _dia = dia;
+           
 
             if (int.TryParse(cupoMaximo, out int cupoMaximoValor))
             {
@@ -172,5 +175,7 @@ namespace BibliotecaCLases.Modelo
             get { return _aula; }
             set { _aula = value; }
         }
+
+        public object Cupomaximo { get; set; }
     }
 }

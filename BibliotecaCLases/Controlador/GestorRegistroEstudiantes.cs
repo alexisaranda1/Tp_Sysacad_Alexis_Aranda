@@ -103,10 +103,7 @@ namespace BibliotecaCLases.Controlador
         /// Obtiene un diccionario que contiene a los estudiantes registrados utilizando el objeto CrudEstudiante.
         /// </summary>
         /// <returns>Un diccionario que contiene a los estudiantes registrados, donde la clave es el número de legajo y el valor es el objeto Estudiante.</returns>
-        public Dictionary<int, Estudiante> ObtenerEstudiantesRegistrados()
-        {
-            return crudEstudiante.ObtenerEstudiantesRegistrados();
-        }
+   
 
         /// <summary>
         /// Modifica el nombre de un estudiante utilizando el objeto CrudEstudiante.
