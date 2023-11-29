@@ -35,17 +35,19 @@
             btnAgregar = new Button();
             btnSalir = new Button();
             label = new Label();
+            lblAvisoListavacia = new Label();
             ((System.ComponentModel.ISupportInitialize)dtgvListaEspera).BeginInit();
             SuspendLayout();
             // 
             // dtgvListaEspera
             // 
+            dtgvListaEspera.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dtgvListaEspera.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dtgvListaEspera.Location = new Point(81, 110);
             dtgvListaEspera.Name = "dtgvListaEspera";
             dtgvListaEspera.RowTemplate.Height = 25;
             dtgvListaEspera.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dtgvListaEspera.Size = new Size(545, 150);
+            dtgvListaEspera.Size = new Size(545, 163);
             dtgvListaEspera.TabIndex = 2;
             dtgvListaEspera.CellClick += dtgvListaEspera_CellClick;
             // 
@@ -101,18 +103,26 @@
             // 
             // label
             // 
-            label.AutoSize = true;
-            label.Location = new Point(247, 58);
+            label.Location = new Point(185, 24);
             label.Name = "label";
-            label.Size = new Size(38, 15);
+            label.Size = new Size(264, 83);
             label.TabIndex = 8;
-            label.Text = "label1";
+            label.Text = "label";
+            // 
+            // lblAvisoListavacia
+            // 
+            lblAvisoListavacia.Location = new Point(114, 127);
+            lblAvisoListavacia.Name = "lblAvisoListavacia";
+            lblAvisoListavacia.Size = new Size(477, 121);
+            lblAvisoListavacia.TabIndex = 9;
+            lblAvisoListavacia.Text = "Aviso Lista vacia";
             // 
             // FrmGestionListaEspera
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(lblAvisoListavacia);
             Controls.Add(label);
             Controls.Add(btnSalir);
             Controls.Add(btnAgregar);
@@ -124,7 +134,6 @@
             Text = "s";
             ((System.ComponentModel.ISupportInitialize)dtgvListaEspera).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
@@ -135,5 +144,6 @@
         private Button btnAgregar;
         private Button btnSalir;
         private Label label;
+        private Label lblAvisoListavacia;
     }
 }
