@@ -117,5 +117,12 @@ namespace Formularios
             this.Hide();
 
         }
+
+        private void btnGestionarRequisitos_Click(object sender, EventArgs e)
+        {
+            FrmGestionarRequisitosAcademics frmGestionarRequisitosAcademics = new();
+            frmGestionarRequisitosAcademics.Show();
+            this.Hide();
+        }
     }
 }

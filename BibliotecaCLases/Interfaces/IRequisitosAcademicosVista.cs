@@ -10,8 +10,15 @@ namespace BibliotecaCLases.Interfaces
     public interface IRequisitosAcademicosVista
     {
         void MostrarCursos(List<Curso> cursos);
-        void MostrarRequisitosCurso(Curso requisitos);
+
+        public event Action OnListaCursosPedida;
+       
+
+        /// <summary>
+        /// Muestra un mensaje en la vista.
+        /// </summary>
+        /// <param name="mensaje">Mensaje a mostrar.</param>
         void MostrarMensaje(string mensaje);
-        event Action<Curso> RequisitosActualizados;
+        //event Action<Curso> RequisitosActualizados;
     }
 }
