@@ -37,6 +37,7 @@
             btnRealizarPagos = new Button();
             btnSalir = new Button();
             btnGestionarListasEspera = new Button();
+            btnGestionarRequisitos = new Button();
             SuspendLayout();
             // 
             // btnRegistrarEstudiante
@@ -52,7 +53,7 @@
             // 
             // btnGestionarCursos
             // 
-            btnGestionarCursos.Location = new Point(205, 128);
+            btnGestionarCursos.Location = new Point(205, 102);
             btnGestionarCursos.Margin = new Padding(2);
             btnGestionarCursos.Name = "btnGestionarCursos";
             btnGestionarCursos.Size = new Size(130, 20);
@@ -93,7 +94,7 @@
             // 
             // btnConsultarHorario
             // 
-            btnConsultarHorario.Location = new Point(205, 128);
+            btnConsultarHorario.Location = new Point(205, 102);
             btnConsultarHorario.Margin = new Padding(2);
             btnConsultarHorario.Name = "btnConsultarHorario";
             btnConsultarHorario.Size = new Size(130, 20);
@@ -104,7 +105,7 @@
             // 
             // btnRealizarPagos
             // 
-            btnRealizarPagos.Location = new Point(205, 182);
+            btnRealizarPagos.Location = new Point(205, 181);
             btnRealizarPagos.Margin = new Padding(2);
             btnRealizarPagos.Name = "btnRealizarPagos";
             btnRealizarPagos.Size = new Size(130, 20);
@@ -126,7 +127,7 @@
             // 
             // btnGestionarListasEspera
             // 
-            btnGestionarListasEspera.Location = new Point(205, 179);
+            btnGestionarListasEspera.Location = new Point(205, 137);
             btnGestionarListasEspera.Name = "btnGestionarListasEspera";
             btnGestionarListasEspera.Size = new Size(130, 23);
             btnGestionarListasEspera.TabIndex = 7;
@@ -134,11 +135,22 @@
             btnGestionarListasEspera.UseVisualStyleBackColor = true;
             btnGestionarListasEspera.Click += btnGestionarListasEspera_Click;
             // 
+            // btnGestionarRequisitos
+            // 
+            btnGestionarRequisitos.Location = new Point(205, 181);
+            btnGestionarRequisitos.Name = "btnGestionarRequisitos";
+            btnGestionarRequisitos.Size = new Size(130, 23);
+            btnGestionarRequisitos.TabIndex = 8;
+            btnGestionarRequisitos.Text = "Gestionar Requisitos";
+            btnGestionarRequisitos.UseVisualStyleBackColor = true;
+            btnGestionarRequisitos.Click += btnGestionarRequisitos_Click;
+            // 
             // FormPanelUsuario
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(560, 270);
+            Controls.Add(btnGestionarRequisitos);
             Controls.Add(btnGestionarListasEspera);
             Controls.Add(btnSalir);
             Controls.Add(btnRealizarPagos);
@@ -166,5 +178,6 @@
         private Button btnRealizarPagos;
         private Button btnSalir;
         private Button btnGestionarListasEspera;
+        private Button btnGestionarRequisitos;
     }
 }
