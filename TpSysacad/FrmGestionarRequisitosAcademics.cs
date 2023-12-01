@@ -16,16 +16,21 @@ namespace Formularios
 {
     public partial class FrmGestionarRequisitosAcademics : Form, IRequisitosAcademicosVista
     {
-        private GestorRequisitosAcademicos _requisitosAcademicos;
-        public FrmGestionarRequisitosAcademics()
+        private GestorRequisitosAcademicos _gestorRequisitosAcademicos;
+        Usuario _usuario;
+        public FrmGestionarRequisitosAcademics(Usuario usuario)
         {
+            _usuario = usuario;
             InitializeComponent();
-            _requisitosAcademicos = new(this);
+            _gestorRequisitosAcademicos = new(this);
             OnListaCursosPedida?.Invoke();
 
         }
 
         public event Action OnListaCursosPedida;
+        public event Action OnEditarPromedioRequerido;
+        public event Action OnEditarCreditosRequeridos;
+        public event Action OnEditarCorrelativas;
         /// <inheritdoc/>
         public void MostrarMensaje(string mensaje)
         {
@@ -41,7 +46,7 @@ namespace Formularios
                 foreach (Curso curso in cursos)
                 {
 
-                    dataGridView1.Rows.Add(curso.Codigo, curso.Nombre,curso.PromedioRequerido,curso.CreditosRequerido,curso.Correlativas);
+                    dataGridView1.Rows.Add(curso.Codigo, curso.Nombre, curso.PromedioRequerido, curso.CreditosRequerido, curso.Correlativas);
 
                 }
             }
@@ -66,13 +71,33 @@ namespace Formularios
                     if (primeraCelda != null && primeraCelda.Value != null)
                     {
                         string valorPrimeraColumna = primeraCelda.Value.ToString();
-                        _requisitosAcademicos.CodigoCurso= valorPrimeraColumna;
+                        _gestorRequisitosAcademicos.CodigoCurso = valorPrimeraColumna;
                     }
                 }
             }
 
         }
+        private void btnEditarPromedio_Click(object sender, EventArgs e)
+        {
+            OnEditarPromedioRequerido?.Invoke();
+        }
+
+        private void btnEditarCreditos_Click(object sender, EventArgs e)
+        {
+            OnEditarCreditosRequeridos?.Invoke();
+        }
+
+        private void btnEditarCorrelativas_Click(object sender, EventArgs e)
+        {
+            OnEditarCorrelativas?.Invoke();
+        }
 
 
+        private void btnSalir_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            FormPanelUsuario formPrincipal = new FormPanelUsuario(_usuario);
+            formPrincipal.Show();
+        }
     }
 }

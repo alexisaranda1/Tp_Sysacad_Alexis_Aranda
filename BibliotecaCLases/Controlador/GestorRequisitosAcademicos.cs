@@ -11,7 +11,7 @@ namespace BibliotecaCLases.Controlador
 {
     public class GestorRequisitosAcademicos
     {
-        
+
         private IRequisitosAcademicosVista _vista;
         private CrudCurso _crudCurso;
         public GestorRequisitosAcademicos(IRequisitosAcademicosVista vista)
@@ -19,13 +19,16 @@ namespace BibliotecaCLases.Controlador
             _crudCurso = new CrudCurso();
             _vista = vista;
             _vista.OnListaCursosPedida += MostrarCursos;
+            _vista.OnEditarPromedioRequerido += EditarPromedioRequerido;
+            _vista.OnEditarCreditosRequeridos += EditarCreditosRequeridos;
+            _vista.OnEditarCorrelativas += EditarCorrelativas;
         }
         /// <summary>
         /// Muestra la lista de cursos en la vista.
         /// </summary>
         public void MostrarCursos()
         {
-        
+
             var listaCursos = _crudCurso.ObtenerListaCursos();
             _vista.MostrarCursos(listaCursos);
         }
@@ -37,6 +40,24 @@ namespace BibliotecaCLases.Controlador
         public Curso ObtenerCursoPorCodigo()
         {
             return _crudCurso.ObtenerCursoPorCodigo(CodigoCurso);
+        }
+
+        public void EditarPromedioRequerido()
+        {
+            Curso curso = ObtenerCursoPorCodigo();
+           
+        }
+
+        public void EditarCreditosRequeridos()
+        {
+            Curso curso = ObtenerCursoPorCodigo();
+           
+        }
+
+        public void EditarCorrelativas()
+        {
+            Curso curso = ObtenerCursoPorCodigo();
+           
         }
 
     }

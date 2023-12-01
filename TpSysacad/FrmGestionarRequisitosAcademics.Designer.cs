@@ -35,6 +35,7 @@
             Correlatividades = new DataGridViewTextBoxColumn();
             CreditosRequeridos = new DataGridViewTextBoxColumn();
             lblListaVacia = new Label();
+            btnSalir = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -49,34 +50,38 @@
             dataGridView1.Size = new Size(636, 150);
             dataGridView1.TabIndex = 0;
             dataGridView1.CellClick += dataGridView1_CellClick;
-
             // 
             // Codigo
             // 
             Codigo.HeaderText = "Codigo";
             Codigo.Name = "Codigo";
+            Codigo.ReadOnly = true;
             // 
             // Nombre
             // 
             Nombre.HeaderText = "Nombre";
             Nombre.Name = "Nombre";
+            Nombre.ReadOnly = true;
             // 
             // PromedioRequerido
             // 
             PromedioRequerido.HeaderText = "PromedioRequerido";
             PromedioRequerido.Name = "PromedioRequerido";
+            PromedioRequerido.ReadOnly = true;
             PromedioRequerido.Width = 120;
             // 
             // Correlatividades
             // 
             Correlatividades.HeaderText = "CreditosRequeridos";
             Correlatividades.Name = "Correlatividades";
+            Correlatividades.ReadOnly = true;
             Correlatividades.Width = 120;
             // 
             // CreditosRequeridos
             // 
             CreditosRequeridos.HeaderText = "Correlatividades";
             CreditosRequeridos.Name = "CreditosRequeridos";
+            CreditosRequeridos.ReadOnly = true;
             CreditosRequeridos.Width = 150;
             // 
             // lblListaVacia
@@ -87,11 +92,22 @@
             lblListaVacia.TabIndex = 1;
             lblListaVacia.Text = "label1";
             // 
+            // btnSalir
+            // 
+            btnSalir.Location = new Point(12, 346);
+            btnSalir.Name = "btnSalir";
+            btnSalir.Size = new Size(75, 23);
+            btnSalir.TabIndex = 2;
+            btnSalir.Text = "Salir";
+            btnSalir.UseVisualStyleBackColor = true;
+            btnSalir.Click += btnSalir_Click;
+            // 
             // FrmGestionarRequisitosAcademics
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnSalir);
             Controls.Add(lblListaVacia);
             Controls.Add(dataGridView1);
             Name = "FrmGestionarRequisitosAcademics";
@@ -109,5 +125,6 @@
         private DataGridViewTextBoxColumn PromedioRequerido;
         private DataGridViewTextBoxColumn Correlatividades;
         private DataGridViewTextBoxColumn CreditosRequeridos;
+        private Button btnSalir;
     }
 }
