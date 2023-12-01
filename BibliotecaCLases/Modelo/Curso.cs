@@ -17,7 +17,7 @@ namespace BibliotecaCLases.Modelo
         private string _aula;
         private string _dia;
         private string _horario;
-        public string Correlativas{get;set;}
+        public string Correlativas { get; set; }
         public string PromedioRequerido { get; set; }
         public string CreditosRequerido { get; set; }
 
@@ -76,7 +76,7 @@ namespace BibliotecaCLases.Modelo
             _aula = aula;
             _horario = horario;
             _dia = dia;
-           
+
 
             if (int.TryParse(cupoMaximo, out int cupoMaximoValor))
             {
@@ -179,5 +179,23 @@ namespace BibliotecaCLases.Modelo
         }
 
         public object Cupomaximo { get; set; }
+
+        public void AgregarCorrelativa(string codigoCorrelativa)
+        {
+            Correlativas = codigoCorrelativa;
+    
+        }
+
+        public void EstablecerPromedioRequerido(string promedio)
+        {
+            PromedioRequerido = promedio;
+
+
+        }
+
+        public void EstablecerCreditosRequeridos(string creditos)
+        {
+            CreditosRequerido = creditos;
+        }
     }
 }

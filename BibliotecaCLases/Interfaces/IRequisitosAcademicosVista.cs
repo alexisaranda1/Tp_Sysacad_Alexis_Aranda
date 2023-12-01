@@ -12,7 +12,10 @@ namespace BibliotecaCLases.Interfaces
         void MostrarCursos(List<Curso> cursos);
 
         public event Action OnListaCursosPedida;
-       
+        public event Action OnEditarPromedioRequerido;
+        public event Action OnEditarCreditosRequeridos;
+        public event Action OnEditarCorrelativas;
+
 
         /// <summary>
         /// Muestra un mensaje en la vista.

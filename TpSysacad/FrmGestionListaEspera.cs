@@ -70,6 +70,10 @@ namespace Formularios
             dtgvListaEspera.Columns.Add("CupoMaximo", "Cupo Máximo");
             dtgvListaEspera.Columns.Add("CuposDisponibles", "Cupos Disponibles");
             esListaDeEstudiantes = false;
+            foreach (DataGridViewColumn columna in dtgvListaEspera.Columns)
+            {
+                columna.ReadOnly = true;
+            }
         }
 
         /// <inheritdoc/>
@@ -82,6 +86,10 @@ namespace Formularios
             dtgvListaEspera.Columns.Add("Correo", "Correo");
             dtgvListaEspera.Columns.Add("DNI", "DNI");
             esListaDeEstudiantes = true;
+            foreach (DataGridViewColumn columna in dtgvListaEspera.Columns)
+            {
+                columna.ReadOnly = true;
+            }
         }
 
         /// <inheritdoc/>
@@ -95,6 +103,10 @@ namespace Formularios
             dtgvListaEspera.Columns.Add("DNI", "DNI");
             dtgvListaEspera.Columns.Add("Fecha", "Fecha");
             esListaDeEstudiantes = true;
+            foreach (DataGridViewColumn columna in dtgvListaEspera.Columns)
+            {
+                columna.ReadOnly = true;
+            }
         }
 
         /// <inheritdoc/>
