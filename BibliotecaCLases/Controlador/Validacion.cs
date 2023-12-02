@@ -123,7 +123,7 @@ namespace BibliotecaCLases.Controlador
         /// </summary>
         /// <param name="numeroAValidar">La cadena que se va a validar como número de tarjeta de crédito.</param>
         /// <returns>True si es un número de tarjeta de crédito válido, de lo contrario False.</returns>
-        public static bool EsNumeroValido(string numeroAValidar,int cantidadNumeroRecibido)
+        public static bool EsNumeroValido(string numeroAValidar, int cantidadNumeroRecibido)
         {
             int cantidadNumero = cantidadNumeroRecibido;
             if (string.IsNullOrEmpty(numeroAValidar))
@@ -135,6 +135,27 @@ namespace BibliotecaCLases.Controlador
             Regex regexTarjeta = new Regex(patronTarjeta);
 
             return regexTarjeta.IsMatch(numeroAValidar);
+        }
+
+        public static bool EsNumeroEnRango(string numeroAValidar, int rangoInicio, int rangoFin)
+        {
+            if (string.IsNullOrEmpty(numeroAValidar))
+            {
+                return false;
+            }
+
+            // Expresión regular para validar que sea una cadena de dígitos.
+            string patronNumerico = @"^\d+$";
+            Regex regexNumerico = new Regex(patronNumerico);
+
+            if (!regexNumerico.IsMatch(numeroAValidar))
+            {
+                return false; // No es una cadena de dígitos válida.
+            }
+
+            int numero = Convert.ToInt32(numeroAValidar);
+
+            return numero >= rangoInicio && numero <= rangoFin;
         }
 
         /// <summary>

@@ -36,7 +36,9 @@ namespace BibliotecaCLases.Controlador
         /// Obtiene o establece el código del curso.
         /// </summary>
         public string CodigoCurso { get; set; }
-
+        public string CodigoCursoCorrelativa { get; set; }
+        public string NuevoPromedio { get; set; }
+        public string NuevoCredito { get; set; }
         public Curso ObtenerCursoPorCodigo()
         {
             return _crudCurso.ObtenerCursoPorCodigo(CodigoCurso);
@@ -46,19 +48,71 @@ namespace BibliotecaCLases.Controlador
         {
             Curso curso = ObtenerCursoPorCodigo();
            
+            if (curso != null && NuevoPromedio != null)
+            {
+                if (Validacion.EsNumeroEnRango(NuevoPromedio,6,10))
+                {                                   
+                        _crudCurso.EstablecerPromedioRequerido(CodigoCurso, NuevoPromedio);
+                        Curso curso1 = ObtenerCursoPorCodigo();
+                        _vista.MostrarMensaje("Promedio requerido actualizado con éxito.");                                   
+                }
+                else
+                {
+                    _vista.MostrarMensaje("Ingrese un promedio válido (rango de 6 a 10).");
+                }
+
+            }   
         }
 
         public void EditarCreditosRequeridos()
         {
             Curso curso = ObtenerCursoPorCodigo();
-           
+       
+
+            if (curso != null && NuevoCredito != null)
+            {
+                if (Validacion.EsNumeroEnRango(NuevoCredito, 0, 100))
+                {                    
+                        _crudCurso.EstablecerCreditosRequeridos(CodigoCurso, NuevoCredito);
+                        Curso cursoActualizado = ObtenerCursoPorCodigo();
+                        _vista.MostrarMensaje("Créditos requeridos actualizados con éxito.");                   
+                }
+                else
+                {
+                    _vista.MostrarMensaje("Ingrese un numero válido (rango de 0 a 100).");
+                }
+
+            }        
         }
 
         public void EditarCorrelativas()
         {
             Curso curso = ObtenerCursoPorCodigo();
-           
+            Curso CursoCorrellativa = _crudCurso.ObtenerCursoPorCodigo(CodigoCursoCorrelativa);
+            if (curso != null && CursoCorrellativa != null)
+            {
+    
+                if (CodigoCursoCorrelativa !=CodigoCurso)
+                {
+                    _crudCurso.AgregarCorrelativa(CodigoCurso, CursoCorrellativa.Nombre);
+                    Curso cursoActualizado = ObtenerCursoPorCodigo();
+                    _vista.MostrarMensaje("Correlativas actualizadas con éxito.");
+                }
+                else
+                {
+                    _vista.MostrarMensaje("Error al agregar correlativa. No puedes agregar el mismo curso como correlativa.");
+                }
+            }
+            else
+            {
+                _vista.MostrarMensaje("Error al editar las correlativas. Curso no válido.");
+            }
         }
+
+
+
+
+
 
     }
 }
