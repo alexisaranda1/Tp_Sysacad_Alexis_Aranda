@@ -196,14 +196,14 @@ namespace BibliotecaCLases.Controlador
                 return new Curso("", "", "", "", "", "", "");
             }
         }
-        public void AgregarCorrelativa(string codigoCurso, string codigoCorrelativa)
+        public void AgregarCorrelativa(string codigoCurso, string nombre)
         {
             Curso curso = ObtenerCursoPorCodigo(codigoCurso);
             if (curso != null)
             {
-                curso.AgregarCorrelativa(codigoCorrelativa);
-                serializador.ActualizarJson(listaCursos, _path);
 
+                curso.AgregarCorrelativa(nombre);
+                ActualizarListaCursos(curso);
             }
         }
 
@@ -213,7 +213,7 @@ namespace BibliotecaCLases.Controlador
             if (curso != null)
             {
                 curso.EstablecerPromedioRequerido(promedio);
-                serializador.ActualizarJson(listaCursos, _path);
+                ActualizarListaCursos(curso);
 
             }
         }
@@ -224,11 +224,21 @@ namespace BibliotecaCLases.Controlador
             if (curso != null)
             {
                 curso.EstablecerCreditosRequeridos(creditos);
-                serializador.ActualizarJson(listaCursos, _path);
+                ActualizarListaCursos(curso);
 
             }
         }
 
+        private void ActualizarListaCursos(Curso cursoModificado)
+        {
+            int index = listaCursos.FindIndex(c => c.Codigo == cursoModificado.Codigo);
+
+            if (index != -1)
+            {
+                listaCursos[index] = cursoModificado;
+                serializador.ActualizarJson(listaCursos, _path);
+            }
+        }
 
 
 
