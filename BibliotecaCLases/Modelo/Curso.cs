@@ -180,10 +180,9 @@ namespace BibliotecaCLases.Modelo
 
         public object Cupomaximo { get; set; }
 
-        public void AgregarCorrelativa(string codigoCorrelativa)
+        public void AgregarCorrelativa(string nombre)
         {
-            Correlativas = codigoCorrelativa;
-    
+            Correlativas = string.IsNullOrEmpty(Correlativas)? nombre: Correlativas + "," + nombre;           
         }
 
         public void EstablecerPromedioRequerido(string promedio)
