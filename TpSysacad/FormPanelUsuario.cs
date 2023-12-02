@@ -74,7 +74,7 @@ namespace Formularios
                 btnRegistrarEstudiante.Visible = true;
                 btnGestionarCursos.Visible = true;
                 btnGestionarListasEspera.Visible = true;
-                btnGestionarRequisitos.Visible=true;
+                btnGestionarRequisitos.Visible = true;
             }
         }
 
@@ -124,6 +124,13 @@ namespace Formularios
         {
             FrmGestionarRequisitosAcademics frmGestionarRequisitosAcademics = new(_usuario);
             frmGestionarRequisitosAcademics.Show();
+            this.Hide();
+        }
+
+        private void btnGestionarProfesor_Click(object sender, EventArgs e)
+        {
+            FrmGestionarProfesores frmGestionarProfesores = new(_usuario);
+            frmGestionarProfesores.Show();
             this.Hide();
         }
     }
