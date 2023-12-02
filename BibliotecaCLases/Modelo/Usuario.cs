@@ -24,7 +24,8 @@ namespace BibliotecaCLases.Modelo
         public enum tipoUsuario
         {
             Administrador=0,
-            Estudiante=1
+            Estudiante=1,
+            Profesor = 2
         }
         private tipoUsuario _tipoUsuario;
 
