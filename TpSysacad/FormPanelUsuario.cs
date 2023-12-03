@@ -61,6 +61,7 @@ namespace Formularios
             btnRealizarPagos.Visible = false;
             btnGestionarListasEspera.Visible = false;
             btnGestionarRequisitos.Visible = false;
+            btnGestionarProfesor.Visible = false;
             if (usuario.TipoUsuario.ToString() == "Estudiante")
             {
                 btnInscripcionCurso.Visible = true;
@@ -74,6 +75,7 @@ namespace Formularios
                 btnGestionarCursos.Visible = true;
                 btnGestionarListasEspera.Visible = true;
                 btnGestionarRequisitos.Visible = true;
+                btnGestionarProfesor.Visible=true;
             }
         }
 

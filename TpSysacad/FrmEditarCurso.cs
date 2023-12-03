@@ -1,4 +1,5 @@
 ﻿using BibliotecaCLases.Controlador;
+using BibliotecaCLases.DataBase;
 using BibliotecaCLases.Modelo;
 using BibliotecaCLases.Utilidades;
 using System;
@@ -11,6 +12,7 @@ namespace Formularios
         private Curso _cursoSeleccionado;
         private string _codigoOriginal;
         private FrmGestionarCursos _ownerForm;
+        private DBCursos _dBCurso = new DBCursos();
         public FrmEditarCurso(Curso cursoSeleccionado, FrmGestionarCursos ownerForm)
         {
             InitializeComponent();
@@ -53,14 +55,14 @@ namespace Formularios
 
             if (nuevoCodigo != _codigoOriginal)
                 {
-                if (!gestorCursos.verificarDatosExistentes(nuevoCodigo))
+                if (_dBCurso.VerificaCodigo(nuevoCodigo))
                 {
                     MessageBox.Show("Error de validación: " + gestorCursos.MensajeError, "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                 }
             }
 
-            string resultadoEdicion = gestorCursos.EditarCurso(_codigoOriginal, nuevoCodigo, nuevoNombre, nuevaDescripcion, nuevoCupoMaximo);
+            string resultadoEdicion = gestorCursos.EditarCurso(_codigoOriginal, nuevoCodigo, nuevoNombre, nuevaDescripcion, nuevoCupoMaximo, _cursoSeleccionado.CuposDisponibles, _cursoSeleccionado.CupoMaximo);
 
             if (resultadoEdicion.StartsWith("Se modificó correctamente"))
             {

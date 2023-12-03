@@ -75,7 +75,7 @@ namespace Formularios
             MessageBox.Show(comprobante, "Comprobante de Pago", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        public void MostrarTotalPagar(decimal total)
+        public void MostrarTotalPagar(int total)
         {
             // Lógica para mostrar el total a pagar en tu formulario
             // Por ejemplo, podrías actualizar un label con el total
@@ -137,9 +137,9 @@ namespace Formularios
             return TbxCvv.Text;
         }
 
-        public List<decimal> ObtenerValoresEditados(List<decimal> montosIngresados)
+        public List<int> ObtenerValoresEditados(List<int> montosIngresados)
         {
-            List<decimal> valores = new List<decimal>();
+            List<int> valores = new List<int>();
 
             foreach (DataGridViewRow row in dtgvConceptoPago.Rows)
             {
@@ -147,14 +147,14 @@ namespace Formularios
 
                 if (cellValue != null && !string.IsNullOrWhiteSpace(cellValue.ToString()))
                 {
-                    if (decimal.TryParse(cellValue.ToString(), out decimal valorCelda) && valorCelda >= 0)
+                    if (int.TryParse(cellValue.ToString(), out int valorCelda) && valorCelda >= 0)
                     {
                         valores.Add(valorCelda);
                     }
                     else
                     {
                         MessageBox.Show(this, "Ingrese un número válido", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return new List<decimal>();
+                        return new List<int>();
                     }
                 }
                 else
