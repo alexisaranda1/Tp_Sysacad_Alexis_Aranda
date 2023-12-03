@@ -19,7 +19,7 @@ namespace BibliotecaCLases.Modelo
         private string _aula;
         private string _dia;
         private string _horario;
-        public string Correlativas{get;set;}
+        public string Correlativas { get; set; }
         public string PromedioRequerido { get; set; }
         public string CreditosRequerido { get; set; }
 
@@ -184,5 +184,22 @@ namespace BibliotecaCLases.Modelo
         }
 
         public object Cupomaximo { get; set; }
+
+        public void AgregarCorrelativa(string nombre)
+        {
+            Correlativas = string.IsNullOrEmpty(Correlativas)? nombre: Correlativas + "," + nombre;           
+        }
+
+        public void EstablecerPromedioRequerido(string promedio)
+        {
+            PromedioRequerido = promedio;
+
+
+        }
+
+        public void EstablecerCreditosRequeridos(string creditos)
+        {
+            CreditosRequerido = creditos;
+        }
     }
 }

@@ -171,6 +171,51 @@ namespace BibliotecaCLases.Controlador
         {
             return dBCurso.TraePorCodigo(codigo);
         }
+        public void AgregarCorrelativa(string codigoCurso, string nombre)
+        {
+            Curso curso = ObtenerCursoPorCodigo(codigoCurso);
+            if (curso != null)
+            {
+
+                curso.AgregarCorrelativa(nombre);
+                ActualizarListaCursos(curso);
+            }
+        }
+
+        public void EstablecerPromedioRequerido(string codigoCurso, string promedio)
+        {
+            Curso curso = ObtenerCursoPorCodigo(codigoCurso);
+            if (curso != null)
+            {
+                curso.EstablecerPromedioRequerido(promedio);
+                ActualizarListaCursos(curso);
+
+            }
+        }
+
+        public void EstablecerCreditosRequeridos(string codigoCurso, string creditos)
+        {
+            Curso curso = ObtenerCursoPorCodigo(codigoCurso);
+            if (curso != null)
+            {
+                curso.EstablecerCreditosRequeridos(creditos);
+                ActualizarListaCursos(curso);
+
+            }
+        }
+
+        private void ActualizarListaCursos(Curso cursoModificado)
+        {
+            int index = listaCursos.FindIndex(c => c.Codigo == cursoModificado.Codigo);
+
+            if (index != -1)
+            {
+                listaCursos[index] = cursoModificado;
+                serializador.ActualizarJson(listaCursos, _path);
+            }
+        }
+
+
 
         /// <summary>
         /// Propiedad para obtener o establecer la ruta del archivo JSON de datos.

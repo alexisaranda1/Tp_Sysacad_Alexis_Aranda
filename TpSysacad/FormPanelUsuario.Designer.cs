@@ -38,11 +38,12 @@
             btnSalir = new Button();
             btnGestionarListasEspera = new Button();
             btnGestionarRequisitos = new Button();
+            btnGestionarProfesor = new Button();
             SuspendLayout();
             // 
             // btnRegistrarEstudiante
             // 
-            btnRegistrarEstudiante.Location = new Point(205, 64);
+            btnRegistrarEstudiante.Location = new Point(205, 40);
             btnRegistrarEstudiante.Margin = new Padding(2);
             btnRegistrarEstudiante.Name = "btnRegistrarEstudiante";
             btnRegistrarEstudiante.Size = new Size(130, 20);
@@ -53,7 +54,7 @@
             // 
             // btnGestionarCursos
             // 
-            btnGestionarCursos.Location = new Point(205, 102);
+            btnGestionarCursos.Location = new Point(205, 78);
             btnGestionarCursos.Margin = new Padding(2);
             btnGestionarCursos.Name = "btnGestionarCursos";
             btnGestionarCursos.Size = new Size(130, 20);
@@ -74,7 +75,7 @@
             // 
             label2.AutoSize = true;
             label2.ForeColor = SystemColors.HotTrack;
-            label2.Location = new Point(257, 28);
+            label2.Location = new Point(255, 9);
             label2.Margin = new Padding(2, 0, 2, 0);
             label2.Name = "label2";
             label2.Size = new Size(36, 15);
@@ -83,7 +84,7 @@
             // 
             // btnInscripcionCurso
             // 
-            btnInscripcionCurso.Location = new Point(205, 64);
+            btnInscripcionCurso.Location = new Point(205, 40);
             btnInscripcionCurso.Margin = new Padding(2);
             btnInscripcionCurso.Name = "btnInscripcionCurso";
             btnInscripcionCurso.Size = new Size(130, 20);
@@ -94,7 +95,7 @@
             // 
             // btnConsultarHorario
             // 
-            btnConsultarHorario.Location = new Point(205, 102);
+            btnConsultarHorario.Location = new Point(205, 78);
             btnConsultarHorario.Margin = new Padding(2);
             btnConsultarHorario.Name = "btnConsultarHorario";
             btnConsultarHorario.Size = new Size(130, 20);
@@ -105,7 +106,7 @@
             // 
             // btnRealizarPagos
             // 
-            btnRealizarPagos.Location = new Point(205, 181);
+            btnRealizarPagos.Location = new Point(205, 179);
             btnRealizarPagos.Margin = new Padding(2);
             btnRealizarPagos.Name = "btnRealizarPagos";
             btnRealizarPagos.Size = new Size(130, 20);
@@ -127,7 +128,7 @@
             // 
             // btnGestionarListasEspera
             // 
-            btnGestionarListasEspera.Location = new Point(205, 137);
+            btnGestionarListasEspera.Location = new Point(205, 112);
             btnGestionarListasEspera.Name = "btnGestionarListasEspera";
             btnGestionarListasEspera.Size = new Size(130, 23);
             btnGestionarListasEspera.TabIndex = 7;
@@ -137,7 +138,7 @@
             // 
             // btnGestionarRequisitos
             // 
-            btnGestionarRequisitos.Location = new Point(205, 181);
+            btnGestionarRequisitos.Location = new Point(205, 141);
             btnGestionarRequisitos.Name = "btnGestionarRequisitos";
             btnGestionarRequisitos.Size = new Size(130, 23);
             btnGestionarRequisitos.TabIndex = 8;
@@ -145,11 +146,22 @@
             btnGestionarRequisitos.UseVisualStyleBackColor = true;
             btnGestionarRequisitos.Click += btnGestionarRequisitos_Click;
             // 
+            // btnGestionarProfesor
+            // 
+            btnGestionarProfesor.Location = new Point(205, 179);
+            btnGestionarProfesor.Name = "btnGestionarProfesor";
+            btnGestionarProfesor.Size = new Size(130, 23);
+            btnGestionarProfesor.TabIndex = 9;
+            btnGestionarProfesor.Text = "Gestionar Profesores";
+            btnGestionarProfesor.UseVisualStyleBackColor = true;
+            btnGestionarProfesor.Click += btnGestionarProfesor_Click;
+            // 
             // FormPanelUsuario
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(560, 270);
+            Controls.Add(btnGestionarProfesor);
             Controls.Add(btnGestionarRequisitos);
             Controls.Add(btnGestionarListasEspera);
             Controls.Add(btnSalir);
@@ -179,5 +191,6 @@
         private Button btnSalir;
         private Button btnGestionarListasEspera;
         private Button btnGestionarRequisitos;
+        private Button btnGestionarProfesor;
     }
 }
