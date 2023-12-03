@@ -8,31 +8,36 @@ using System.Threading.Tasks;
 
 namespace BibliotecaCLases.Controlador
 {
- 
-        public class PresentadorProfesor
-        {
-            private readonly IProfesorVista _profesorVista;
-            private readonly CrudProfesor _crudProfesor;
+
+  
+    public class PresentadorProfesor
+    {
+        public int LegajoObtenido { get; set; }
+        private readonly IProfesorVista _profesorVista;
+        private readonly CrudProfesor _crudProfesor;
 
         public PresentadorProfesor(IProfesorVista profesorVista)
         {
             _profesorVista = profesorVista;
             _crudProfesor = new();
             CargarListaProfesores();
+            profesorVista.OnEliminarProfesorSolicitada += () => EliminarProfesor();
+
 
         }
 
 
-        // Método para cargar la lista de profesores en la vista
-        public void CargarListaProfesores()
+
+        public List<Profesor> CargarListaProfesores()
+        {            
+                List<Profesor> profesores = _crudProfesor.ObtenerProfesoresRegistrados();
+            return profesores;
+        }
+
+        private void IniciarEdicionProfesor()
         {
             
-                List<Profesor> profesores = _crudProfesor.ObtenerProfesoresRegistrados();
-                //_profesorVista.ActualizarListaProfesores(profesores);
-            
-           
         }
-
         public void AgregarProfesor()
         {
 
@@ -49,11 +54,11 @@ namespace BibliotecaCLases.Controlador
                 _profesorVista.MostrarMensaje(gestorRegistroProfesores.MensajeError);
             }
         }
-        public string EliminarProfesor(int legajoProfesor)
+        public void EliminarProfesor()
         {
-            string mensaje = _crudProfesor.EliminarProfesor(legajoProfesor);
-            //CargarListaProfesores();
-            return mensaje;
+            string mensaje = _crudProfesor.EliminarProfesor(LegajoObtenido);
+            _profesorVista.MostrarMensaje(mensaje);
+            _profesorVista.RecargarPrograma();
         }
         public void CargarCursosAsignados(int legajoProfesor)
         {

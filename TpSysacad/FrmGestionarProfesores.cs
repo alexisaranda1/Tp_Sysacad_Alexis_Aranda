@@ -24,6 +24,7 @@ namespace Formularios
             _presentador = new(this);
             InitializeComponent();
             CrearColumnasCursos();
+            dtgProfesores.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
         }
         private void FrmGestionarProfesores_Load(object sender, EventArgs e)
@@ -41,22 +42,17 @@ namespace Formularios
 
         public event Action OnListaProfesoresPedida;
         public event Action OnAgragarProfesor;
+        public event Action OnEliminarProfesorSolicitada;
+        public event Action OnEditarProfesorSolicitada;
 
         public Profesor ObtenerDatosNuevoProfesor()
-        {
-            // Aquí deberías obtener los datos ingresados por el usuario desde los controles del formulario.
-            // Puedes crear un nuevo objeto Profesor con esos datos y devolverlo.
-            // A modo de ejemplo, asumamos que tienes TextBox para nombre, apellido, dni, correo, direccion y telefono:
-
+        {          
             string nombre = txtNombre.Text;
             string apellido = txtApellido.Text;
             string dni = txtDni.Text;
             string direccion = txtDireccion.Text;
             string correo = txtCorreo.Text;
             string telefono = txtTelefono.Text;
-
-
-            // Crear y devolver un nuevo objeto Profesor con los datos obtenidos:
             return new Profesor(nombre, apellido, dni, correo, direccion, telefono, "");
         }
 
@@ -68,7 +64,8 @@ namespace Formularios
 
         public void CrearColumnasCursos()
         {
-            //dtgProfesores.Columns.Clear();
+            dtgProfesores.Columns.Clear();
+            dtgProfesores.Columns.Add("legajo", "legajo");
             dtgProfesores.Columns.Add("Nombre", "Nombre");
             dtgProfesores.Columns.Add("Apellido", "Apellido");
             dtgProfesores.Columns.Add("Dni", "Dni");
@@ -83,29 +80,16 @@ namespace Formularios
         public void MostrarProfes()
         {
             CrudProfesor crudProfesor = new CrudProfesor();
-            List<Profesor> profesores = crudProfesor.ObtenerProfesoresRegistrados();
+            List<Profesor> profesores = _presentador.CargarListaProfesores();
             foreach (Profesor profesor in profesores)
             {
-                dtgProfesores.Rows.Add(profesor.Nombre,profesor.Apellido,profesor.Dni,profesor.Correo,profesor.Telefono);
-            }
-
-        }
-
-        public void ActualizarListaProfesores(List<Profesor> profesores)
-        {
-            if (profesores.Count > 0)
-            {              
-                foreach (Profesor profesor in profesores)
+                if (profesor.Activo != "false")
                 {
-                    string nombre = profesor.Nombre;
-                    string apellido = profesor.Apellido;
-                    string telefono = profesor.Telefono;
-                    string correo = profesor.Correo;
-                    string algo = "no tiene";
-                    dtgProfesores.Rows.Add(nombre);
-                    //MostrarMensaje($"{nombre}, {apellido},{telefono},{correo},{algo}");
+                    dtgProfesores.Rows.Add(profesor.Legajo, profesor.Nombre, profesor.Apellido, profesor.Dni, profesor.Correo, profesor.Telefono);
                 }
+               
             }
+
         }
         public void ActualizarCursosAsignados(List<string> cursosAsignados)
         {
@@ -139,14 +123,16 @@ namespace Formularios
             _presentador.AgregarProfesor();
         }
 
+      
+
         private void btnEditarProfesor_Click(object sender, EventArgs e)
         {
-
+            OnEditarProfesorSolicitada?.Invoke();
         }
 
         private void btnEliminarProfesor_Click(object sender, EventArgs e)
         {
-
+            OnEliminarProfesorSolicitada?.Invoke();
         }
 
         private void btnAgregarCurso_Click(object sender, EventArgs e)
@@ -180,7 +166,7 @@ namespace Formularios
                     if (primeraCelda != null && primeraCelda.Value != null)
                     {
                         string valorPrimeraColumna = primeraCelda.Value.ToString();
-                      
+                        _presentador.LegajoObtenido = int.Parse(valorPrimeraColumna);
                     }
                 }
             }

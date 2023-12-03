@@ -51,7 +51,7 @@ namespace BibliotecaCLases.Controlador
 
             if (profesorAEliminar != null)
             {
-                _listaProfesoresRegistrados.Remove(profesorAEliminar);
+                profesorAEliminar.Activo = "false";               
                 string path = PathManager.ObtenerRuta("Data", "DataUsuariosProfesores.json");
                 _serializador.ActualizarJson(_listaProfesoresRegistrados, path);
                 return $"El Profesor {profesorAEliminar.Nombre} {profesorAEliminar.Apellido} (Legajo: {profesorAEliminar.Legajo}) ha sido eliminado exitosamente.";
@@ -139,13 +139,25 @@ namespace BibliotecaCLases.Controlador
             return _ultimoLegajoEnArchivo;
         }
 
-        public static string GenerarContrasenaAleatoria(int longitudMinima, int longitudMaxima)
+        static string GenerarContrasenaAleatoria(int longitudMinima, int longitudMaxima)
         {
-            return "";
-            // ... (Código previo)
+            const string caracteresPermitidos = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_+=<>?";
+
+            Random random = new Random();
+            int longitud = random.Next(longitudMinima, longitudMaxima + 1);
+            StringBuilder contrasena = new StringBuilder();
+
+            for (int i = 0; i < longitud; i++)
+            {
+                int indice = random.Next(caracteresPermitidos.Length);
+                char caracterAleatorio = caracteresPermitidos[indice];
+                contrasena.Append(caracterAleatorio);
+            }
+
+            return contrasena.ToString();
         }
 
- 
+
 
     }
 
