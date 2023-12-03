@@ -20,8 +20,8 @@ namespace BibliotecaCLases.Interfaces
         public string ObtenerNumeroTarjeta();
         public string ObtenerFechaVencimiento();
         public string ObtenerCVV();
-        public List<decimal> ObtenerValoresEditados(List<decimal> montosIngresados);
-        public void MostrarTotalPagar(decimal total);
+        public List<int> ObtenerValoresEditados(List<int> montosIngresados);
+        public void MostrarTotalPagar(int total);
         public void MostrarComprobantePago(string comprobante);
         public string ObtenerMetodoPagoSeleccionado();
         public void RecargarPrograma();

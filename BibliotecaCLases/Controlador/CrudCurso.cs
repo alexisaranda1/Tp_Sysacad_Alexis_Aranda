@@ -1,4 +1,5 @@
-﻿using BibliotecaCLases.Modelo;
+﻿using BibliotecaCLases.DataBase;
+using BibliotecaCLases.Modelo;
 using BibliotecaCLases.Utilidades;
 
 
@@ -13,14 +14,15 @@ namespace BibliotecaCLases.Controlador
         private List<Curso> listaCursos;
         private string _path;
         private GestionListasEspera _gestionListasEspera;
+        DBCursos dBCurso = new DBCursos();
+        DBCursosInscriptos _dBCursosInscriptos = new DBCursosInscriptos();
         /// <summary>
         /// Constructor de la clase CrudCurso.
         /// </summary>
         public CrudCurso()
         {
-            _path = PathManager.ObtenerRuta("Data", "ListaCursos.json");
-            listaCursos = serializador.LeerJson<List<Curso>>(_path) ?? new List<Curso>();
-             _gestionListasEspera = new GestionListasEspera();   
+            listaCursos = dBCurso.ObtenerTodosLosCursos();
+            _gestionListasEspera = new GestionListasEspera();
         }
 
         /// <summary>
@@ -35,14 +37,9 @@ namespace BibliotecaCLases.Controlador
         /// <param name="aula">Aula del curso.</param>
         public void AgregarCurso(string nombre, string codigo, string descripcion, string cupoMaximo, string dia, string horario, string aula)
         {
-            Curso nuevoCurso = new Curso(nombre, codigo, descripcion, cupoMaximo, dia, horario, aula);
+            Curso nuevoCurso = new Curso(nombre, codigo, descripcion, cupoMaximo, dia, horario, aula, "No tiene", "6", "0");
 
-            if (listaCursos != null)
-            {
-                listaCursos.Add(nuevoCurso);
-                _gestionListasEspera.AgregarCurso(codigo);
-                serializador.ActualizarJson(listaCursos, _path);
-            }
+            dBCurso.Guardar(nuevoCurso);
         }
 
         /// <summary>
@@ -54,34 +51,20 @@ namespace BibliotecaCLases.Controlador
         /// <param name="nuevaDescripcion">Nueva descripción del curso.</param>
         /// <param name="nuevoCupoMaximo">Nuevo cupo máximo del curso.</param>
         /// <returns>Un mensaje que indica si la edición fue exitosa o si ocurrió un error.</returns>
-        public string EditarCurso(string codigo, string nuevoCodigo, string nuevoNombre, string nuevaDescripcion, string nuevoCupoMaximo)
+        public string EditarCurso(string codigo, string nuevoCodigo, string nuevoNombre, string nuevaDescripcion, string nuevoCupoMaximo, int antiguoCuposDispónibles, int antiguoCuposMaximo)
         {
             int.TryParse(codigo, out int codigoCurso);
             int.TryParse(nuevoCodigo, out int nuevoCodigoCurso);
+            int.TryParse(nuevoCupoMaximo, out int cupoMaximoNuevo);
 
             try
             {
-                if (listaCursos.Any(curso => curso.Codigo == codigo))
+                int nuevoCuposDisponibles = ValidoCuposDisponibles(antiguoCuposMaximo, cupoMaximoNuevo, antiguoCuposDispónibles);
+                if (dBCurso.ModificarCurso(nuevoNombre, nuevaDescripcion, nuevoCupoMaximo, codigoCurso, nuevoCodigoCurso, nuevoCuposDisponibles))
                 {
-                    Curso cursoExistente = listaCursos.First(curso => curso.Codigo == codigo);
-
-                    if (codigoCurso != nuevoCodigoCurso)
-                    {
-                        listaCursos.RemoveAll(curso => curso.Codigo == codigo);
-                    }
-
-                    cursoExistente.Codigo = nuevoCodigo;
-                    cursoExistente.Nombre = nuevoNombre;
-                    cursoExistente.Descripcion = nuevaDescripcion;
-                    cursoExistente.CupoMaximo = int.Parse(nuevoCupoMaximo);
-                    if (cursoExistente.CuposDisponibles > cursoExistente.CupoMaximo)
-                    {
-                        cursoExistente.CuposDisponibles = int.Parse(nuevoCupoMaximo);
-                    }
-                    _gestionListasEspera.ActualizarCodigoCurso(codigo, nuevoCodigo);
-                    serializador.ActualizarJson(listaCursos, _path);
                     return "Se modificó correctamente";
                 }
+
                 else
                 {
                     return "El curso no existe en la lista.";
@@ -93,6 +76,24 @@ namespace BibliotecaCLases.Controlador
             }
         }
 
+        public int ValidoCuposDisponibles(int cuposMaximosAntiguos, int nuevosCuposMaximos, int cuposDisponibles)
+        {
+            // Calcular la diferencia entre los cupos máximos antiguos y nuevos
+            int diferenciaCupos = cuposMaximosAntiguos - nuevosCuposMaximos;
+
+            // Calcular los nuevos cupos disponibles
+            int nuevosCuposDisponibles = cuposDisponibles - diferenciaCupos;
+
+            // Verificar que los nuevos cupos disponibles no sean negativos
+            if (nuevosCuposDisponibles < 0)
+            {
+                // Si se vuelven negativos, ajustar a cero (no permitir cupos disponibles negativos)
+                nuevosCuposDisponibles = 0;
+            }
+
+            return nuevosCuposDisponibles;
+        }
+
         /// <summary>
         /// Elimina un curso de forma lógica, marcándolo como inactivo en la lista de cursos.
         /// </summary>
@@ -102,12 +103,8 @@ namespace BibliotecaCLases.Controlador
         {
             int.TryParse(curso.Codigo, out int codigoCurso);
 
-            if (listaCursos.Any(c => c.Codigo == curso.Codigo))
+            if (dBCurso.BorrarCurso(codigoCurso))
             {
-                Curso cursoAEliminar = listaCursos.First(c => c.Codigo == curso.Codigo);
-                cursoAEliminar.Activo = false;
-
-                serializador.ActualizarJson(listaCursos, _path);
 
                 return "Se realizó la eliminación lógica del curso";
             }
@@ -118,39 +115,26 @@ namespace BibliotecaCLases.Controlador
         }
 
         /// <summary>
-        /// Verifica si un código de curso existe en la lista de cursos.
-        /// </summary>
-        /// <param name="codigo">El código de curso a verificar.</param>
-        /// <returns>1 si el código de curso existe, 0 si no existe.</returns>
-        public int VerificarCodigoCurso(string codigo)
-        {
-            if (listaCursos != null && listaCursos.Any(curso => curso.Codigo == codigo))
-            {
-                return 1;
-            }
-
-            return 0;
-        }
-
-        /// <summary>
         /// Inscribe un estudiante en un curso si hay cupos disponibles.
         /// </summary>
         /// <param name="codigo">El código del curso en el que inscribir al estudiante.</param>
         /// <returns>Un mensaje que indica si la inscripción fue exitosa o si no hay cupos disponibles.</returns>
-        public string InscribirEstudianteEnCurso(string codigo)
+        public string InscribirEstudianteEnCurso(string codigo, int legajo)
         {
             if (listaCursos != null)
             {
                 int.TryParse(codigo, out int codigoCurso);
-                if (listaCursos.Any(curso => curso.Codigo == codigo))
+                if (dBCurso.VerificaCodigo(codigo))
                 {
-                    Curso curso = listaCursos.First(curso => curso.Codigo == codigo);
+                    Curso curso = dBCurso.TraePorCodigo(codigo);
 
                     if (curso.CuposDisponibles > 0)
                     {
                         curso.CuposDisponibles--;
-                        serializador.ActualizarJson(listaCursos, _path);
-                        return "Inscripción exitosa.";
+                        if (_dBCursosInscriptos.AgregarCursosInscriptos(codigoCurso, legajo))
+                        {
+                            return "Inscripción exitosa.";
+                        }
                     }
                     else
                     {
@@ -166,6 +150,7 @@ namespace BibliotecaCLases.Controlador
             {
                 return "No se encontraron cursos.";
             }
+            return "";
         }
 
         /// <summary>
@@ -174,8 +159,7 @@ namespace BibliotecaCLases.Controlador
         /// <returns>La lista de cursos.</returns>
         public List<Curso> ObtenerListaCursos()
         {
-            listaCursos = serializador.LeerJson<List<Curso>>(_path) ?? new List<Curso>();
-            return listaCursos;
+            return dBCurso.ObtenerTodosLosCursos();
         }
 
         /// <summary>
@@ -185,16 +169,7 @@ namespace BibliotecaCLases.Controlador
         /// <returns>El curso correspondiente o un nuevo objeto Curso si no se encuentra.</returns>
         public Curso ObtenerCursoPorCodigo(string codigo)
         {
-            int.TryParse(codigo, out int codigoCurso);
-
-            if (listaCursos.Any(curso => curso.Codigo == codigo))
-            {
-                return listaCursos.First(curso => curso.Codigo == codigo);
-            }
-            else
-            {
-                return new Curso("", "", "", "", "", "", "");
-            }
+            return dBCurso.TraePorCodigo(codigo);
         }
 
         /// <summary>

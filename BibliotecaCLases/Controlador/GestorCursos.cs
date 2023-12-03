@@ -1,5 +1,6 @@
 ﻿using System;
 using BibliotecaCLases.Controlador;
+using BibliotecaCLases.DataBase;
 using BibliotecaCLases.Modelo;
 using BibliotecaCLases.Utilidades;
 
@@ -11,6 +12,7 @@ namespace BibliotecaCLases.Controlador
     public class GestorCursos
     {
         private CrudCurso crudCurso;
+        private DBCursos dBCurso;
         private bool _validado;
         private string _nombre;
         private string _codigo;
@@ -40,6 +42,7 @@ namespace BibliotecaCLases.Controlador
             if (_validado)
             {
                 crudCurso = new CrudCurso();
+                dBCurso = new DBCursos();
                 _nombre = nombre;
                 _codigo = codigo;
                 _descripcion = descripcion;
@@ -90,15 +93,7 @@ namespace BibliotecaCLases.Controlador
         /// <returns>True si el código no existe, False si el código ya está registrado.</returns>
         public bool verificarDatosExistentes()
         {
-            int numeroError = crudCurso.VerificarCodigoCurso(_codigo);
-
-            if (numeroError == 1)
-            {
-                _mensajeError = "Error: El código ya está registrado.";
-                return false;
-            }
-
-            return true;
+            return dBCurso.VerificaCodigo(_codigo);
         }
 
         /// <summary>
@@ -106,18 +101,18 @@ namespace BibliotecaCLases.Controlador
         /// </summary>
         /// <param name="codigoNuevo">Nuevo código a verificar.</param>
         /// <returns>True si el código no existe, False si el código ya está registrado.</returns>
-        public bool verificarDatosExistentes(string codigoNuevo)
-        {
-            int numeroError = crudCurso.VerificarCodigoCurso(codigoNuevo);
+        //public bool verificarDatosExistentes(string codigoNuevo)
+        //{
+        //    int numeroError = crudCurso.VerificarCodigoCurso(codigoNuevo);
 
-            if (numeroError == 1)
-            {
-                _mensajeError = "Error: El código ya está registrado.";
-                return false;
-            }
+        //    if (numeroError == 1)
+        //    {
+        //        _mensajeError = "Error: El código ya está registrado.";
+        //        return false;
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
 
         /// <summary>
         /// Agrega un nuevo curso.
@@ -154,11 +149,11 @@ namespace BibliotecaCLases.Controlador
         /// <param name="nuevaDescripcion">Nueva descripción del curso.</param>
         /// <param name="nuevoCupoMaximo">Nuevo cupo máximo del curso.</param>
         /// <returns>Un mensaje que indica si la operación fue exitosa o si hubo un error.</returns>
-        public string EditarCurso(string codigo, string nuevoCodigo, string nuevoNombre, string nuevaDescripcion, string nuevoCupoMaximo)
+        public string EditarCurso(string codigo, string nuevoCodigo, string nuevoNombre, string nuevaDescripcion, string nuevoCupoMaximo, int antiguoCuposDispónibles, int antiguoCuposMaximo)
         {
             try
             {
-                string resultadoEdicion = crudCurso.EditarCurso(codigo, nuevoCodigo, nuevoNombre, nuevaDescripcion, nuevoCupoMaximo);
+                string resultadoEdicion = crudCurso.EditarCurso(codigo, nuevoCodigo, nuevoNombre, nuevaDescripcion, nuevoCupoMaximo, antiguoCuposDispónibles, antiguoCuposMaximo);
                 return resultadoEdicion;
             }
             catch (Exception ex)

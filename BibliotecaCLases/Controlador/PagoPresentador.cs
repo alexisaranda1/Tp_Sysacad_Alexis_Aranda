@@ -18,7 +18,7 @@ namespace BibliotecaCLases.Controlador
             _gestorPagoLogic = new GestorPagoLogic(usuario);
             _vista.MetodoPagoSeleccionado += Vista_MetodoPagoSeleccionado;
             _vista.PagarClicked += Vista_PagarClicked;            
-            _vista.MostrarConceptosPagoPendientes(_gestorPagoLogic.ObtenerConceptosPagoPendientes());
+            _vista.MostrarConceptosPagoPendientes(_gestorPagoLogic.ObtenerConceptosPagoPendientes(usuario.Legajo));
 
 
             _vista.MostrarMetodosPago(_gestorPagoLogic.ObtenerMetodosPago());
@@ -67,7 +67,7 @@ namespace BibliotecaCLases.Controlador
 
         private bool Vista_CeldaEditada()
         {
-            List<decimal> valoresCelda = _vista.ObtenerValoresEditados(_gestorPagoLogic.MontosIngresados);
+            List<int> valoresCelda = _vista.ObtenerValoresEditados(_gestorPagoLogic.MontosIngresados);
 
             if (valoresCelda.Count > 0)
             {

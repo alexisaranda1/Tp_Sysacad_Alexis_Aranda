@@ -19,16 +19,16 @@ namespace BibliotecaCLases.Modelo
     public class ConceptoPago
     {
         private string _nombre;
-        private decimal _montoPagar;
+        private int _montoPagar;
       
-        private decimal _montoPagado;
+        private int _montoPagado;
 
         /// <summary>
         /// Constructor de la clase ConceptoPago.
         /// </summary>
         /// <param name="nombre">Nombre del concepto de pago.</param>
         /// <param name="monto">Monto a pagar asociado al concepto.</param>
-        public ConceptoPago(string nombre, decimal monto)
+        public ConceptoPago(string nombre, int monto)
         {
             _nombre = nombre;
             _montoPagar = monto;
@@ -46,28 +46,17 @@ namespace BibliotecaCLases.Modelo
         /// <summary>
         /// Propiedad para obtener o establecer el monto a pagar asociado al concepto.
         /// </summary>
-        public decimal MontoPagar
+        public int MontoAPagar
         { 
             get { return _montoPagar; } 
             set { _montoPagar = value; }
         }
 
-        public decimal MontoPagado
+        public int MontoPagado
         {
             get { return _montoPagado; }
             set { _montoPagado += value; }
         }
 
-
-
-        /// <summary>
-        /// Método para actualizar el monto pendiente restando el monto ingresado.
-        /// </summary>
-        public void ActualizarMontoPendiente(decimal montoingresado)
-        {
-            _montoPagar -= montoingresado;
-        }
-
-     
     }
 }

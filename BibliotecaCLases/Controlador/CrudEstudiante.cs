@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BibliotecaCLases.DataBase;
 using BibliotecaCLases.Modelo;
 using BibliotecaCLases.Utilidades;
 using static BibliotecaCLases.Modelo.Usuario;
@@ -16,36 +17,32 @@ namespace BibliotecaCLases.Controlador
         private CrudCurso crudCurso;
         private List<Estudiante> listaEstudiantesRegistrados;
         Serializador serializador = new Serializador();
+        DBEstudiantes dBEstudiante = new DBEstudiantes();
+        DBGeneric dBGeneric = new DBGeneric();
+        DBConceptoPago _dBConceptoCurso = new DBConceptoPago();
+        DBCursosInscriptos _dBCursosInscriptos = new DBCursosInscriptos();
 
         public CrudEstudiante()
         {
-            listaEstudiantesRegistrados = new List<Estudiante>();
-            _path = PathManager.ObtenerRuta("Data", "DataUsuarios.json");
-            listaEstudiantesRegistrados = serializador.LeerJson<List<Estudiante>>(_path) ?? new List<Estudiante>();
-            pathUltimoLegajo = PathManager.ObtenerRuta("Data", "Legajo.json");
-            _ultimoLegajoEnArchivo = serializador.LeerJson<int>(pathUltimoLegajo);
             crudCurso = new CrudCurso();
         }
 
         public bool AgregarCursoAEstudiante(int legajoEstudiante, string codigoCurso, out string mensajeError)
         {
             Estudiante estudiante = ObtenerEstudiantePorLegajo(legajoEstudiante);
-
+            int.TryParse(codigoCurso, out int codigo);
             if (estudiante != null)
             {
-                if (estudiante.CursosInscriptos.Contains(codigoCurso))
+                if (_dBCursosInscriptos.VerificaCodigo(codigo, legajoEstudiante))
                 {
                     mensajeError = "El estudiante ya está inscrito en este curso.";
                     return false;
                 }
 
-                string mensaje = crudCurso.InscribirEstudianteEnCurso(codigoCurso);
+                string mensaje = crudCurso.InscribirEstudianteEnCurso(codigoCurso, legajoEstudiante);
 
                 if (mensaje == "Inscripción exitosa.")
                 {
-                    estudiante.CursosInscriptos.Add(codigoCurso);
-                    string path = PathManager.ObtenerRuta("Data", "DataUsuarios.json");
-                    serializador.ActualizarJson(listaEstudiantesRegistrados, path);
                     mensajeError = null;
                     return true;
                 }
@@ -59,22 +56,6 @@ namespace BibliotecaCLases.Controlador
             mensajeError = "El estudiante no se encontró.";
             return false;
         }
-
-        public void ModificarEstudiante(Estudiante estudiante)
-        {
-            Estudiante estudianteAModificar = listaEstudiantesRegistrados.FirstOrDefault(e => e.Legajo == estudiante.Legajo);
-
-            if (estudianteAModificar != null)
-            {
-              
-                estudianteAModificar = estudiante;
-
-                
-                string path = PathManager.ObtenerRuta("Data", "DataUsuarios.json");
-                serializador.ActualizarJson(listaEstudiantesRegistrados, path);
-            }
-        }
-
 
         public void EliminarEstudiante(int estudianteId)
         {
@@ -90,28 +71,16 @@ namespace BibliotecaCLases.Controlador
 
         public int VerificarDatosEstudiante(string correo, string dni)
         {
-            if (listaEstudiantesRegistrados != null)
+            if (dBEstudiante.VerificaMail(correo))
             {
-                if (listaEstudiantesRegistrados.Any(est => est.Correo == correo))
-                {
-                    return 1;
-                }
-                if (listaEstudiantesRegistrados.Any(est => est.Dni == dni))
-                {
-                    return 2;
-                }
+                return 1;
+            }
+            if (dBGeneric.AutenticarUsuario(dni, "Estudiante"))
+            {
+                return 2;
             }
 
             return 0;
-        }
-
-        public int ObtieneLegajo()
-        {
-            _ultimoLegajoEnArchivo++;
-            string pathLegajo = PathManager.ObtenerRuta("Data", "Legajo.json");
-            Serializador.GuardarAJson(_ultimoLegajoEnArchivo, pathLegajo);
-
-            return _ultimoLegajoEnArchivo;
         }
 
         static string GenerarContrasenaAleatoria(int longitudMinima, int longitudMaxima)
@@ -132,35 +101,16 @@ namespace BibliotecaCLases.Controlador
             return contrasena.ToString();
         }
 
-        static List<ConceptoPago> GenerarConceptoPago()
+
+        public string RegistrarEstudiante(string nombre, string apellido, string dni, string correo, string direccion, string telefono, int debeCambiar)
         {
-            List<ConceptoPago> conceptoPagos = new List<ConceptoPago>
-            {
-                new ConceptoPago("Noviembre", 22500),
-                new ConceptoPago("Diciembre", 25000),
-                new ConceptoPago("Febrero", 26000)
-            };
-
-            return conceptoPagos;
-        }
-
-        public string RegistrarEstudiante(string nombre, string apellido, string dni, string correo, string direccion, string telefono, bool debeCambiar)
-        {
-            int legajo = ObtieneLegajo();
-            List<ConceptoPago> conceptoPagos = GenerarConceptoPago();
-
             string claveProvisional = GenerarContrasenaAleatoria(7, 12);
             string mensaje = Email.SendMessageSmtp(correo, claveProvisional, nombre, apellido);
             String contrasena = PasswordHashing.GetHash(claveProvisional.ToString());
-            Estudiante nuevoEstudiante = new Estudiante(nombre, apellido, dni, correo, direccion, telefono, contrasena, debeCambiar, conceptoPagos);
-            nuevoEstudiante.Legajo = legajo;
-
-            listaEstudiantesRegistrados.Add(nuevoEstudiante);
-
-            string path = PathManager.ObtenerRuta("Data", "DataUsuarios.json");
-           
-            serializador.ActualizarJson(listaEstudiantesRegistrados, path);
-
+            Estudiante nuevoEstudiante = new Estudiante(nombre, apellido, dni, correo, direccion, telefono, contrasena, debeCambiar);
+            dBEstudiante.Guardar(nuevoEstudiante);
+            Estudiante estudianteRegistrado = dBEstudiante.TraeEstudiantePorDNI(dni);
+            _dBConceptoCurso.Guardar(estudianteRegistrado.Legajo);
             return mensaje;
         }
 
@@ -177,13 +127,9 @@ namespace BibliotecaCLases.Controlador
                 return new List<Estudiante>();
             }
         }
-
-
         public Estudiante ObtenerEstudiantePorLegajo(int legajo)
         {
-            return listaEstudiantesRegistrados.FirstOrDefault(estudiante => estudiante.Legajo == legajo);
+            return dBEstudiante.TraeEstudiantePorLegajo(legajo);
         }
-
-
     }
 }

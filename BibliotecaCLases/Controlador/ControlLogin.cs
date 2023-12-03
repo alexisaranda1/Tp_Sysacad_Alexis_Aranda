@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using BibliotecaCLases.DataBase;
 using BibliotecaCLases.Modelo;
 using BibliotecaCLases.Utilidades;
 
@@ -10,6 +11,9 @@ namespace BibliotecaCLases.Controlador
     /// </summary>
     public class ControlLogin
     {
+        private DBGeneric dBGeneric = new DBGeneric();
+        private DBEstudiantes dBEstudiante = new DBEstudiantes();
+        private DBAdministrador dBAdministrador = new DBAdministrador();
         Serializador serializador = new Serializador();
         private Usuario? _usuario;
         private readonly List<Usuario> listaUsuarios;
@@ -26,12 +30,7 @@ namespace BibliotecaCLases.Controlador
         /// </remarks>
         public ControlLogin()
         {
-            int nivelesARetroceder = 4;
-            _path = PathManager.ObtenerRuta("Data", "DataUsuarios.json", nivelesARetroceder);
 
-            listaUsuarios = serializador.LeerJson<List<Usuario>>(_path);
-
-            _existeUsuario = listaUsuarios != null && listaUsuarios.Any();
         }
 
         /// <summary>
@@ -40,16 +39,28 @@ namespace BibliotecaCLases.Controlador
         /// <param name="dni">El DNI del usuario.</param>
         /// <param name="contrasena">La contraseña del usuario.</param>
         /// <returns>True si la autenticación es exitosa; de lo contrario, False.</returns>
-        public bool AutenticarUsuario(string dni, string contrasena)
+        public bool AutenticarUsuario(string dni)
         {
-            _usuario = listaUsuarios.FirstOrDefault(u => u.Dni == dni);
 
-            if (_usuario != null && contrasena != null && PasswordHashing.ValidatePassword(contrasena, _usuario.Clave))
+            if (dBGeneric.AutenticarUsuario(dni, "Estudiante"))
             {
+                _usuario = dBEstudiante.TraeEstudiantePorDNI(dni);
                 return true;
             }
-
+            else
+            {
+                if (dBGeneric.AutenticarUsuario(dni, "Administrador"))
+                {
+                    _usuario = dBAdministrador.VerificaDni(dni);
+                    return true;
+                }
+            }
             return false;
+        }
+
+        public bool AutenticarContraseña(string contrasena)
+        {
+            return PasswordHashing.ValidatePassword(contrasena, _usuario.Clave);
         }
 
 
@@ -58,7 +69,7 @@ namespace BibliotecaCLases.Controlador
         /// </summary>
         public Usuario GetUsuario
         {
-            get { return _usuario; }
+            get { return _usuario!; }
         }
 
 

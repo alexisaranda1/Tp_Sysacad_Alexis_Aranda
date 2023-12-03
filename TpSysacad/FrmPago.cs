@@ -56,7 +56,7 @@ namespace Formularios
 
             foreach (var concepto in conceptosPago)
             {
-                dtgvConceptoPago.Rows.Add(concepto.Nombre, concepto.MontoPagar, "");
+                dtgvConceptoPago.Rows.Add(concepto.Nombre, concepto.MontoAPagar, "");
             }
 
         }

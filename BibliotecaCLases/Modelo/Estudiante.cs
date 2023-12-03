@@ -13,7 +13,7 @@ namespace BibliotecaCLases.Modelo
     {
         private string _direccion;
         private string _telefono;
-        private bool _debecambiar;
+        private int _debecambiar;
         private List<string> _cursosInscriptos;
         private List<ConceptoPago> _conceptoPagos;  
         private string _estadoDePago;
@@ -31,22 +31,19 @@ namespace BibliotecaCLases.Modelo
         /// <param name="telefono">Teléfono del estudiante.</param>
         /// <param name="claveProvisional">Clave provisional del estudiante.</param>
         /// <param name="debeCambiar">Indica si el estudiante debe cambiar su contraseña.</param>
-        public Estudiante(string nombre, string apellido, string dni, string correo, string direccion, string telefono, string claveProvisional, bool debeCambiar,List<ConceptoPago> conceptoPagos)
+        public Estudiante(string nombre, string apellido, string dni, string correo, string direccion, string telefono, string claveProvisional, int debeCambiar)
             : base(nombre, apellido, dni, correo, claveProvisional, 1)
         {
             _debecambiar = debeCambiar;
             _direccion = direccion;
             _telefono = telefono;
-
-            _cursosInscriptos = new List<string>();
-            _conceptoPagos = conceptoPagos ;  
             _estadoDePago = "pendiente";
         }
 
         /// <summary>
         /// Propiedad para obtener o establecer si el estudiante debe cambiar su contraseña.
         /// </summary>
-        public bool Debecambiar
+        public int Debecambiar
         {
             get { return _debecambiar; }
             set { _debecambiar = value; }
@@ -86,14 +83,6 @@ namespace BibliotecaCLases.Modelo
         {
             get { return _estadoDePago; }
             set { _estadoDePago = value; }
-        }
-        /// <summary>
-        /// Propiedad para obtener o establecer la lista de conceptos de pago asociados al estudiante.
-        /// </summary>
-        public List<ConceptoPago> ConceptoPagos
-        {
-            get { return _conceptoPagos; }
-            set { _conceptoPagos = value; }
         }
 
     }
