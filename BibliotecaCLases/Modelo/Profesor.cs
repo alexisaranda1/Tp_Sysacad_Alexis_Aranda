@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BibliotecaCLases.Utilidades;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -10,6 +11,7 @@ namespace BibliotecaCLases.Modelo
     public class Profesor: Usuario
     {
         public string Direccion { get; set; }
+        public string Activo { get; set; }
         public string Telefono { get; set; }       
         public List<string> AreasEspecializacion { get; set; }
         public List<string> CursosAsignados { get; set; }
@@ -17,6 +19,7 @@ namespace BibliotecaCLases.Modelo
         public Profesor(string nombre,string apellido,string dni, string correo, string direccion, string telefono, string clave)
            : base(nombre, apellido, dni, correo, clave, 2)
         {
+            Activo = "true";
             Direccion = direccion;
             Telefono = telefono;
             AreasEspecializacion = new List<string>();
