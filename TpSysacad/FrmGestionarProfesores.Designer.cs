@@ -29,17 +29,19 @@
         private void InitializeComponent()
         {
             btnSalir = new Button();
-            dataGridView1 = new DataGridView();
-            Nombre = new DataGridViewTextBoxColumn();
-            Direccion = new DataGridViewTextBoxColumn();
-            Telefono = new DataGridViewTextBoxColumn();
-            Correo = new DataGridViewTextBoxColumn();
-            Especializacion = new DataGridViewTextBoxColumn();
             btnAgregarProfesor = new Button();
             btnEditarProfesor = new Button();
             btnEliminarProfesor = new Button();
             btnAgregarCurso = new Button();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            txtNombre = new TextBox();
+            txtApellido = new TextBox();
+            txtDni = new TextBox();
+            txtDireccion = new TextBox();
+            txtCorreo = new TextBox();
+            txtTelefono = new TextBox();
+            btnRegistrarProfesor = new Button();
+            dtgProfesores = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)dtgProfesores).BeginInit();
             SuspendLayout();
             // 
             // btnSalir
@@ -51,42 +53,6 @@
             btnSalir.Text = "Salir";
             btnSalir.UseVisualStyleBackColor = true;
             btnSalir.Click += btnSalir_Click;
-            // 
-            // dataGridView1
-            // 
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Nombre, Direccion, Telefono, Correo, Especializacion });
-            dataGridView1.Location = new Point(61, 136);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.RowTemplate.Height = 25;
-            dataGridView1.Size = new Size(622, 150);
-            dataGridView1.TabIndex = 1;
-            // 
-            // Nombre
-            // 
-            Nombre.HeaderText = "Nombre";
-            Nombre.Name = "Nombre";
-            // 
-            // Direccion
-            // 
-            Direccion.HeaderText = "Direccion";
-            Direccion.Name = "Direccion";
-            // 
-            // Telefono
-            // 
-            Telefono.HeaderText = "Telefono";
-            Telefono.Name = "Telefono";
-            // 
-            // Correo
-            // 
-            Correo.HeaderText = "Correo";
-            Correo.Name = "Correo";
-            // 
-            // Especializacion
-            // 
-            Especializacion.HeaderText = "Especializacion";
-            Especializacion.Name = "Especializacion";
-            Especializacion.ReadOnly = true;
             // 
             // btnAgregarProfesor
             // 
@@ -128,35 +94,115 @@
             btnAgregarCurso.UseVisualStyleBackColor = true;
             btnAgregarCurso.Click += btnAgregarCurso_Click;
             // 
+            // txtNombre
+            // 
+            txtNombre.Location = new Point(157, 30);
+            txtNombre.Name = "txtNombre";
+            txtNombre.PlaceholderText = "Nombre";
+            txtNombre.Size = new Size(100, 23);
+            txtNombre.TabIndex = 6;
+            // 
+            // txtApellido
+            // 
+            txtApellido.Location = new Point(157, 86);
+            txtApellido.Name = "txtApellido";
+            txtApellido.PlaceholderText = "Apellido";
+            txtApellido.Size = new Size(100, 23);
+            txtApellido.TabIndex = 7;
+            // 
+            // txtDni
+            // 
+            txtDni.Location = new Point(303, 30);
+            txtDni.Name = "txtDni";
+            txtDni.PlaceholderText = "DNI";
+            txtDni.Size = new Size(100, 23);
+            txtDni.TabIndex = 8;
+            // 
+            // txtDireccion
+            // 
+            txtDireccion.Location = new Point(303, 86);
+            txtDireccion.Name = "txtDireccion";
+            txtDireccion.PlaceholderText = "Direccion";
+            txtDireccion.Size = new Size(100, 23);
+            txtDireccion.TabIndex = 9;
+            // 
+            // txtCorreo
+            // 
+            txtCorreo.Location = new Point(479, 30);
+            txtCorreo.Name = "txtCorreo";
+            txtCorreo.PlaceholderText = "Correo";
+            txtCorreo.Size = new Size(100, 23);
+            txtCorreo.TabIndex = 10;
+            // 
+            // txtTelefono
+            // 
+            txtTelefono.Location = new Point(479, 86);
+            txtTelefono.Name = "txtTelefono";
+            txtTelefono.PlaceholderText = "Telefono";
+            txtTelefono.Size = new Size(100, 23);
+            txtTelefono.TabIndex = 11;
+            // 
+            // btnRegistrarProfesor
+            // 
+            btnRegistrarProfesor.Location = new Point(260, 332);
+            btnRegistrarProfesor.Name = "btnRegistrarProfesor";
+            btnRegistrarProfesor.Size = new Size(153, 23);
+            btnRegistrarProfesor.TabIndex = 12;
+            btnRegistrarProfesor.Text = "Registrar Profesor";
+            btnRegistrarProfesor.UseVisualStyleBackColor = true;
+            btnRegistrarProfesor.Click += btnRegistrarProfesor_Click;
+            // 
+            // dtgProfesores
+            // 
+            dtgProfesores.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dtgProfesores.Location = new Point(61, 129);
+            dtgProfesores.Name = "dtgProfesores";
+            dtgProfesores.RowTemplate.Height = 25;
+            dtgProfesores.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dtgProfesores.Size = new Size(592, 150);
+            dtgProfesores.TabIndex = 13;
+            dtgProfesores.CellClick += dtgProfesores_CellClick;
+            // 
             // FrmGestionarProfesores
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(dtgProfesores);
+            Controls.Add(btnRegistrarProfesor);
+            Controls.Add(txtTelefono);
+            Controls.Add(txtCorreo);
+            Controls.Add(txtDireccion);
+            Controls.Add(txtDni);
+            Controls.Add(txtApellido);
+            Controls.Add(txtNombre);
             Controls.Add(btnAgregarCurso);
             Controls.Add(btnEliminarProfesor);
             Controls.Add(btnEditarProfesor);
             Controls.Add(btnAgregarProfesor);
-            Controls.Add(dataGridView1);
             Controls.Add(btnSalir);
             Name = "FrmGestionarProfesores";
             Text = "FrmGestionarProfesores";
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            Load += FrmGestionarProfesores_Load;
+            ((System.ComponentModel.ISupportInitialize)dtgProfesores).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private Button btnSalir;
-        private DataGridView dataGridView1;
-        private DataGridViewTextBoxColumn Nombre;
-        private DataGridViewTextBoxColumn Direccion;
-        private DataGridViewTextBoxColumn Telefono;
-        private DataGridViewTextBoxColumn Correo;
-        private DataGridViewTextBoxColumn Especializacion;
         private Button btnAgregarProfesor;
         private Button btnEditarProfesor;
         private Button btnEliminarProfesor;
         private Button btnAgregarCurso;
+        private TextBox txtNombre;
+        private TextBox txtApellido;
+        private TextBox txtDni;
+        private TextBox txtDireccion;
+        private TextBox txtCorreo;
+        private TextBox txtTelefono;
+        private Button btnRegistrarProfesor;
+        private DataGridView dtgProfesores;
     }
 }

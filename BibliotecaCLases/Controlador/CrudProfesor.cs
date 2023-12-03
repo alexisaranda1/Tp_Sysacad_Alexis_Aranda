@@ -45,7 +45,7 @@ namespace BibliotecaCLases.Controlador
 
             return mensaje;
         }
-        public void EliminarProfesor(int legajoProfesor)
+        public string EliminarProfesor(int legajoProfesor)
         {
             Profesor profesorAEliminar = _listaProfesoresRegistrados.FirstOrDefault(profesor => profesor.Legajo == legajoProfesor);
 
@@ -54,20 +54,19 @@ namespace BibliotecaCLases.Controlador
                 _listaProfesoresRegistrados.Remove(profesorAEliminar);
                 string path = PathManager.ObtenerRuta("Data", "DataUsuariosProfesores.json");
                 _serializador.ActualizarJson(_listaProfesoresRegistrados, path);
+                return $"El Profesor {profesorAEliminar.Nombre} {profesorAEliminar.Apellido} (Legajo: {profesorAEliminar.Legajo}) ha sido eliminado exitosamente.";
+
             }
-            else
-            {
-                // Manejar el caso donde no se encuentra al profesor
-            }
+            return "No se pudo eliminar";
         }
 
         public List<Profesor> ObtenerProfesoresRegistrados()
         {
-            var profesores = _listaProfesoresRegistrados.Where(u => u.TipoUsuario == tipoUsuario.Profesor);
+            _listaProfesoresRegistrados = _serializador.LeerJson<List<Profesor>>(_path) ?? new List<Profesor>();
 
-            if (profesores.Any())
+            if (_listaProfesoresRegistrados.Any())
             {
-                return profesores.Cast<Profesor>().ToList();
+                return _listaProfesoresRegistrados;
             }
             else
             {
@@ -78,6 +77,22 @@ namespace BibliotecaCLases.Controlador
         public Profesor ObtenerProfesorPorLegajo(int legajo)
         {
             return _listaProfesoresRegistrados.FirstOrDefault(profesor => profesor.Legajo == legajo);
+        }
+        public int VerificarDatosProfesor(string correo, string dni)
+        {
+            if (_listaProfesoresRegistrados != null)
+            {
+                if (_listaProfesoresRegistrados.Any(prof => prof.Correo == correo))
+                {
+                    return 1; 
+                }
+                if (_listaProfesoresRegistrados.Any(prof => prof.Dni == dni))
+                {
+                    return 2; 
+                }
+            }
+
+            return 0; // Código para indicar que no hay problemas con los datos
         }
 
 

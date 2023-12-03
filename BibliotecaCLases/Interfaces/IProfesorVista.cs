@@ -10,6 +10,18 @@ namespace BibliotecaCLases.Interfaces
     public interface IProfesorVista
     {
         /// <summary>
+        /// Evento que se dispara al solicitar la lista de Profesores.
+        /// </summary>
+        event Action OnListaProfesoresPedida;
+        event Action OnAgragarProfesor;
+
+        /// <summary>
+        /// Obtiene los datos ingresados para agregar un profesor.
+        /// </summary>
+        /// <returns>Un objeto Profesor con los datos ingresados.</returns>
+        Profesor ObtenerDatosNuevoProfesor();
+
+        /// <summary>
         /// Muestra un mensaje en la vista.
         /// </summary>
         /// <param name="mensaje">Mensaje a mostrar.</param>
