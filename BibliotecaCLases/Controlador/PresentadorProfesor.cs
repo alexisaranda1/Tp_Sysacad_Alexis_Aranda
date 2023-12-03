@@ -18,31 +18,42 @@ namespace BibliotecaCLases.Controlador
         {
             _profesorVista = profesorVista;
             _crudProfesor = new();
+            CargarListaProfesores();
+
         }
 
 
         // Método para cargar la lista de profesores en la vista
         public void CargarListaProfesores()
         {
-            var profesores = _crudProfesor.ObtenerProfesoresRegistrados();
-            _profesorVista.ActualizarListaProfesores(profesores);
+            
+                List<Profesor> profesores = _crudProfesor.ObtenerProfesoresRegistrados();
+                //_profesorVista.ActualizarListaProfesores(profesores);
+            
+           
         }
 
-
-        // Método para agregar un profesor desde la vista
-        public void AgregarProfesor(string nombre, string apellido, string dni, string correo, string direccion, string telefono)
+        public void AgregarProfesor()
         {
-            string mensaje = _crudProfesor.RegistrarProfesor(nombre, apellido, dni, correo, direccion, telefono);
-            _profesorVista.MostrarMensaje(mensaje);
-            CargarListaProfesores(); // Actualizar la lista después de agregar un profesor
+
+            Profesor profesor = _profesorVista.ObtenerDatosNuevoProfesor();
+            GestorRegistroProfesores gestorRegistroProfesores = new(profesor);
+            if (gestorRegistroProfesores.Validado && gestorRegistroProfesores.VerificarDatosExistentes())
+            {
+                string mensaje = gestorRegistroProfesores.RegistrarProfesor();
+                _profesorVista.MostrarMensaje(mensaje);
+                //CargarListaProfesores();
+            }
+            else
+            {
+                _profesorVista.MostrarMensaje(gestorRegistroProfesores.MensajeError);
+            }
         }
-
-
-        // Método para eliminar un profesor desde la vista
-        public void EliminarProfesor(int legajoProfesor)
+        public string EliminarProfesor(int legajoProfesor)
         {
-            _crudProfesor.EliminarProfesor(legajoProfesor);
-            CargarListaProfesores(); // Actualizar la lista después de eliminar un profesor
+            string mensaje = _crudProfesor.EliminarProfesor(legajoProfesor);
+            //CargarListaProfesores();
+            return mensaje;
         }
         public void CargarCursosAsignados(int legajoProfesor)
         {
@@ -58,7 +69,6 @@ namespace BibliotecaCLases.Controlador
             }
         }
 
-        // Otros métodos según sea necesario
     }
 
 

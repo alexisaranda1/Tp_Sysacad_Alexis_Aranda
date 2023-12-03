@@ -100,7 +100,11 @@ namespace BibliotecaCLases.Controlador
                     }
                      montoIngresado = Math.Min(montoIngresado, conceptoPago.MontoPagar);
                     conceptoPago.MontoPagado = montoIngresado;
-                    _montosIngresados[conceptosPago.IndexOf(conceptoPago)] = montoIngresado;
+
+                    int indece = conceptosPago.IndexOf(conceptoPago);
+
+                    _montosIngresados[indece] = montoIngresado;
+
                     if ( conceptoPago.MontoPagar > 0)
                     {
                         conceptoPago.ActualizarMontoPendiente(montoIngresado);

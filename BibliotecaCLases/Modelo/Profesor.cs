@@ -18,8 +18,9 @@ namespace BibliotecaCLases.Modelo
            : base(nombre, apellido, dni, correo, clave, 2)
         {
             Direccion = direccion;
-            Telefono = telefono;    
+            Telefono = telefono;
             AreasEspecializacion = new List<string>();
+            
             CursosAsignados = new List<string>();
         }
     }
