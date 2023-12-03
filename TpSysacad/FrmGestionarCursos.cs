@@ -1,4 +1,5 @@
 ﻿using BibliotecaCLases.Controlador;
+using BibliotecaCLases.DataBase;
 using BibliotecaCLases.Modelo;
 using BibliotecaCLases.Utilidades;
 using System;
@@ -20,6 +21,7 @@ namespace Formularios
         private CrudEstudiante crudEstudiante;
         private Curso _cursoSeleccionado;
         private CrudCurso _crudCurso;
+        private DBCursos _dBCursos = new DBCursos();
         public FrmGestionarCursos(Usuario usuario)
         {
             crudEstudiante = new CrudEstudiante();
@@ -84,22 +86,12 @@ namespace Formularios
         {
             List<Curso> listaCursos = null;
 
-            string path = PathManager.ObtenerRuta("Data", "ListaCursos.json");
-
-            try
-            {
-                listaCursos = serializador.LeerJson<List<Curso>>(path);
-            }
-            catch (FileNotFoundException ex)
-            {
-                MessageBox.Show($"No se encontró el archivo JSON en la ruta: {path}");
-            }
-
+            listaCursos = _dBCursos.ObtenerTodosLosCursos();
             if (listaCursos != null)
             {
                 foreach (Curso curso in listaCursos)
                 {
-                    if (curso.Activo)
+                    if (curso.Activo != "False")
                     {
                         dataGridViewCursos.Rows.Add(curso.Codigo, curso.Nombre, curso.Descripcion, curso.CuposDisponibles, curso.CupoMaximo);
                     }
@@ -174,7 +166,7 @@ namespace Formularios
 
             foreach (Curso curso in _crudCurso.ObtenerListaCursos())
             {
-                if (curso.Activo)
+                if (curso.Activo != "False")
                 {
                     dataGridViewCursos.Rows.Add(curso.Codigo, curso.Nombre, curso.Descripcion, curso.CuposDisponibles, curso.CupoMaximo);
                 }

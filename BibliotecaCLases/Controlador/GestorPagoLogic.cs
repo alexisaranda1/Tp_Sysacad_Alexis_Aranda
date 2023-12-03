@@ -1,4 +1,5 @@
 ﻿using BibliotecaCLases.Modelo;
+using BibliotecaCLases.DataBase;
 using BibliotecaCLases.Utilidades;
 using System;
 using System.Collections.Generic;
@@ -16,10 +17,12 @@ namespace BibliotecaCLases.Controlador
         private readonly string _pathPago;
         Serializador serializador = new Serializador();
         private readonly CrudEstudiante _crudEstudiante;
-        private List<decimal> _montosIngresados = new();
+        private List<int> _montosIngresados = new();
         private List<ConceptoPago> _conceptosPendientes = new ();
         private decimal _totalAPagar = 0;
-       
+        private DBConceptoPago _dBConceptoPago = new DBConceptoPago();
+        private DBPagos _dBPago = new DBPagos();
+
 
 
 
@@ -34,15 +37,18 @@ namespace BibliotecaCLases.Controlador
 
 
         }
-        public List<ConceptoPago> ObtenerConceptosPagoPendientes()
+        public List<ConceptoPago> ObtenerConceptosPagoPendientes(int legajo)
         {
             List<ConceptoPago> conceptosPendientes = new List<ConceptoPago>();
+            List<ConceptoPago> conceptosPendientesAMostrar = new List<ConceptoPago>();
 
-            foreach (ConceptoPago conceptoPago in _estudiante.ConceptoPagos)
+            conceptosPendientes = _dBConceptoPago.TraerConceptosPagoPorLegajo(legajo);
+
+            foreach (ConceptoPago conceptoPago in conceptosPendientes)
             {
-                if (conceptoPago.MontoPagar > 0)
+                if (conceptoPago.MontoAPagar > 0)
                 {
-                    conceptosPendientes.Add(conceptoPago);
+                    conceptosPendientesAMostrar.Add(conceptoPago);
                     _montosIngresados.Add(0);
                 }
             }
@@ -91,60 +97,69 @@ namespace BibliotecaCLases.Controlador
 
             if (esPagoValido)
             {
+                bool guardar = true;
                 foreach (ConceptoPago conceptoPago in conceptosPago)
                 {
-                    decimal montoIngresado = _montosIngresados[conceptosPago.IndexOf(conceptoPago)];
-                    if (montoIngresado > conceptoPago.MontoPagar)
+                    int montoIngresado = (int)_montosIngresados[conceptosPago.IndexOf(conceptoPago)];
+                    if (montoIngresado > conceptoPago.MontoAPagar)
                     {
                         mensaje = "El monto ingresado es mayor que el monto a pagar. Se cobrará solo el monto a pagar.";
                     }
-                     montoIngresado = Math.Min(montoIngresado, conceptoPago.MontoPagar);
-                    conceptoPago.MontoPagado = montoIngresado;
+                    montoIngresado = Math.Min(montoIngresado, conceptoPago.MontoAPagar);
+                    //conceptoPago.MontoPagado = montoIngresado;
+                    _montosIngresados[conceptosPago.IndexOf(conceptoPago)] = montoIngresado;
 
-                    int indece = conceptosPago.IndexOf(conceptoPago);
-
-                    _montosIngresados[indece] = montoIngresado;
-
-                    if ( conceptoPago.MontoPagar > 0)
+                    if (conceptoPago.MontoAPagar > 0)
                     {
-                        conceptoPago.ActualizarMontoPendiente(montoIngresado);
+                        ActualizarMontoPendiente(montoIngresado, usuario.Legajo, conceptoPago);
                     }
                     else
                     {
                         mensaje = "Ya esta pagado, no lo puede volver a pagar!";
-                    }                    
+                        guardar = false;
+                    }
                     if (montoIngresado > 0)
                     {
                         conceptosPagopagados.Add(conceptoPago);
                     }
+                    if (!RegistrarPago(conceptosPagopagados, metodoPago, guardar))
+                    {
+                        mensaje = "Error a guardar en la base de datos";
+                    }
                 }
-              
-                RegistrarPago(conceptosPagopagados, metodoPago);               
-            }       
+            }
             return esPagoValido;
         }
 
-        public List<decimal> MontosIngresados
+        /// <summary>
+        /// Método para actualizar el monto pendiente restando el monto ingresado.
+        /// </summary>
+        public void ActualizarMontoPendiente(int montoingresado, int legajo, ConceptoPago concepto)
+        {
+
+            concepto.MontoAPagar -= montoingresado;
+            _dBConceptoPago.ActualizarConceptoPago(legajo, concepto.Nombre, montoingresado, concepto.MontoAPagar);
+        }
+
+        public List<int> MontosIngresados
         {
             get { return _montosIngresados; }
             set { _montosIngresados = value; }
         }
 
 
-        private void RegistrarPago(List<ConceptoPago> conceptosPago, string metodoPago)
+        private bool RegistrarPago(List<ConceptoPago> conceptosPago, string metodoPago, bool guardar)
         {
             CalcularMontoTotal(conceptosPago);
             _pago = new Pago(_estudiante, conceptosPago, metodoPago, _totalAPagar);
-          
-            if (_estudiante.ConceptoPagos.All(concepto => concepto.MontoPagar == 0))
+            if (guardar)
             {
-                _estudiante.EstadoDePago = "pagado";
+                if (_dBPago.Guardar(_pago))
+                {
+                    return true;
+                }
             }
-            
-            _crudEstudiante.ModificarEstudiante(_estudiante);
-
-           
-
+            return false;
         }
 
         private void CalcularMontoTotal(List<ConceptoPago> conceptosPago)
@@ -198,38 +213,6 @@ namespace BibliotecaCLases.Controlador
             {
                 return "No se realizó el pago";
             }
-        }
-
-        public List<string> ObtenerHistorialPagos()
-        {
-            List<string> comprobantes = new List<string>();
-            foreach (Pago pago in _pagos)
-            {
-                StringBuilder comprobante = new StringBuilder();
-                comprobante.AppendLine("Comprobante de Pago");
-                comprobante.AppendLine("===================");
-                comprobante.AppendLine($"Fecha: {pago.Fecha}");
-                comprobante.AppendLine($"Estudiante: {pago.NombreUsuario}, {pago.ApellidoUsuario}");
-                comprobante.AppendLine("Conceptos de Pago:");
-
-                List<ConceptoPago> conceptos = _conceptosPendientes;
-
-                for (int i = 0; i < conceptos.Count && i < _montosIngresados.Count; i++)
-                {
-                    if (_montosIngresados[i] > 0)
-                    {
-                        comprobante.AppendLine($"- {_pago.ConceptosPago[i].Nombre}: ${_montosIngresados[i]}");
-                    }
-                    
-                }
-
-
-                comprobante.AppendLine($"Monto Total: ${pago.MontoTotal}");
-                comprobante.AppendLine($"Método de Pago: {pago.MetodoPago}");
-                comprobantes.Add(comprobante.ToString());
-            }
-
-            return comprobantes;
         }
 
 

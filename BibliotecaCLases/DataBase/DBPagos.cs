@@ -1,40 +1,38 @@
 ﻿using BibliotecaCLases.Modelo;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BibliotecaCLases.DataBase
 {
-    internal class DBPagos:SQLServer
+    internal class DBPagos : SQLServer
     {
-        public DBPagos() 
+        public DBPagos()
         {
 
         }
-        public void Guardar(Pago pago)
+        public bool Guardar(Pago pago)
         {
+            bool existe = false;
             try
             {
                 _conexion.Open();
-                var query = $"INSERT INTO Cursos (IdUsuario, Fecha, NombreUsuario, ApellidoUsuario, MontoTotal,MetodoPago) VALUES (@IdUsuario, @Fecha," +
-                    " @NombreUsuario, @ApellidoUsuario, @MontoTotal,@MetodoPago)";
+                var query = $"INSERT INTO Pago (LegajoEstudiante, MetodoPago, Fecha, MontoTotal) VALUES (@Legajo,@MetodoPago,GETDATE()," +
+                    " @MontoTotal)";
                 _comando.CommandText = query;
-
+                _comando.Parameters.Clear();
                 //Ajuste de parámetros con valores reales
-                _comando.Parameters.AddWithValue("@IdUsuario", pago.IdUsuario);
-                _comando.Parameters.AddWithValue("@Fecha", pago.Fecha);
-                _comando.Parameters.AddWithValue("@NombreUsuario", pago.NombreUsuario);
-                _comando.Parameters.AddWithValue("@ApellidoUsuario", pago.ApellidoUsuario);
+                _comando.Parameters.AddWithValue("@Legajo", pago.IdUsuario);
                 _comando.Parameters.AddWithValue("@MontoTotal", pago.MontoTotal);
                 _comando.Parameters.AddWithValue("@MetodoPago", pago.MetodoPago);
 
                 //comando.Parameters.Clear();
 
                 var filasAfectadas = _comando.ExecuteNonQuery();
-
-                Console.WriteLine("Filas afectadas " + filasAfectadas);
+                existe = filasAfectadas > 0;
             }
             catch (Exception ex)
             {
@@ -44,6 +42,7 @@ namespace BibliotecaCLases.DataBase
             {
                 _conexion.Close();
             }
+            return existe;
         }
     }
 }

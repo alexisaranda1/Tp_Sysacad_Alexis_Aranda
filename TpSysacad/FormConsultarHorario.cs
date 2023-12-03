@@ -1,4 +1,5 @@
 ﻿using BibliotecaCLases.Controlador;
+using BibliotecaCLases.DataBase;
 using BibliotecaCLases.Modelo;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace Formularios
         private Usuario _usuario;
         private CrudEstudiante _crudEstudiante;
         private CrudCurso _crudCurso;
+        private DBCursosInscriptos _dBCusoInscripto = new DBCursosInscriptos();
 
         public FormConsultarHorario(Usuario usuario)
         {
@@ -30,10 +32,10 @@ namespace Formularios
         {
             Estudiante estudiante = _crudEstudiante.ObtenerEstudiantePorLegajo(_usuario.Legajo);
 
-            if (estudiante != null && estudiante.CursosInscriptos.Count > 0)
+            if (estudiante != null && _dBCusoInscripto.ContarCursosInscriptosPorLegajo(_usuario.Legajo))
             {
                 labelHorarioVacio.Visible = false;
-                MostrarHorario(estudiante.CursosInscriptos);
+                MostrarHorario(_dBCusoInscripto.VerCursosInscriptosPorLegajo(_usuario.Legajo));
             }
             else
             {
@@ -43,12 +45,11 @@ namespace Formularios
             }
         }
 
-        private void MostrarHorario(List<string> cursosInscriptos)
+        private void MostrarHorario(List<Curso> cursosInscriptos)
         {
-            foreach (var codigoCurso in cursosInscriptos)
+            foreach (var curso in cursosInscriptos)
             {
-                Curso curso = _crudCurso.ObtenerCursoPorCodigo(codigoCurso);
-                if (curso != null && curso.Activo)
+                if (curso != null && curso.Activo != "False")
                 {
                     dataGridViewHorario.Rows.Add(curso.Nombre, curso.Horario, curso.Dia, curso.Aula);
                 }

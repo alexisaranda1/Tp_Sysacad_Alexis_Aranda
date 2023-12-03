@@ -93,7 +93,7 @@ namespace BibliotecaCLases.Controlador
         /// <param name="telefono">El teléfono del estudiante.</param>
         /// <param name="debeCambiar">Indica si el estudiante debe cambiar la clave.</param>
         /// <returns>Un mensaje de éxito o error al registrar el estudiante.</returns>
-        public string RegistrarEstudiante(string nombre, string apellido,  string dni, string correo, string direccion, string telefono, bool debeCambiar)
+        public string RegistrarEstudiante(string nombre, string apellido,  string dni, string correo, string direccion, string telefono, int debeCambiar)
         {
             
             return crudEstudiante.RegistrarEstudiante(nombre, apellido, dni, correo, direccion, telefono, debeCambiar);

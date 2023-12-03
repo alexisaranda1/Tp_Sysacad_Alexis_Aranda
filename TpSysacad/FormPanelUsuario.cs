@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using BibliotecaCLases.DataBase;
 using BibliotecaCLases.Modelo;
 using BibliotecaCLases.Utilidades;
 
@@ -25,8 +26,6 @@ namespace Formularios
         private void button1_Click(object sender, EventArgs e)
         {
             FrmRegistroEstudiante frmRegistroEstudiante = new(_usuario);
-            //SQLServer test = new SQLServer();
-            //test.Guardar("dian", "barrientos", 24, 32112333, 10, "Administrador");
 
             frmRegistroEstudiante.FormClosed += (sender, args) =>
             {
@@ -62,6 +61,7 @@ namespace Formularios
             btnRealizarPagos.Visible = false;
             btnGestionarListasEspera.Visible = false;
             btnGestionarRequisitos.Visible = false;
+            btnGestionarProfesor.Visible = false;
             if (usuario.TipoUsuario.ToString() == "Estudiante")
             {
                 btnInscripcionCurso.Visible = true;
@@ -75,6 +75,7 @@ namespace Formularios
                 btnGestionarCursos.Visible = true;
                 btnGestionarListasEspera.Visible = true;
                 btnGestionarRequisitos.Visible = true;
+                btnGestionarProfesor.Visible=true;
             }
         }
 
