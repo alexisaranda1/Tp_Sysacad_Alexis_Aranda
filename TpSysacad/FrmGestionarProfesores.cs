@@ -127,7 +127,16 @@ namespace Formularios
 
         private void btnEditarProfesor_Click(object sender, EventArgs e)
         {
-            OnEditarProfesorSolicitada?.Invoke();
+
+            if (_presentador.LegajoObtenido != null)
+            {
+                FrmEditarProfesor frmEditarProfesor = new(_usuario,_presentador.LegajoObtenido);
+            }
+            else
+            {
+                MostrarMensaje("Selecciona un profesor");
+            }
+          
         }
 
         private void btnEliminarProfesor_Click(object sender, EventArgs e)
