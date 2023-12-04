@@ -130,21 +130,6 @@ namespace Formularios
 
                     dtgvListaEspera.Rows.Add(estudiante.Legajo, estudiante.Nombre, estudiante.Apellido, estudiante.Correo, estudiante.Dni, fecha);
                 }
-
-                //for (int i = 0; i < estudiantes.Count; i++)
-                //{
-                //    Estudiante estudiante = estudiantes[i];
-                //    string fecha = listaFechas[i].FechasSolicitud;
-
-                //    dtgvListaEspera.Rows.Add(estudiante.Legajo, estudiante.Nombre, estudiante.Apellido, estudiante.Correo, estudiante.Dni, fecha);
-                
-                //}
-
-                //else
-                //{
-                //    lblAvisoListavacia.Visible = true;
-                //    lblAvisoListavacia.Text = "Error: No se pudo mostrar la lista correctamente.";
-                //}
             }
             else
             {
