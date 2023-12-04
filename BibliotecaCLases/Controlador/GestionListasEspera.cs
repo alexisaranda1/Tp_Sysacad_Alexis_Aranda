@@ -1,4 +1,5 @@
-﻿using BibliotecaCLases.Modelo;
+﻿using BibliotecaCLases.DataBase;
+using BibliotecaCLases.Modelo;
 using BibliotecaCLases.Utilidades;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace BibliotecaCLases.Controlador
         private List<ListaEspera> _listasEspera;
         private Serializador _serializador;
         private string _path;
+        private DBListaDeEspera _dBListaDeEspera = new DBListaDeEspera();
 
         /// <summary>
         /// Constructor de la clase <see cref="GestionListasEspera"/>.
@@ -31,12 +33,7 @@ namespace BibliotecaCLases.Controlador
         /// <param name="codigoCurso">Código del curso.</param>
         public void AgregarCurso(string codigoCurso)
         {
-            if (!ExisteListaEspera(codigoCurso))
-            {
-                ListaEspera nuevaListaEspera = new ListaEspera(codigoCurso);
-                _listasEspera.Add(nuevaListaEspera);
-                _serializador.ActualizarJson(_listasEspera, _path);
-            }
+            ExisteListaEspera(codigoCurso);
         }
 
         /// <summary>
@@ -44,17 +41,9 @@ namespace BibliotecaCLases.Controlador
         /// </summary>
         /// <param name="codigoViejo">Código del curso a actualizar.</param>
         /// <param name="nuevoCodigo">Nuevo código del curso.</param>
-        public void ActualizarCodigoCurso(string codigoViejo, string nuevoCodigo)
+        public bool ActualizarCodigoCurso(string codigoViejo, string nuevoCodigo)
         {
-            foreach (var listaEspera in _listasEspera)
-            {
-                if (listaEspera.CodigoCurso == codigoViejo)
-                {
-                    listaEspera.CodigoCurso = nuevoCodigo;
-                    _serializador.ActualizarJson(_listasEspera, _path);
-                    return;
-                }
-            }
+            return _dBListaDeEspera.ActualizarCodigo(nuevoCodigo);
         }
 
         /// <summary>
@@ -62,23 +51,16 @@ namespace BibliotecaCLases.Controlador
         /// </summary>
         /// <param name="codigoCurso">Código del curso.</param>
         /// <returns>Lista de fechas en formato de cadena (yyyy-MM-dd).</returns>
-        public List<string> ObtenerFechas(string codigoCurso)
+        public List<ListaEspera> ObtenerFechas(string codigoCurso)
         {
-            ListaEspera listaEspera = ObtenerListaEsperaPorCodigo(codigoCurso);
+            List<ListaEspera> listaEspera = ObtenerListaEsperaPorCodigos(codigoCurso);
 
-            if (listaEspera?.FechasSolicitud == null)
+            if (listaEspera == null)
             {
-                return new List<string>();
+                return new List<ListaEspera>();
             }
 
-            List<string> fechasString = new List<string>();
-            foreach (DateTime fecha in listaEspera.FechasSolicitud)
-            {
-                string fechaFormateada = fecha.ToString("yyyy-MM-dd");
-                fechasString.Add(fechaFormateada);
-            }
-
-            return fechasString;
+            return listaEspera;
         }
 
         /// <summary>
@@ -86,24 +68,11 @@ namespace BibliotecaCLases.Controlador
         /// </summary>
         /// <param name="codigoCurso">Código del curso.</param>
         /// <returns>Lista de legajos en espera ordenada por fecha de solicitud.</returns>
-        public List<int> ObtenerListaEspera(string codigoCurso)
+        public List<ListaEspera> ObtenerListaEspera(string codigoCurso)
         {
-            ListaEspera listaEspera = ObtenerListaEsperaPorCodigo(codigoCurso);
+            List<ListaEspera> listaEspera = ObtenerListaEsperaPorCodigos(codigoCurso);
 
-            if (listaEspera != null)
-            {
-                return listaEspera.LegajosEnEspera.OrderBy(legajo =>
-                {
-                    int index = listaEspera.LegajosEnEspera.IndexOf(legajo);
-                    if (index >= 0 && index < listaEspera.FechasSolicitud.Count)
-                    {
-                        return listaEspera.FechasSolicitud[index];
-                    }
-                    return DateTime.MinValue;
-                }).ToList();
-            }
-
-            return new List<int>();
+            return listaEspera;
         }
 
         /// <summary>
@@ -111,17 +80,14 @@ namespace BibliotecaCLases.Controlador
         /// </summary>
         /// <param name="codigoCurso">Código del curso.</param>
         /// <param name="legajo">Número de legajo del estudiante.</param>
-        public void AgregarEstudianteAListaEspera(string codigoCurso, int legajo)
+        public bool AgregarEstudianteAListaEspera(string codigoCurso, int legajo)
         {
-            var listaEsperaModificada = ObtenerListaEsperaPorCodigo(codigoCurso);
-
-            if (listaEsperaModificada != null)
+            if (!_dBListaDeEspera.VerificaEstudianteEnCurso(codigoCurso, legajo))
             {
-                listaEsperaModificada.AgregarEstudiante(legajo);
-                _listasEspera.Remove(listaEsperaModificada);
-                _listasEspera.Add(listaEsperaModificada);
-                _serializador.ActualizarJson(_listasEspera, _path);
+                return _dBListaDeEspera.Guardar(codigoCurso,legajo);
             }
+            return false;
+            
         }
 
         /// <summary>
@@ -131,15 +97,7 @@ namespace BibliotecaCLases.Controlador
         /// <param name="legajo">Número de legajo del estudiante.</param>
         public void EliminarEstudianteDeListaEspera(string codigoCurso, int legajo)
         {
-            var listaEsperaModificada = ObtenerListaEsperaPorCodigo(codigoCurso);
-
-            if (listaEsperaModificada != null)
-            {
-                listaEsperaModificada.EliminarEstudiante(legajo);
-                _listasEspera.Remove(listaEsperaModificada);
-                _listasEspera.Add(listaEsperaModificada);
-                _serializador.ActualizarJson(_listasEspera, _path);
-            }
+            _dBListaDeEspera.Eliminar(codigoCurso, legajo);
         }
 
         private ListaEspera ObtenerListaEsperaPorCodigo(string codigoCurso)
@@ -147,9 +105,14 @@ namespace BibliotecaCLases.Controlador
             return _listasEspera.FirstOrDefault(lista => lista.CodigoCurso == codigoCurso);
         }
 
+        private List<ListaEspera> ObtenerListaEsperaPorCodigos(string codigoCurso)
+        {
+            return _dBListaDeEspera.ObtenerTodasLasEsperas();
+        }
+
         private bool ExisteListaEspera(string codigoCurso)
         {
-            return _listasEspera.Any(lista => lista.CodigoCurso == codigoCurso);
+            return _dBListaDeEspera.GuardarCodigo(codigoCurso);
         }
     }
 }

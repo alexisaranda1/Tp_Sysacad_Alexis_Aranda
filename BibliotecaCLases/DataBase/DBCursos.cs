@@ -92,6 +92,7 @@ namespace BibliotecaCLases.DataBase
 
                 var query = "SELECT * FROM Cursos WHERE Codigo = @CodigoCurso";
                 _comando.CommandText = query;
+                _comando.Parameters.Clear();
                 _comando.Parameters.AddWithValue("@CodigoCurso", codigoABuscar);
 
                 using (SqlDataReader reader = _comando.ExecuteReader())
@@ -138,6 +139,7 @@ namespace BibliotecaCLases.DataBase
                 var query = $"UPDATE Cursos SET Codigo = @NuevoCodigo, Nombre = @Nombre, CupoMaximo = @CupoMaximo, Descripcion = @Descripcion,CuposDisponibles = @CupoDisponible WHERE Codigo = @AntiguoCodigo";
                 _comando.CommandText = query;
 
+                _comando.Parameters.Clear();
                 // Ajuste de parámetros con los nuevos valores
                 _comando.Parameters.AddWithValue("@NuevoCodigo", nuevoCodigo);
                 _comando.Parameters.AddWithValue("@AntiguoCodigo", codigo);
@@ -145,6 +147,37 @@ namespace BibliotecaCLases.DataBase
                 _comando.Parameters.AddWithValue("@CupoMaximo", cupoMaximo);
                 _comando.Parameters.AddWithValue("@Descripcion", descripcion);
                 _comando.Parameters.AddWithValue("@CupoDisponible", cuposDisponibles);
+                int filasAfectadas = _comando.ExecuteNonQuery();
+
+                cambio = filasAfectadas > 0;
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                _conexion.Close();
+            }
+            return cambio;
+        }
+        public bool ModificarCorrePromeCredi(Curso curso)
+        {
+            bool cambio = false;
+            try
+            {
+                _conexion.Open();
+
+                // Consulta SQL para actualizar un curso
+                var query = $"UPDATE Cursos SET Correlativas = @Correlativa, PromedioRequerido = @PromedioRequerido, CreditosRequeridos = @CreditosRequeridos WHERE Codigo = @Codigo";
+                _comando.CommandText = query;
+
+                // Ajuste de parámetros con los nuevos valores
+                _comando.Parameters.Clear();
+                _comando.Parameters.AddWithValue("@Codigo", curso.Codigo);
+                _comando.Parameters.AddWithValue("@Correlativa", curso.Correlativas);
+                _comando.Parameters.AddWithValue("@PromedioRequerido", curso.PromedioRequerido);
+                _comando.Parameters.AddWithValue("@CreditosRequeridos", curso.CreditosRequerido);
                 int filasAfectadas = _comando.ExecuteNonQuery();
 
                 cambio = filasAfectadas > 0;
