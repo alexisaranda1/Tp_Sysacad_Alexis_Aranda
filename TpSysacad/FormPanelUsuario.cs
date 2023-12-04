@@ -62,6 +62,7 @@ namespace Formularios
             btnGestionarListasEspera.Visible = false;
             btnGestionarRequisitos.Visible = false;
             btnGestionarProfesor.Visible = false;
+            bttnGenerarReporte.Visible = false;
             if (usuario.TipoUsuario.ToString() == "Estudiante")
             {
                 btnInscripcionCurso.Visible = true;
@@ -75,7 +76,8 @@ namespace Formularios
                 btnGestionarCursos.Visible = true;
                 btnGestionarListasEspera.Visible = true;
                 btnGestionarRequisitos.Visible = true;
-                btnGestionarProfesor.Visible=true;
+                btnGestionarProfesor.Visible = true;
+                bttnGenerarReporte.Visible=true;
             }
         }
 
@@ -132,6 +134,13 @@ namespace Formularios
         {
             FrmGestionarProfesores frmGestionarProfesores = new(_usuario);
             frmGestionarProfesores.Show();
+            this.Hide();
+        }
+
+        private void bttnGenerarReporte_Click(object sender, EventArgs e)
+        {
+            FormGenerarReportes formGenerarReportes = new FormGenerarReportes(_usuario);
+            formGenerarReportes.Show();
             this.Hide();
         }
     }

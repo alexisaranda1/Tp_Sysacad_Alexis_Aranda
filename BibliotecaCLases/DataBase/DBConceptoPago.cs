@@ -45,6 +45,41 @@ namespace BibliotecaCLases.DataBase
             return existe;
         }
 
+        public List<ConceptoPago> ObtenerTodosLosPagos()
+        {
+            List<ConceptoPago> pago = new List<ConceptoPago>();
+
+            try
+            {
+                _conexion.Open();
+                var query = "SELECT * FROM ConceptoPago";
+                _comando.CommandText = query;
+
+                using (SqlDataReader reader = _comando.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string Nombre = reader["Nombre"].ToString()!;
+                        int montoAPagar = Convert.ToInt16(reader["MontoAPagar"])!;
+                        int montoPagado = Convert.ToInt16(reader["MontoPagado"])!;
+                        ConceptoPago conceptoPago = new ConceptoPago(Nombre,montoAPagar);
+                        conceptoPago.MontoPagado = montoPagado;
+                        pago.Add(conceptoPago);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                _conexion.Close();
+            }
+
+            return pago;
+        }
+
         public bool ActualizarConceptoPago(int legajo, string nombre, int montoPagado, int nuevoMontoAPagar)
         {
             bool actualizacionExitosa = false;

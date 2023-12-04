@@ -47,12 +47,12 @@
             // 
             dataGridViewCursos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCursos.Columns.AddRange(new DataGridViewColumn[] { codigo, curso, descripcion, cuposDisponibles, cupoMaximo });
-            dataGridViewCursos.Location = new Point(93, 88);
-            dataGridViewCursos.Margin = new Padding(3, 2, 3, 2);
+            dataGridViewCursos.Location = new Point(133, 147);
+            dataGridViewCursos.Margin = new Padding(4, 3, 4, 3);
             dataGridViewCursos.Name = "dataGridViewCursos";
             dataGridViewCursos.RowHeadersWidth = 51;
             dataGridViewCursos.RowTemplate.Height = 29;
-            dataGridViewCursos.Size = new Size(633, 223);
+            dataGridViewCursos.Size = new Size(904, 372);
             dataGridViewCursos.TabIndex = 0;
             dataGridViewCursos.CellContentClick += dataGridView1_CellContentClick;
             dataGridViewCursos.SelectionChanged += dataGridViewCursos_SelectionChanged;
@@ -101,19 +101,19 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.Location = new Point(339, 38);
+            label1.Location = new Point(484, 63);
+            label1.Margin = new Padding(4, 0, 4, 0);
             label1.Name = "label1";
-            label1.Size = new Size(112, 21);
+            label1.Size = new Size(169, 32);
             label1.TabIndex = 5;
             label1.Text = "Lista de cursos";
             label1.Click += label1_Click;
             // 
             // btnInscripcion
             // 
-            btnInscripcion.Location = new Point(93, 337);
-            btnInscripcion.Margin = new Padding(2, 2, 2, 2);
+            btnInscripcion.Location = new Point(133, 562);
             btnInscripcion.Name = "btnInscripcion";
-            btnInscripcion.Size = new Size(127, 26);
+            btnInscripcion.Size = new Size(181, 43);
             btnInscripcion.TabIndex = 7;
             btnInscripcion.Text = "inscripcion";
             btnInscripcion.UseVisualStyleBackColor = true;
@@ -121,9 +121,10 @@
             // 
             // BtnEditarCursos
             // 
-            BtnEditarCursos.Location = new Point(354, 340);
+            BtnEditarCursos.Location = new Point(506, 567);
+            BtnEditarCursos.Margin = new Padding(4, 5, 4, 5);
             BtnEditarCursos.Name = "BtnEditarCursos";
-            BtnEditarCursos.Size = new Size(118, 23);
+            BtnEditarCursos.Size = new Size(169, 38);
             BtnEditarCursos.TabIndex = 8;
             BtnEditarCursos.Text = "Editar Curso";
             BtnEditarCursos.UseVisualStyleBackColor = true;
@@ -131,9 +132,10 @@
             // 
             // BtnEliminarCursos
             // 
-            BtnEliminarCursos.Location = new Point(633, 340);
+            BtnEliminarCursos.Location = new Point(904, 567);
+            BtnEliminarCursos.Margin = new Padding(4, 5, 4, 5);
             BtnEliminarCursos.Name = "BtnEliminarCursos";
-            BtnEliminarCursos.Size = new Size(93, 23);
+            BtnEliminarCursos.Size = new Size(133, 38);
             BtnEliminarCursos.TabIndex = 9;
             BtnEliminarCursos.Text = "Eliminar curso";
             BtnEliminarCursos.UseVisualStyleBackColor = true;
@@ -141,9 +143,10 @@
             // 
             // BtnAgregarCurso
             // 
-            BtnAgregarCurso.Location = new Point(93, 337);
+            BtnAgregarCurso.Location = new Point(133, 562);
+            BtnAgregarCurso.Margin = new Padding(4, 5, 4, 5);
             BtnAgregarCurso.Name = "BtnAgregarCurso";
-            BtnAgregarCurso.Size = new Size(127, 23);
+            BtnAgregarCurso.Size = new Size(181, 38);
             BtnAgregarCurso.TabIndex = 10;
             BtnAgregarCurso.Text = "Agregar Curso";
             BtnAgregarCurso.UseVisualStyleBackColor = true;
@@ -151,9 +154,10 @@
             // 
             // btnVolver
             // 
-            btnVolver.Location = new Point(93, 370);
+            btnVolver.Location = new Point(133, 617);
+            btnVolver.Margin = new Padding(4, 5, 4, 5);
             btnVolver.Name = "btnVolver";
-            btnVolver.Size = new Size(127, 23);
+            btnVolver.Size = new Size(181, 38);
             btnVolver.TabIndex = 11;
             btnVolver.TabStop = false;
             btnVolver.Text = "Volver";
@@ -162,9 +166,9 @@
             // 
             // FrmGestionarCursos
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(824, 405);
+            ClientSize = new Size(1177, 675);
             Controls.Add(btnVolver);
             Controls.Add(BtnAgregarCurso);
             Controls.Add(BtnEliminarCursos);
@@ -172,7 +176,7 @@
             Controls.Add(btnInscripcion);
             Controls.Add(label1);
             Controls.Add(dataGridViewCursos);
-            Margin = new Padding(3, 2, 3, 2);
+            Margin = new Padding(4, 3, 4, 3);
             Name = "FrmGestionarCursos";
             Text = "FrmGestionarCurso";
             Load += FrmGestionarCurso_Load;

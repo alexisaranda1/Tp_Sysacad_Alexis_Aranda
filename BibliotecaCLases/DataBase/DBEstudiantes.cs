@@ -142,7 +142,7 @@ namespace BibliotecaCLases.DataBase
             {
                 _conexion.Close();
             }
-            return estudianteEncontrado;
+            return estudianteEncontrado!;
         }
 
 
@@ -174,6 +174,47 @@ namespace BibliotecaCLases.DataBase
             }
 
             return existe;
+        }
+        public List<Estudiante> ObtenerTodosLosEstudiantes()
+        {
+            List<Estudiante> estudiante = new List<Estudiante>();
+
+            try
+            {
+                _conexion.Open();
+                var query = "SELECT * FROM Estudiante";
+                _comando.CommandText = query;
+
+                using (SqlDataReader reader = _comando.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int legajoEncontrado = Convert.ToInt16(reader["Legajo"])!;
+                        string nombre = Convert.ToString(reader["Nombre"])!;
+                        string apellido = Convert.ToString(reader["Apellido"])!;
+                        string dniAEstudiante = Convert.ToString(reader["DNI"])!;
+                        string correo = Convert.ToString(reader["Correo"])!;
+                        string direccion = Convert.ToString(reader["Direccion"])!;
+                        string telefono = Convert.ToString(reader["Telefono"])!;
+                        string contraseña = Convert.ToString(reader["Clave"])!;
+                        int debeCambiar = Convert.ToInt16(reader["DebeCambiar"])!;
+                        // Crear una instancia de la clase Estudiante con los datos de la fila encontrada
+                        Estudiante estudianteEncontrado = new Estudiante(nombre, apellido, dniAEstudiante, correo, direccion, telefono, contraseña, debeCambiar);
+                        estudianteEncontrado.Legajo = legajoEncontrado;
+                        estudiante.Add(estudianteEncontrado);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                _conexion.Close();
+            }
+
+            return estudiante;
         }
     }
 }

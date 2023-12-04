@@ -19,7 +19,7 @@ namespace BibliotecaCLases.Modelo
     public class ConceptoPago
     {
         private string _nombre;
-        private int _montoPagar;
+        private int _montoAPagar;
       
         private int _montoPagado;
 
@@ -31,7 +31,7 @@ namespace BibliotecaCLases.Modelo
         public ConceptoPago(string nombre, int monto)
         {
             _nombre = nombre;
-            _montoPagar = monto;
+            _montoAPagar = monto;
         }
 
         /// <summary>
@@ -48,8 +48,8 @@ namespace BibliotecaCLases.Modelo
         /// </summary>
         public int MontoAPagar
         { 
-            get { return _montoPagar; } 
-            set { _montoPagar = value; }
+            get { return _montoAPagar; } 
+            set { _montoAPagar = value; }
         }
 
         public int MontoPagado
