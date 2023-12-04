@@ -38,12 +38,14 @@
             cBPeriodo = new ComboBox();
             cBPago = new ComboBox();
             btnAtras = new Button();
+            cBEspera = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)dataGridViewReportes).BeginInit();
             SuspendLayout();
             // 
             // dataGridViewReportes
             // 
             dataGridViewReportes.AllowUserToAddRows = false;
+            dataGridViewReportes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dataGridViewReportes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewReportes.Columns.AddRange(new DataGridViewColumn[] { Check, Informe });
             dataGridViewReportes.Location = new Point(82, 67);
@@ -59,14 +61,14 @@
             Check.HeaderText = "Check";
             Check.MinimumWidth = 8;
             Check.Name = "Check";
-            Check.Width = 150;
+            Check.Width = 65;
             // 
             // Informe
             // 
             Informe.HeaderText = "Informe";
             Informe.MinimumWidth = 8;
             Informe.Name = "Informe";
-            Informe.Width = 150;
+            Informe.Width = 111;
             // 
             // label
             // 
@@ -138,11 +140,22 @@
             btnAtras.UseVisualStyleBackColor = true;
             btnAtras.Click += btnAtras_Click;
             // 
+            // cBEspera
+            // 
+            cBEspera.FormattingEnabled = true;
+            cBEspera.Location = new Point(297, 298);
+            cBEspera.Name = "cBEspera";
+            cBEspera.Size = new Size(182, 33);
+            cBEspera.TabIndex = 8;
+            cBEspera.Text = "Espera Por Curso";
+            cBEspera.Visible = false;
+            // 
             // FormGenerarReportes
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(cBEspera);
             Controls.Add(btnAtras);
             Controls.Add(cBPago);
             Controls.Add(cBPeriodo);
@@ -170,5 +183,6 @@
         private ComboBox cBPeriodo;
         private ComboBox cBPago;
         private Button btnAtras;
+        private ComboBox cBEspera;
     }
 }

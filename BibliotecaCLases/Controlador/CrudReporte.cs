@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 
 namespace BibliotecaCLases.Controlador
 {
@@ -19,6 +20,7 @@ namespace BibliotecaCLases.Controlador
         private DBConceptoPago _dbConceptoPago = new DBConceptoPago();
         private DBEstudiantes _dbEstudiantes = new DBEstudiantes();
         private DBGeneric _dBGeneric = new DBGeneric(); 
+        private DBListaDeEspera _dBListaDeEspera = new DBListaDeEspera();   
         public CrudReporte()
         {
 
@@ -103,6 +105,41 @@ namespace BibliotecaCLases.Controlador
                 }
             }
             return comprobante.ToString();
+        }
+        public string GeneraReportePorEspera(bool valido, string materiaEspera, List<Curso> lista)
+        {
+            StringBuilder comprobante = new StringBuilder();
+            Curso espera = buscoCursoPorMateria(lista, materiaEspera);
+            Dictionary<Estudiante, DateTime> estudiantesYFechas = _dBListaDeEspera.ObtenerEstudiantesYFechasEnEsperaPorCurso(espera.Codigo);
+            
+            if (valido)
+            {
+                DateTime dateTime = DateTime.Now;
+                comprobante.AppendLine($"Informe Detallado de Alumnos en Espera en la materia : {espera.Nombre}");
+                comprobante.AppendLine($"Fecha Al Dia Del Informe: {dateTime.ToString("yyyy-MM-dd")}\n");
+                foreach (var kvp in estudiantesYFechas)
+                {
+                    Estudiante estudiante = kvp.Key;
+                    DateTime fecha = kvp.Value;
+                    comprobante.AppendLine($"Estudiante: {estudiante.Nombre} {estudiante.Apellido}");
+                    comprobante.AppendLine($"Fecha de espera: {fecha}$");
+                    comprobante.AppendLine("=================");
+                }
+            }
+            return comprobante.ToString();
+        }
+
+        public Curso buscoCursoPorMateria(List<Curso> lista,string materia)
+        {
+            Curso cursoEncontrado = null;
+            foreach(Curso curso in lista)
+            {
+                if(curso.Nombre == materia)
+                {
+                    cursoEncontrado= curso;
+                }
+            }
+            return cursoEncontrado!;
         }
     }
 }
