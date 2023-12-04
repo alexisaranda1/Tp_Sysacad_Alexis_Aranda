@@ -38,7 +38,7 @@ namespace BibliotecaCLases.Controlador
         public void AgregarCurso(string nombre, string codigo, string descripcion, string cupoMaximo, string dia, string horario, string aula)
         {
             _gestionListasEspera.AgregarCurso(codigo);
-            Curso nuevoCurso = new Curso(nombre, codigo, descripcion, cupoMaximo, dia, horario, aula, "No tiene", "6", "0");
+            Curso nuevoCurso = new Curso(nombre, codigo, descripcion, cupoMaximo, dia, horario, aula, "", "6", "0");
 
             dBCurso.Guardar(nuevoCurso);
         }
@@ -61,7 +61,7 @@ namespace BibliotecaCLases.Controlador
             try
             {
                 int nuevoCuposDisponibles = ValidoCuposDisponibles(antiguoCuposMaximo, cupoMaximoNuevo, antiguoCuposDispónibles);
-                if (dBCurso.ModificarCurso(nuevoNombre, nuevaDescripcion, nuevoCupoMaximo, codigoCurso, nuevoCodigoCurso, nuevoCuposDisponibles))
+                if (dBCurso.ModificarCurso(nuevoNombre, nuevaDescripcion, nuevoCupoMaximo, codigoCurso, nuevoCodigoCurso, nuevoCuposDisponibles) && _gestionListasEspera.ActualizarCodigoCurso(codigo,nuevoCodigo))
                 {
 
                     return "Se modificó correctamente";
@@ -173,48 +173,47 @@ namespace BibliotecaCLases.Controlador
         {
             return dBCurso.TraePorCodigo(codigo);
         }
-        public void AgregarCorrelativa(string codigoCurso, string nombre)
+        public bool AgregarCorrelativa(string codigoCurso, string nombre)
         {
+            bool valid = false;
             Curso curso = ObtenerCursoPorCodigo(codigoCurso);
             if (curso != null)
             {
 
                 curso.AgregarCorrelativa(nombre);
-                ActualizarListaCursos(curso);
+                valid = ActualizarListaCursos(curso);
             }
+            return valid;
         }
 
-        public void EstablecerPromedioRequerido(string codigoCurso, string promedio)
+        public bool EstablecerPromedioRequerido(string codigoCurso, string promedio)
         {
+            bool valid = false;
             Curso curso = ObtenerCursoPorCodigo(codigoCurso);
             if (curso != null)
             {
                 curso.EstablecerPromedioRequerido(promedio);
-                ActualizarListaCursos(curso);
-
+                valid = ActualizarListaCursos(curso);
             }
+            return valid;
         }
 
-        public void EstablecerCreditosRequeridos(string codigoCurso, string creditos)
+        public bool EstablecerCreditosRequeridos(string codigoCurso, string creditos)
         {
+            bool valid = false;
             Curso curso = ObtenerCursoPorCodigo(codigoCurso);
             if (curso != null)
             {
                 curso.EstablecerCreditosRequeridos(creditos);
-                ActualizarListaCursos(curso);
+                valid = ActualizarListaCursos(curso);
 
             }
+            return valid;
         }
 
-        private void ActualizarListaCursos(Curso cursoModificado)
+        private bool ActualizarListaCursos(Curso cursoModificado)
         {
-            int index = listaCursos.FindIndex(c => c.Codigo == cursoModificado.Codigo);
-
-            if (index != -1)
-            {
-                listaCursos[index] = cursoModificado;
-                serializador.ActualizarJson(listaCursos, _path);
-            }
+            return dBCurso.ModificarCorrePromeCredi(cursoModificado);
         }
 
 

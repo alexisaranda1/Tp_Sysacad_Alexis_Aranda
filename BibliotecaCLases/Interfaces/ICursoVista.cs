@@ -66,7 +66,8 @@ namespace BibliotecaCLases.Interfaces
         /// </summary>
         /// <param name="estudiantes">Lista de estudiantes en espera.</param>
         /// <param name="listaFechas">Lista de fechas de solicitud de los estudiantes en espera.</param>
-        void MostrarListaEspera(List<Estudiante> estudiantes, List<string> listaFechas);
+        //void MostrarListaEspera(List<Estudiante> estudiantes, List<ListaEspera> espera);
+        void MostrarListaEsperas(Dictionary<Estudiante, DateTime> dict);
 
         /// <summary>
         /// Muestra un mensaje en la vista.

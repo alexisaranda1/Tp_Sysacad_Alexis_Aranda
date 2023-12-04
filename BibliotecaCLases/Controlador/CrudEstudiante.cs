@@ -116,16 +116,8 @@ namespace BibliotecaCLases.Controlador
 
         public List<Estudiante> ObtenerEstudiantesRegistrados()
         {           
-            var estudiantes = listaEstudiantesRegistrados.Where(u => u.TipoUsuario == tipoUsuario.Estudiante);
-         
-            if (estudiantes.Any())
-            {            
-                return estudiantes.Cast<Estudiante>().ToList();
-            }
-            else
-            {
-                return new List<Estudiante>();
-            }
+            List<Estudiante> estudiantes = dBEstudiante.ObtenerTodosLosEstudiantes();
+            return estudiantes;
         }
         public Estudiante ObtenerEstudiantePorLegajo(int legajo)
         {

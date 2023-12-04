@@ -159,12 +159,11 @@
             // 
             // bttnGenerarReporte
             // 
-            bttnGenerarReporte.Location = new Point(205, 88);
-            bttnGenerarReporte.Margin = new Padding(2, 2, 2, 2);
+            bttnGenerarReporte.Location = new Point(293, 107);
             bttnGenerarReporte.Name = "bttnGenerarReporte";
             bttnGenerarReporte.Size = new Size(130, 20);
             bttnGenerarReporte.TabIndex = 10;
-            bttnGenerarReporte.Text = "GnerarReporte";
+            bttnGenerarReporte.Text = "Gnerar Reporte";
             bttnGenerarReporte.UseVisualStyleBackColor = true;
             bttnGenerarReporte.Click += bttnGenerarReporte_Click;
             // 

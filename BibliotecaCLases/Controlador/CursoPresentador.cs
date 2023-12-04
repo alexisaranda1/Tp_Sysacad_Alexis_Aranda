@@ -1,4 +1,5 @@
-﻿using BibliotecaCLases.Interfaces;
+﻿using BibliotecaCLases.DataBase;
+using BibliotecaCLases.Interfaces;
 using BibliotecaCLases.Modelo;
 using BibliotecaCLases.Utilidades;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace BibliotecaCLases.Controlador
         private CrudCurso _crudCurso;
         private CrudEstudiante _crudEstudiante;
         private GestionListasEspera _gestionListasEspera;
+        private DBListaDeEspera dBListaDeEspera = new DBListaDeEspera();    
 
         /// <summary>
         /// Constructor de la clase <see cref="CursoPresentador"/>.
@@ -36,9 +38,10 @@ namespace BibliotecaCLases.Controlador
         private void _vista_MostrarListaEsperaPedida()
         {
             _vista.CrearColumnasListaEspera();
+            Dictionary<Estudiante, DateTime> estudiantesConFechas = dBListaDeEspera.ObtenerEstudiantesYFechasEnEsperaPorCurso(CodigoCurso);
             List<Estudiante> listaEstudiante = CargarListaEsperaEstudiante();
-            List<string> listaFechas = _gestionListasEspera.ObtenerFechas(CodigoCurso);
-            _vista.MostrarListaEspera(listaEstudiante, listaFechas);
+            List<ListaEspera> espera = _gestionListasEspera.ObtenerFechas(CodigoCurso);
+            _vista.MostrarListaEsperas(estudiantesConFechas);
         }
 
         /// <summary>
@@ -49,12 +52,12 @@ namespace BibliotecaCLases.Controlador
         {
             List<Estudiante> estudiantes = new List<Estudiante>();
             string codigo = CodigoCurso;
-            List<int> lista = _gestionListasEspera.ObtenerListaEspera(codigo);
+            List<ListaEspera> lista = _gestionListasEspera.ObtenerListaEspera(codigo);
             if (lista.Count > 0)
             {
-                foreach (int legajo in lista)
+                foreach (ListaEspera espera in lista)
                 {
-                    estudiantes.Add(_crudEstudiante.ObtenerEstudiantePorLegajo(legajo));
+                    estudiantes.Add(_crudEstudiante.ObtenerEstudiantePorLegajo(espera.LegajosEnEspera));
                 }
             }
             return estudiantes;
@@ -67,7 +70,15 @@ namespace BibliotecaCLases.Controlador
         /// <param name="legajo">Número de legajo del estudiante.</param>
         public void AgregarEstudianteListaEspera(string codigoCurso, int legajo)
         {
-            _gestionListasEspera.AgregarEstudianteAListaEspera(codigoCurso, legajo);
+            bool valid = _gestionListasEspera.AgregarEstudianteAListaEspera(codigoCurso, legajo);
+            if (valid) 
+            {
+                _vista.MostrarMensaje("Guardado en base de datos");
+            }
+            else
+            {
+                _vista.MostrarMensaje("Estudiante ya registrado");
+            }
         }
 
         /// <summary>
