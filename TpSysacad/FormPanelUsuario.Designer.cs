@@ -45,7 +45,7 @@
             // btnRegistrarEstudiante
             // 
             btnRegistrarEstudiante.Location = new Point(205, 40);
-            btnRegistrarEstudiante.Margin = new Padding(2, 2, 2, 2);
+            btnRegistrarEstudiante.Margin = new Padding(2);
             btnRegistrarEstudiante.Name = "btnRegistrarEstudiante";
             btnRegistrarEstudiante.Size = new Size(130, 20);
             btnRegistrarEstudiante.TabIndex = 0;
@@ -56,7 +56,7 @@
             // btnGestionarCursos
             // 
             btnGestionarCursos.Location = new Point(205, 64);
-            btnGestionarCursos.Margin = new Padding(2, 2, 2, 2);
+            btnGestionarCursos.Margin = new Padding(2);
             btnGestionarCursos.Name = "btnGestionarCursos";
             btnGestionarCursos.Size = new Size(130, 20);
             btnGestionarCursos.TabIndex = 1;
@@ -86,7 +86,7 @@
             // btnInscripcionCurso
             // 
             btnInscripcionCurso.Location = new Point(205, 40);
-            btnInscripcionCurso.Margin = new Padding(2, 2, 2, 2);
+            btnInscripcionCurso.Margin = new Padding(2);
             btnInscripcionCurso.Name = "btnInscripcionCurso";
             btnInscripcionCurso.Size = new Size(130, 20);
             btnInscripcionCurso.TabIndex = 3;
@@ -97,7 +97,7 @@
             // btnConsultarHorario
             // 
             btnConsultarHorario.Location = new Point(205, 64);
-            btnConsultarHorario.Margin = new Padding(2, 2, 2, 2);
+            btnConsultarHorario.Margin = new Padding(2);
             btnConsultarHorario.Name = "btnConsultarHorario";
             btnConsultarHorario.Size = new Size(130, 20);
             btnConsultarHorario.TabIndex = 4;
@@ -108,7 +108,7 @@
             // btnRealizarPagos
             // 
             btnRealizarPagos.Location = new Point(205, 179);
-            btnRealizarPagos.Margin = new Padding(2, 2, 2, 2);
+            btnRealizarPagos.Margin = new Padding(2);
             btnRealizarPagos.Name = "btnRealizarPagos";
             btnRealizarPagos.Size = new Size(130, 20);
             btnRealizarPagos.TabIndex = 5;
@@ -119,7 +119,7 @@
             // btnSalir
             // 
             btnSalir.Location = new Point(205, 224);
-            btnSalir.Margin = new Padding(2, 2, 2, 2);
+            btnSalir.Margin = new Padding(2);
             btnSalir.Name = "btnSalir";
             btnSalir.Size = new Size(130, 20);
             btnSalir.TabIndex = 6;
@@ -159,7 +159,7 @@
             // 
             // bttnGenerarReporte
             // 
-            bttnGenerarReporte.Location = new Point(293, 107);
+            bttnGenerarReporte.Location = new Point(205, 89);
             bttnGenerarReporte.Name = "bttnGenerarReporte";
             bttnGenerarReporte.Size = new Size(130, 20);
             bttnGenerarReporte.TabIndex = 10;
@@ -184,7 +184,7 @@
             Controls.Add(label1);
             Controls.Add(btnGestionarCursos);
             Controls.Add(btnRegistrarEstudiante);
-            Margin = new Padding(2, 2, 2, 2);
+            Margin = new Padding(2);
             Name = "FormPanelUsuario";
             Text = "PanelUsuario";
             ResumeLayout(false);
