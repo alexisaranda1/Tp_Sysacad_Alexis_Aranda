@@ -117,6 +117,7 @@ namespace BibliotecaCLases.Controlador
                 DateTime dateTime = DateTime.Now;
                 comprobante.AppendLine($"Informe Detallado de Alumnos en Espera en la materia : {espera.Nombre}");
                 comprobante.AppendLine($"Fecha Al Dia Del Informe: {dateTime.ToString("yyyy-MM-dd")}\n");
+
                 foreach (var kvp in estudiantesYFechas)
                 {
                     Estudiante estudiante = kvp.Key;
