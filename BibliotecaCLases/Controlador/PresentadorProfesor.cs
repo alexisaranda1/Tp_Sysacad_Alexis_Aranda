@@ -46,8 +46,7 @@ namespace BibliotecaCLases.Controlador
             if (gestorRegistroProfesores.Validado && gestorRegistroProfesores.VerificarDatosExistentes())
             {
                 string mensaje = gestorRegistroProfesores.RegistrarProfesor();
-                _profesorVista.MostrarMensaje(mensaje);
-                //CargarListaProfesores();
+                _profesorVista.MostrarMensaje(mensaje);               
             }
             else
             {
