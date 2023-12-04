@@ -44,9 +44,10 @@
             // 
             // btnRegistrarEstudiante
             // 
-            btnRegistrarEstudiante.Location = new Point(293, 67);
+            btnRegistrarEstudiante.Location = new Point(205, 40);
+            btnRegistrarEstudiante.Margin = new Padding(2);
             btnRegistrarEstudiante.Name = "btnRegistrarEstudiante";
-            btnRegistrarEstudiante.Size = new Size(186, 33);
+            btnRegistrarEstudiante.Size = new Size(130, 20);
             btnRegistrarEstudiante.TabIndex = 0;
             btnRegistrarEstudiante.Text = "Registrar Estudiante";
             btnRegistrarEstudiante.UseVisualStyleBackColor = true;
@@ -54,9 +55,10 @@
             // 
             // btnGestionarCursos
             // 
-            btnGestionarCursos.Location = new Point(293, 146);
+            btnGestionarCursos.Location = new Point(205, 64);
+            btnGestionarCursos.Margin = new Padding(2);
             btnGestionarCursos.Name = "btnGestionarCursos";
-            btnGestionarCursos.Size = new Size(186, 33);
+            btnGestionarCursos.Size = new Size(130, 20);
             btnGestionarCursos.TabIndex = 1;
             btnGestionarCursos.Text = "Gestionar Curso";
             btnGestionarCursos.UseVisualStyleBackColor = true;
@@ -65,25 +67,28 @@
             // label1
             // 
             label1.Location = new Point(0, 0);
+            label1.Margin = new Padding(2, 0, 2, 0);
             label1.Name = "label1";
-            label1.Size = new Size(100, 23);
+            label1.Size = new Size(70, 14);
             label1.TabIndex = 0;
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.ForeColor = SystemColors.HotTrack;
-            label2.Location = new Point(364, 15);
+            label2.Location = new Point(255, 9);
+            label2.Margin = new Padding(2, 0, 2, 0);
             label2.Name = "label2";
-            label2.Size = new Size(53, 25);
+            label2.Size = new Size(36, 15);
             label2.TabIndex = 2;
             label2.Text = "Panel";
             // 
             // btnInscripcionCurso
             // 
-            btnInscripcionCurso.Location = new Point(293, 67);
+            btnInscripcionCurso.Location = new Point(205, 40);
+            btnInscripcionCurso.Margin = new Padding(2);
             btnInscripcionCurso.Name = "btnInscripcionCurso";
-            btnInscripcionCurso.Size = new Size(186, 33);
+            btnInscripcionCurso.Size = new Size(130, 20);
             btnInscripcionCurso.TabIndex = 3;
             btnInscripcionCurso.Text = "Inscripcion a cursos";
             btnInscripcionCurso.UseVisualStyleBackColor = true;
@@ -91,9 +96,10 @@
             // 
             // btnConsultarHorario
             // 
-            btnConsultarHorario.Location = new Point(293, 107);
+            btnConsultarHorario.Location = new Point(205, 64);
+            btnConsultarHorario.Margin = new Padding(2);
             btnConsultarHorario.Name = "btnConsultarHorario";
-            btnConsultarHorario.Size = new Size(186, 33);
+            btnConsultarHorario.Size = new Size(130, 20);
             btnConsultarHorario.TabIndex = 4;
             btnConsultarHorario.Text = "Consultar Horario";
             btnConsultarHorario.UseVisualStyleBackColor = true;
@@ -101,9 +107,10 @@
             // 
             // btnRealizarPagos
             // 
-            btnRealizarPagos.Location = new Point(293, 298);
+            btnRealizarPagos.Location = new Point(205, 179);
+            btnRealizarPagos.Margin = new Padding(2);
             btnRealizarPagos.Name = "btnRealizarPagos";
-            btnRealizarPagos.Size = new Size(186, 33);
+            btnRealizarPagos.Size = new Size(130, 20);
             btnRealizarPagos.TabIndex = 5;
             btnRealizarPagos.Text = "Realizar Pagos";
             btnRealizarPagos.UseVisualStyleBackColor = true;
@@ -111,9 +118,10 @@
             // 
             // btnSalir
             // 
-            btnSalir.Location = new Point(293, 373);
+            btnSalir.Location = new Point(205, 224);
+            btnSalir.Margin = new Padding(2);
             btnSalir.Name = "btnSalir";
-            btnSalir.Size = new Size(186, 33);
+            btnSalir.Size = new Size(130, 20);
             btnSalir.TabIndex = 6;
             btnSalir.Text = "Salir";
             btnSalir.UseVisualStyleBackColor = true;
@@ -121,10 +129,9 @@
             // 
             // btnGestionarListasEspera
             // 
-            btnGestionarListasEspera.Location = new Point(293, 187);
-            btnGestionarListasEspera.Margin = new Padding(4, 5, 4, 5);
+            btnGestionarListasEspera.Location = new Point(205, 112);
             btnGestionarListasEspera.Name = "btnGestionarListasEspera";
-            btnGestionarListasEspera.Size = new Size(186, 38);
+            btnGestionarListasEspera.Size = new Size(130, 23);
             btnGestionarListasEspera.TabIndex = 7;
             btnGestionarListasEspera.Text = "Gestionar Espera";
             btnGestionarListasEspera.UseVisualStyleBackColor = true;
@@ -132,10 +139,9 @@
             // 
             // btnGestionarRequisitos
             // 
-            btnGestionarRequisitos.Location = new Point(293, 235);
-            btnGestionarRequisitos.Margin = new Padding(4, 5, 4, 5);
+            btnGestionarRequisitos.Location = new Point(205, 141);
             btnGestionarRequisitos.Name = "btnGestionarRequisitos";
-            btnGestionarRequisitos.Size = new Size(186, 38);
+            btnGestionarRequisitos.Size = new Size(130, 23);
             btnGestionarRequisitos.TabIndex = 8;
             btnGestionarRequisitos.Text = "Gestionar Requisitos";
             btnGestionarRequisitos.UseVisualStyleBackColor = true;
@@ -143,10 +149,9 @@
             // 
             // btnGestionarProfesor
             // 
-            btnGestionarProfesor.Location = new Point(293, 298);
-            btnGestionarProfesor.Margin = new Padding(4, 5, 4, 5);
+            btnGestionarProfesor.Location = new Point(205, 179);
             btnGestionarProfesor.Name = "btnGestionarProfesor";
-            btnGestionarProfesor.Size = new Size(186, 38);
+            btnGestionarProfesor.Size = new Size(130, 23);
             btnGestionarProfesor.TabIndex = 9;
             btnGestionarProfesor.Text = "Gestionar Profesores";
             btnGestionarProfesor.UseVisualStyleBackColor = true;
@@ -154,9 +159,9 @@
             // 
             // bttnGenerarReporte
             // 
-            bttnGenerarReporte.Location = new Point(293, 107);
+            bttnGenerarReporte.Location = new Point(205, 89);
             bttnGenerarReporte.Name = "bttnGenerarReporte";
-            bttnGenerarReporte.Size = new Size(186, 34);
+            bttnGenerarReporte.Size = new Size(130, 20);
             bttnGenerarReporte.TabIndex = 10;
             bttnGenerarReporte.Text = "Gnerar Reporte";
             bttnGenerarReporte.UseVisualStyleBackColor = true;
@@ -164,9 +169,9 @@
             // 
             // FormPanelUsuario
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(560, 270);
             Controls.Add(bttnGenerarReporte);
             Controls.Add(btnGestionarProfesor);
             Controls.Add(btnGestionarRequisitos);
@@ -179,6 +184,7 @@
             Controls.Add(label1);
             Controls.Add(btnGestionarCursos);
             Controls.Add(btnRegistrarEstudiante);
+            Margin = new Padding(2);
             Name = "FormPanelUsuario";
             Text = "PanelUsuario";
             ResumeLayout(false);

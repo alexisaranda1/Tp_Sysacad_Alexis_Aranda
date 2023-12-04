@@ -46,7 +46,10 @@ namespace BibliotecaCLases.Controlador
             if (gestorRegistroProfesores.Validado && gestorRegistroProfesores.VerificarDatosExistentes())
             {
                 string mensaje = gestorRegistroProfesores.RegistrarProfesor();
-                _profesorVista.MostrarMensaje(mensaje);               
+                _profesorVista.MostrarMensaje(mensaje);
+                _profesorVista.MostrarMensaje("Profesor registrado exitosamente.");
+                _profesorVista.RecargarPrograma();
+
             }
             else
             {
@@ -65,7 +68,7 @@ namespace BibliotecaCLases.Controlador
 
             if (profesor != null)
             {
-                _profesorVista.ActualizarCursosAsignados(profesor.CursosAsignados);
+                //_profesorVista.ActualizarCursosAsignados(profesor.CursosAsignados);
             }
             else
             {

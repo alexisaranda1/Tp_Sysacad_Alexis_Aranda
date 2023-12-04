@@ -1,11 +1,6 @@
 [
   {
-    "Debecambiar": false,
-    "Direccion": null,
-    "Telefono": null,
-    "CursosInscriptos": [],
-    "EstadoDePago": "pendiente",
-    "ConceptoPagos": null,
+ 
     "Nombre": "Matias",
     "Apellido": "Cantero",
     "Correo": "matias@gmail.com",

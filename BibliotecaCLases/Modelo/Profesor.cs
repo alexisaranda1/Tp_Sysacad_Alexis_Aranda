@@ -13,18 +13,16 @@ namespace BibliotecaCLases.Modelo
         public string Direccion { get; set; }
         public string Activo { get; set; }
         public string Telefono { get; set; }       
-        public List<string> AreasEspecializacion { get; set; }
-        public List<string> CursosAsignados { get; set; }
-        
-        public Profesor(string nombre,string apellido,string dni, string correo, string direccion, string telefono, string clave)
+        public string Especializacion { get; set; }
+        public List<int> CursosAsignados { get; set; }
+        public Profesor(string nombre,string apellido,string dni, string correo, string direccion, string telefono, string clave, string especializacion)
            : base(nombre, apellido, dni, correo, clave, 2)
         {
             Activo = "true";
             Direccion = direccion;
             Telefono = telefono;
-            AreasEspecializacion = new List<string>();
-            
-            CursosAsignados = new List<string>();
+            Especializacion = especializacion;            
+            CursosAsignados = new List<int>();
         }
     }
 

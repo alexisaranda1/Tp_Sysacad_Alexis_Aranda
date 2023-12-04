@@ -63,6 +63,7 @@ namespace BibliotecaCLases.Controlador
                 int nuevoCuposDisponibles = ValidoCuposDisponibles(antiguoCuposMaximo, cupoMaximoNuevo, antiguoCuposDispónibles);
                 if (dBCurso.ModificarCurso(nuevoNombre, nuevaDescripcion, nuevoCupoMaximo, codigoCurso, nuevoCodigoCurso, nuevoCuposDisponibles) && _gestionListasEspera.ActualizarCodigoCurso(codigo,nuevoCodigo))
                 {
+
                     return "Se modificó correctamente";
                 }
 
