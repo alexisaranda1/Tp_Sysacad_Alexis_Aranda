@@ -110,34 +110,41 @@ namespace Formularios
         }
 
         /// <inheritdoc/>
-        public void MostrarListaEspera(List<Estudiante> estudiantes, List<string> listaFechas)
+        public void MostrarListaEsperas(Dictionary<Estudiante, DateTime> dict)
         {
             label.Text = "Lista de Espera";
 
             // Limpiar las columnas y agregarlas
             CrearColumnasListaEspera();
 
-            if (estudiantes != null && estudiantes.Count > 0 && listaFechas != null)
+            if (dict != null && dict.Count > 0)
             {
                 dtgvListaEspera.Visible = true;
                 lblAvisoListavacia.Visible = false;
                 dtgvListaEspera.Rows.Clear();
 
-                if (estudiantes.Count == listaFechas.Count)
+                foreach (var kvp in dict)
                 {
-                    for (int i = 0; i < estudiantes.Count; i++)
-                    {
-                        Estudiante estudiante = estudiantes[i];
-                        string fecha = listaFechas[i];
+                    Estudiante estudiante = kvp.Key;
+                    DateTime fecha = kvp.Value;
 
-                        dtgvListaEspera.Rows.Add(estudiante.Legajo, estudiante.Nombre, estudiante.Apellido, estudiante.Correo, estudiante.Dni, fecha);
-                    }
+                    dtgvListaEspera.Rows.Add(estudiante.Legajo, estudiante.Nombre, estudiante.Apellido, estudiante.Correo, estudiante.Dni, fecha);
                 }
-                else
-                {
-                    lblAvisoListavacia.Visible = true;
-                    lblAvisoListavacia.Text = "Error: No se pudo mostrar la lista correctamente.";
-                }
+
+                //for (int i = 0; i < estudiantes.Count; i++)
+                //{
+                //    Estudiante estudiante = estudiantes[i];
+                //    string fecha = listaFechas[i].FechasSolicitud;
+
+                //    dtgvListaEspera.Rows.Add(estudiante.Legajo, estudiante.Nombre, estudiante.Apellido, estudiante.Correo, estudiante.Dni, fecha);
+                
+                //}
+
+                //else
+                //{
+                //    lblAvisoListavacia.Visible = true;
+                //    lblAvisoListavacia.Text = "Error: No se pudo mostrar la lista correctamente.";
+                //}
             }
             else
             {
@@ -303,7 +310,6 @@ namespace Formularios
 
                 OnAgregarEstudianteListaEspera?.Invoke(_cursoPresentador.CodigoCurso, legajo);
                 OnListaEsperaPedida?.Invoke();
-                MostrarMensaje("Se agregó exitosamente al estudiante a la lista de espera para este curso.");
             }
             else
             {
@@ -323,6 +329,5 @@ namespace Formularios
             FormPanelUsuario formPrincipal = new FormPanelUsuario(_usuario);
             formPrincipal.Show();
         }
-
     }
 }

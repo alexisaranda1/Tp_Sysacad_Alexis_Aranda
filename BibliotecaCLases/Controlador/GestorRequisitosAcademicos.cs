@@ -52,9 +52,16 @@ namespace BibliotecaCLases.Controlador
             {
                 if (Validacion.EsNumeroEnRango(NuevoPromedio,6,10))
                 {                                   
-                        _crudCurso.EstablecerPromedioRequerido(CodigoCurso, NuevoPromedio);
-                        Curso curso1 = ObtenerCursoPorCodigo();
+                    bool valid =  _crudCurso.EstablecerPromedioRequerido(CodigoCurso, NuevoPromedio);
+                    Curso curso1 = ObtenerCursoPorCodigo();
+                    if (valid) 
+                    {
                         _vista.MostrarMensaje("Promedio requerido actualizado con éxito.");                                   
+                    }
+                    else
+                    {
+                        _vista.MostrarMensaje("No se puede guardar en la base de datos");
+                    }
                 }
                 else
                 {
@@ -67,15 +74,22 @@ namespace BibliotecaCLases.Controlador
         public void EditarCreditosRequeridos()
         {
             Curso curso = ObtenerCursoPorCodigo();
-       
+            bool valid = false;
 
             if (curso != null && NuevoCredito != null)
             {
                 if (Validacion.EsNumeroEnRango(NuevoCredito, 0, 100))
                 {                    
-                        _crudCurso.EstablecerCreditosRequeridos(CodigoCurso, NuevoCredito);
+                        valid = _crudCurso.EstablecerCreditosRequeridos(CodigoCurso, NuevoCredito);
                         Curso cursoActualizado = ObtenerCursoPorCodigo();
+                    if (valid) 
+                    {
                         _vista.MostrarMensaje("Créditos requeridos actualizados con éxito.");                   
+                    }
+                    else
+                    {
+                        _vista.MostrarMensaje("No se puede guardar en la base de datos");
+                    }
                 }
                 else
                 {
@@ -87,6 +101,7 @@ namespace BibliotecaCLases.Controlador
 
         public void EditarCorrelativas()
         {
+            bool valid = false;
             Curso curso = ObtenerCursoPorCodigo();
             Curso CursoCorrellativa = _crudCurso.ObtenerCursoPorCodigo(CodigoCursoCorrelativa);
             if (curso != null && CursoCorrellativa != null)
@@ -94,9 +109,16 @@ namespace BibliotecaCLases.Controlador
     
                 if (CodigoCursoCorrelativa !=CodigoCurso)
                 {
-                    _crudCurso.AgregarCorrelativa(CodigoCurso, CursoCorrellativa.Nombre);
+                    valid = _crudCurso.AgregarCorrelativa(CodigoCurso, CursoCorrellativa.Nombre);
                     Curso cursoActualizado = ObtenerCursoPorCodigo();
-                    _vista.MostrarMensaje("Correlativas actualizadas con éxito.");
+                    if (valid)
+                    {
+                        _vista.MostrarMensaje("Correlativas actualizadas con éxito.");
+                    }
+                    else
+                    {
+                        _vista.MostrarMensaje("No se puede guardar en la base de datos");
+                    }
                 }
                 else
                 {
