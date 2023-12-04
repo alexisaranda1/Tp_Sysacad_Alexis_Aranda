@@ -23,7 +23,7 @@ namespace Formularios
             _usuario = usuario;
             _presentador = new(this);
             InitializeComponent();
-            CrearColumnasCursos();
+            CrearColumnasProfesores();
             dtgProfesores.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
         }
@@ -36,6 +36,7 @@ namespace Formularios
             txtDireccion.Visible = false;
             txtCorreo.Visible = false;
             txtTelefono.Visible = false;
+            txtEspecializacion.Visible = false; 
             btnRegistrarProfesor.Visible = false;
 
         }
@@ -46,14 +47,15 @@ namespace Formularios
         public event Action OnEditarProfesorSolicitada;
 
         public Profesor ObtenerDatosNuevoProfesor()
-        {          
+        {
             string nombre = txtNombre.Text;
             string apellido = txtApellido.Text;
             string dni = txtDni.Text;
             string direccion = txtDireccion.Text;
             string correo = txtCorreo.Text;
             string telefono = txtTelefono.Text;
-            return new Profesor(nombre, apellido, dni, correo, direccion, telefono, "");
+            string especializacion = txtEspecializacion.Text;
+            return new Profesor(nombre, apellido, dni, correo, direccion, telefono, "", especializacion);
         }
 
         /// <inheritdoc/>
@@ -62,15 +64,16 @@ namespace Formularios
             MessageBox.Show(mensaje, "Mensaje", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        public void CrearColumnasCursos()
+        public void CrearColumnasProfesores()
         {
             dtgProfesores.Columns.Clear();
             dtgProfesores.Columns.Add("legajo", "legajo");
             dtgProfesores.Columns.Add("Nombre", "Nombre");
             dtgProfesores.Columns.Add("Apellido", "Apellido");
-            dtgProfesores.Columns.Add("Dni", "Dni");
             dtgProfesores.Columns.Add("correo", "correo");
             dtgProfesores.Columns.Add("Telefono", "Telefono");
+            dtgProfesores.Columns.Add("especialización", "especialización");
+            dtgProfesores.Columns.Add("cursos asignados", "cursos asignados");
             foreach (DataGridViewColumn columna in dtgProfesores.Columns)
             {
                 columna.ReadOnly = true;
@@ -85,12 +88,40 @@ namespace Formularios
             {
                 if (profesor.Activo != "false")
                 {
-                    dtgProfesores.Rows.Add(profesor.Legajo, profesor.Nombre, profesor.Apellido, profesor.Dni, profesor.Correo, profesor.Telefono);
+                    dtgProfesores.Rows.Add(profesor.Legajo, profesor.Nombre, profesor.Apellido, profesor.Correo, profesor.Telefono, profesor.Especializacion, profesor.CursosAsignados);
                 }
-               
+
             }
 
         }
+
+        public void CrearColumnasCursos()
+        {
+            dtgProfesores.Columns.Clear();
+            dtgProfesores.Columns.Add("Codigo", "Código");
+            dtgProfesores.Columns.Add("Nombre", "Nombre");
+            dtgProfesores.Columns.Add("Descripcion", "Descripción");
+            dtgProfesores.Columns.Add("CupoMaximo", "Cupo Máximo");
+            dtgProfesores.Columns.Add("CuposDisponibles", "Cupos Disponibles");
+            foreach (DataGridViewColumn columna in dtgProfesores.Columns)
+            {
+                columna.ReadOnly = true;
+            }
+        }
+        public void MostrarCursos(List<Curso> cursos)
+        {
+
+            if (cursos.Count > 0)
+            {          
+                CrearColumnasCursos();
+                foreach (Curso curso in cursos)
+                {
+                    dtgProfesores.Rows.Add(curso.Codigo, curso.Nombre, curso.Descripcion, curso.CupoMaximo, curso.CuposDisponibles);
+                }               
+            }          
+        }
+
+
         public void ActualizarCursosAsignados(List<string> cursosAsignados)
         {
             // Implementa la lógica para mostrar la lista de cursos asignados a un profesor
@@ -104,6 +135,7 @@ namespace Formularios
         }
         private void btnAgregarProfesor_Click(object sender, EventArgs e)
         {
+
             dtgProfesores.Visible = false;
             txtNombre.Visible = true;
             txtApellido.Visible = true;
@@ -112,6 +144,7 @@ namespace Formularios
             txtCorreo.Visible = true;
             txtTelefono.Visible = true;
             btnRegistrarProfesor.Visible = true;
+            txtEspecializacion.Visible = true;
 
             btnEliminarProfesor.Visible = false;
             btnEditarProfesor.Visible = false;
@@ -123,20 +156,21 @@ namespace Formularios
             _presentador.AgregarProfesor();
         }
 
-      
+
 
         private void btnEditarProfesor_Click(object sender, EventArgs e)
         {
-
-            if (_presentador.LegajoObtenido != null)
+            if (_presentador.LegajoObtenido != 0)
             {
-                FrmEditarProfesor frmEditarProfesor = new(_usuario,_presentador.LegajoObtenido);
+                FrmEditarProfesor frmEditarProfesor = new(_usuario, _presentador.LegajoObtenido);
+                frmEditarProfesor.Show();
             }
             else
             {
                 MostrarMensaje("Selecciona un profesor");
             }
-          
+
+
         }
 
         private void btnEliminarProfesor_Click(object sender, EventArgs e)
@@ -146,6 +180,10 @@ namespace Formularios
 
         private void btnAgregarCurso_Click(object sender, EventArgs e)
         {
+            CrudCurso crudCurso = new CrudCurso();
+            List<Curso> cursos =crudCurso.ObtenerListaCursos();
+            MostrarCursos(cursos);
+
 
         }
         public void RecargarPrograma()

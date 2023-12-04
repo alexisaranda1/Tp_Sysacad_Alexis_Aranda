@@ -77,7 +77,7 @@ namespace Formularios
                 btnGestionarListasEspera.Visible = true;
                 btnGestionarRequisitos.Visible = true;
                 btnGestionarProfesor.Visible = true;
-                bttnGenerarReporte.Visible=true;
+                bttnGenerarReporte.Visible = true;
             }
         }
 

@@ -36,6 +36,7 @@
             textBoxDireccion = new TextBox();
             textBoxCorreo = new TextBox();
             textBoxTelefono = new TextBox();
+            txtEspecializacion = new TextBox();
             SuspendLayout();
             // 
             // btnSalir
@@ -100,11 +101,20 @@
             textBoxTelefono.Size = new Size(100, 23);
             textBoxTelefono.TabIndex = 7;
             // 
+            // txtEspecializacion
+            // 
+            txtEspecializacion.Location = new Point(617, 193);
+            txtEspecializacion.Name = "txtEspecializacion";
+            txtEspecializacion.PlaceholderText = "Especializacion";
+            txtEspecializacion.Size = new Size(100, 23);
+            txtEspecializacion.TabIndex = 8;
+            // 
             // FrmEditarProfesor
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(txtEspecializacion);
             Controls.Add(textBoxTelefono);
             Controls.Add(textBoxCorreo);
             Controls.Add(textBoxDireccion);
@@ -129,5 +139,6 @@
         private TextBox textBoxDireccion;
         private TextBox textBoxCorreo;
         private TextBox textBoxTelefono;
+        private TextBox txtEspecializacion;
     }
 }

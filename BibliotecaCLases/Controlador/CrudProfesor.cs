@@ -28,14 +28,14 @@ namespace BibliotecaCLases.Controlador
             _crudCurso = new CrudCurso();
         }
 
-        public string RegistrarProfesor(string nombre, string apellido, string dni, string correo, string direccion, string telefono)
+        public string RegistrarProfesor(string nombre, string apellido, string dni, string correo, string direccion, string telefono,string especializacion)
         {
             int legajo = ObtieneLegajo();
 
             string claveProvisional = GenerarContrasenaAleatoria(7, 12);
             string mensaje = Email.SendMessageSmtp(correo, claveProvisional, nombre, apellido);
             String contrasena = PasswordHashing.GetHash(claveProvisional.ToString());
-            Profesor nuevoProfesor = new Profesor(nombre, apellido, dni, correo, direccion, telefono, contrasena);
+            Profesor nuevoProfesor = new Profesor(nombre, apellido, dni, correo, direccion, telefono, contrasena, especializacion);
             nuevoProfesor.Legajo = legajo;
 
             _listaProfesoresRegistrados.Add(nuevoProfesor);
@@ -84,50 +84,88 @@ namespace BibliotecaCLases.Controlador
             {
                 if (_listaProfesoresRegistrados.Any(prof => prof.Correo == correo))
                 {
-                    return 1; 
+                    return 1;
                 }
                 if (_listaProfesoresRegistrados.Any(prof => prof.Dni == dni))
                 {
-                    return 2; 
+                    return 2;
                 }
             }
 
             return 0; // Código para indicar que no hay problemas con los datos
         }
 
+        public string ActualizarProfesor(int legajo, string nombre, string apellido, string dni, string correo, string direccion, string telefono,string nuevaEspecializacion)
+        {
+            Profesor profesorAActualizar = ObtenerProfesorPorLegajo(legajo);
 
-        //public bool AgregarCursoAProfesor(int legajoProfesor, string codigoCurso, out string mensajeError)
-        //{
-        //    Profesor profesor = ObtenerProfesorPorLegajo(legajoProfesor);
+            if (profesorAActualizar != null)
+            {
+                string mensejeError = "";
 
-        //    if (profesor != null)
-        //    {
-        //        if (profesor.CursosAsignados.Contains(codigoCurso))
-        //        {
-        //            mensajeError = "El profesor ya tiene asignado este curso.";
-        //            return false;
-        //        }
+                if (ValidarDatos(nombre, apellido, dni, correo, direccion, telefono, out mensejeError))
+                {
+                    profesorAActualizar.Nombre = nombre;
+                    profesorAActualizar.Apellido = apellido;
+                    profesorAActualizar.Dni = dni;
+                    profesorAActualizar.Correo = correo;
+                    profesorAActualizar.Direccion = direccion;
+                    profesorAActualizar.Telefono = telefono;
+                    profesorAActualizar.Especializacion = nuevaEspecializacion;
+                    string path = PathManager.ObtenerRuta("Data", "DataUsuariosProfesores.json");
+                    _serializador.ActualizarJson(_listaProfesoresRegistrados, path);
 
-        //        string mensaje = _crudCurso.AsignarProfesorACurso(codigoCurso);
+                    return $"Los datos del profesor {profesorAActualizar.Nombre} {profesorAActualizar.Apellido} (Legajo: {profesorAActualizar.Legajo}) han sido actualizados exitosamente.";
+                }
+                else
+                {
+                    return $"Los datos no son válidos. Error: {mensejeError}. Por favor, verifique la información proporcionada.";
+                }
+            }
 
-        //        if (mensaje == "Asignación exitosa.")
-        //        {
-        //            profesor.CursosAsignados.Add(codigoCurso);
-        //            string path = PathManager.ObtenerRuta("Data", "DataUsuariosProfesores.json");
-        //            _serializador.ActualizarJson(_listaProfesoresRegistrados, path);
-        //            mensajeError = null;
-        //            return true;
-        //        }
-        //        else
-        //        {
-        //            mensajeError = mensaje;
-        //            return false;
-        //        }
-        //    }
+            return "No se pudo encontrar el profesor.";
+        }
 
-        //    mensajeError = "El profesor no se encontró.";
-        //    return false;
-        //}
+        private bool ValidarDatos(string nombre, string apellido, string dni, string correo, string direccion, string telefono, out string mensejeError)
+        {
+            ValidadorDatos validador = new ValidadorDatos(nombre, apellido, dni, correo, direccion, telefono);
+            return validador.Validar(out mensejeError);
+        }
+
+
+
+        public bool AgregarCursoAProfesor(int legajoProfesor, Curso codigoCurso, out string mensajeError)
+        {
+            Profesor profesor = ObtenerProfesorPorLegajo(legajoProfesor);
+
+            if (profesor != null)
+            {
+                //if (profesor.CursosAsignados.Contains(codigoCurso))
+                //{
+                //    mensajeError = "El profesor ya tiene asignado este curso.";
+                //    return false;
+                //}
+
+                string mensaje = "";//_crudCurso.AsignarProfesorACurso(codigoCurso);
+
+                if (mensaje == "Asignación exitosa.")
+                {
+                    //profesor.CursosAsignados.Add(codigoCurso);
+                    string path = PathManager.ObtenerRuta("Data", "DataUsuariosProfesores.json");
+                    _serializador.ActualizarJson(_listaProfesoresRegistrados, path);
+                    mensajeError = null;
+                    return true;
+                }
+                else
+                {
+                    mensajeError = mensaje;
+                    return false;
+                }
+            }
+
+            mensajeError = "El profesor no se encontró.";
+            return false;
+        }
 
 
 

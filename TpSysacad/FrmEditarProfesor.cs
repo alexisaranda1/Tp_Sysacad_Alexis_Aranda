@@ -1,4 +1,5 @@
-﻿using BibliotecaCLases.Modelo;
+﻿using BibliotecaCLases.Controlador;
+using BibliotecaCLases.Modelo;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,12 +17,16 @@ namespace Formularios
         Usuario _usuario;
         Profesor _profesor;
         int _legajo;
+        CrudProfesor _crudProfesor;
         public FrmEditarProfesor(Usuario usuario, int legajo)
         {
             _usuario = usuario;
             _legajo = legajo;
+            _crudProfesor = new();
+            _profesor = _crudProfesor.ObtenerProfesorPorLegajo(_legajo);
             InitializeComponent();
-           
+            CargarDetallesProfesor();
+
         }
         private void CargarDetallesProfesor()
         {
@@ -34,6 +39,7 @@ namespace Formularios
                 textBoxDireccion.Text = _profesor.Direccion;
                 textBoxCorreo.Text = _profesor.Correo;
                 textBoxTelefono.Text = _profesor.Telefono;
+                txtEspecializacion.Text = _profesor.Especializacion;
             }
             else
             {
@@ -44,8 +50,26 @@ namespace Formularios
 
         private void btnGuardarProfesor_Click(object sender, EventArgs e)
         {
+            string nuevoNombre = textBoxNombre.Text;
+            string nuevoApellido = textBoxApellido.Text;
+            string nuevoDni = textBoxDni.Text;
+            string nuevoCorreo = textBoxCorreo.Text;
+            string nuevaDireccion = textBoxDireccion.Text;
+            string nuevoTelefono = textBoxTelefono.Text;
+            string nuevaEspecializacion = txtEspecializacion.Text;
+
+            string mensajeErrorEspecializacion;
+            if (!Validacion.EsNombreValido(nuevaEspecializacion))
+            {
+                MessageBox.Show("La especialización no es válida. Por favor, verifique la información proporcionada.");
+                return;
+            }
+
+            string mensaje = _crudProfesor.ActualizarProfesor(_legajo, nuevoNombre, nuevoApellido, nuevoDni, nuevoCorreo, nuevaDireccion, nuevoTelefono, nuevaEspecializacion);
+            MessageBox.Show(mensaje);
             RecargarPrograma();
         }
+
 
         private void btnSalir_Click(object sender, EventArgs e)
         {
@@ -55,9 +79,9 @@ namespace Formularios
         }
         public void RecargarPrograma()
         {
-            FrmEditarProfesor frmEditarProfesor = new FrmEditarProfesor(_usuario, _legajo);
-            frmEditarProfesor.Show();
             this.Close();
+            FrmGestionarProfesores formPrincipal = new FrmGestionarProfesores(_usuario);
+            formPrincipal.Show();
         }
 
 

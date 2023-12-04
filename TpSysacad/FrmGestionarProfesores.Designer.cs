@@ -41,6 +41,7 @@
             txtTelefono = new TextBox();
             btnRegistrarProfesor = new Button();
             dtgProfesores = new DataGridView();
+            txtEspecializacion = new TextBox();
             ((System.ComponentModel.ISupportInitialize)dtgProfesores).BeginInit();
             SuspendLayout();
             // 
@@ -155,19 +156,28 @@
             // dtgProfesores
             // 
             dtgProfesores.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dtgProfesores.Location = new Point(61, 129);
+            dtgProfesores.Location = new Point(33, 129);
             dtgProfesores.Name = "dtgProfesores";
             dtgProfesores.RowTemplate.Height = 25;
             dtgProfesores.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            dtgProfesores.Size = new Size(592, 150);
+            dtgProfesores.Size = new Size(724, 150);
             dtgProfesores.TabIndex = 13;
             dtgProfesores.CellClick += dtgProfesores_CellClick;
+            // 
+            // txtEspecializacion
+            // 
+            txtEspecializacion.Location = new Point(653, 58);
+            txtEspecializacion.Name = "txtEspecializacion";
+            txtEspecializacion.PlaceholderText = "Especializacion";
+            txtEspecializacion.Size = new Size(100, 23);
+            txtEspecializacion.TabIndex = 14;
             // 
             // FrmGestionarProfesores
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(txtEspecializacion);
             Controls.Add(dtgProfesores);
             Controls.Add(btnRegistrarProfesor);
             Controls.Add(txtTelefono);
@@ -204,5 +214,6 @@
         private TextBox txtTelefono;
         private Button btnRegistrarProfesor;
         private DataGridView dtgProfesores;
+        private TextBox txtEspecializacion;
     }
 }

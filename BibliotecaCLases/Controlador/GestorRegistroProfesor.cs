@@ -12,7 +12,7 @@ public class GestorRegistroProfesores
     public GestorRegistroProfesores(Profesor profesor)
     {
         _profesor = profesor;
-        _validadorDatos = new ValidadorDatos(_profesor.Nombre, _profesor.Apellido, _profesor.Dni, _profesor.Correo, _profesor.Direccion, _profesor.Telefono);
+        _validadorDatos = new ValidadorDatos(_profesor.Nombre, _profesor.Apellido, _profesor.Dni, _profesor.Correo, _profesor.Direccion, _profesor.Telefono, _profesor.Especializacion);
 
         _validado = _validadorDatos.Validar(out string mensajeError);
 
@@ -46,7 +46,7 @@ public class GestorRegistroProfesores
 
     public string RegistrarProfesor()
     {
-        return crudProfesor.RegistrarProfesor(_profesor.Nombre, _profesor.Apellido, _profesor.Dni, _profesor.Correo, _profesor.Direccion, _profesor.Telefono);
+        return crudProfesor.RegistrarProfesor(_profesor.Nombre, _profesor.Apellido, _profesor.Dni, _profesor.Correo, _profesor.Direccion, _profesor.Telefono, _profesor.Especializacion);
     }
 
     public bool Validado

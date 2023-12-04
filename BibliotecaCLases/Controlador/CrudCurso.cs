@@ -37,6 +37,7 @@ namespace BibliotecaCLases.Controlador
         /// <param name="aula">Aula del curso.</param>
         public void AgregarCurso(string nombre, string codigo, string descripcion, string cupoMaximo, string dia, string horario, string aula)
         {
+            _gestionListasEspera.AgregarCurso(codigo);
             Curso nuevoCurso = new Curso(nombre, codigo, descripcion, cupoMaximo, dia, horario, aula, "No tiene", "6", "0");
 
             dBCurso.Guardar(nuevoCurso);
@@ -62,6 +63,7 @@ namespace BibliotecaCLases.Controlador
                 int nuevoCuposDisponibles = ValidoCuposDisponibles(antiguoCuposMaximo, cupoMaximoNuevo, antiguoCuposDispónibles);
                 if (dBCurso.ModificarCurso(nuevoNombre, nuevaDescripcion, nuevoCupoMaximo, codigoCurso, nuevoCodigoCurso, nuevoCuposDisponibles))
                 {
+
                     return "Se modificó correctamente";
                 }
 
