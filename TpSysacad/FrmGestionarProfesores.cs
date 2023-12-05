@@ -18,12 +18,14 @@ namespace Formularios
     {
         Usuario _usuario;
         PresentadorProfesor _presentador;
+        bool esCruso;
         public FrmGestionarProfesores(Usuario usuario)
         {
             _usuario = usuario;
             _presentador = new(this);
             InitializeComponent();
             CrearColumnasProfesores();
+            esCruso = false;
             dtgProfesores.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
         }
@@ -89,7 +91,7 @@ namespace Formularios
             {
                 if (profesor.Activo != "false")
                 {
-                    dtgProfesores.Rows.Add(profesor.Legajo, profesor.Nombre, profesor.Apellido, profesor.Correo, profesor.Telefono, profesor.Especializacion, profesor.CursosAsignados);
+                    dtgProfesores.Rows.Add(profesor.Legajo, profesor.Nombre, profesor.Apellido, profesor.Correo, profesor.Telefono, profesor.Especializacion, profesor.ObtenerCursosAsignadosComoString());
                 }
 
             }
@@ -185,9 +187,16 @@ namespace Formularios
             btnAgregarProfesor.Visible = false;
             btnAgregarCurso.Visible = false;
             btnGuardar.Visible = true;
+            esCruso = true;
             CrudCurso crudCurso = new CrudCurso();
             List<Curso> cursos = crudCurso.ObtenerListaCursos();
             MostrarCursos(cursos);
+           
+           
+           
+            
+
+
         }
         public void RecargarPrograma()
         {
@@ -216,14 +225,24 @@ namespace Formularios
                     if (primeraCelda != null && primeraCelda.Value != null)
                     {
                         string valorPrimeraColumna = primeraCelda.Value.ToString();
-                        _presentador.LegajoObtenido = int.Parse(valorPrimeraColumna);
+                        if (esCruso)
+                        {
+                            _presentador.codigoCursoObtenido = int.Parse(valorPrimeraColumna);
+                        }
+                        else
+                        {
+                            _presentador.LegajoObtenido = int.Parse(valorPrimeraColumna);
+                        }
+
+                      
                     }
                 }
             }
         }
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-
+            _presentador.AgregarCursoAProfesor();
+            RecargarPrograma();
         }
     }
 }

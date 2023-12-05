@@ -134,38 +134,36 @@ namespace BibliotecaCLases.Controlador
 
 
 
-        public bool AgregarCursoAProfesor(int legajoProfesor, Curso codigoCurso, out string mensajeError)
+        public bool AgregarCursoAProfesor(int legajoProfesor, int codigoCurso, out string mensajeError)
         {
             Profesor profesor = ObtenerProfesorPorLegajo(legajoProfesor);
 
             if (profesor != null)
             {
-                //if (profesor.CursosAsignados.Contains(codigoCurso))
-                //{
-                //    mensajeError = "El profesor ya tiene asignado este curso.";
-                //    return false;
-                //}
 
-                string mensaje = "";//_crudCurso.AsignarProfesorACurso(codigoCurso);
-
-                if (mensaje == "Asignación exitosa.")
+                if (!profesor.CursosAsignados.Contains(codigoCurso))
                 {
-                    //profesor.CursosAsignados.Add(codigoCurso);
+                    profesor.AgregarCurso(codigoCurso);
                     string path = PathManager.ObtenerRuta("Data", "DataUsuariosProfesores.json");
                     _serializador.ActualizarJson(_listaProfesoresRegistrados, path);
-                    mensajeError = null;
+
+                    mensajeError = "Se agrego Curso con exito!";
                     return true;
                 }
                 else
                 {
-                    mensajeError = mensaje;
+                    mensajeError = "El curso esta asignado para ese profesor";
                     return false;
                 }
+
+
+
             }
 
             mensajeError = "El profesor no se encontró.";
             return false;
         }
+
 
 
 
