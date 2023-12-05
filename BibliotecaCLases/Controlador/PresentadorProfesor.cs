@@ -34,6 +34,10 @@ namespace BibliotecaCLases.Controlador
                 List<Profesor> profesores = _crudProfesor.ObtenerProfesoresRegistrados();
             return profesores;
         }
+        public Dictionary<int, Tuple<string, string, string, List<string>>> CargarAsignaturasDeProfesor()
+        {
+            return _crudProfesor.ObtenerAsignaturas();
+        }
         public void AgregarCursoAProfesor()
         {
             string mensajeError = "Algo Salio mal!";

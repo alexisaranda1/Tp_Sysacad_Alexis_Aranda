@@ -48,9 +48,10 @@
             // 
             // btnSalir
             // 
-            btnSalir.Location = new Point(12, 378);
+            btnSalir.Location = new Point(17, 630);
+            btnSalir.Margin = new Padding(4, 5, 4, 5);
             btnSalir.Name = "btnSalir";
-            btnSalir.Size = new Size(75, 23);
+            btnSalir.Size = new Size(107, 38);
             btnSalir.TabIndex = 0;
             btnSalir.Text = "Salir";
             btnSalir.UseVisualStyleBackColor = true;
@@ -58,9 +59,10 @@
             // 
             // btnAgregarProfesor
             // 
-            btnAgregarProfesor.Location = new Point(61, 303);
+            btnAgregarProfesor.Location = new Point(87, 505);
+            btnAgregarProfesor.Margin = new Padding(4, 5, 4, 5);
             btnAgregarProfesor.Name = "btnAgregarProfesor";
-            btnAgregarProfesor.Size = new Size(115, 23);
+            btnAgregarProfesor.Size = new Size(164, 38);
             btnAgregarProfesor.TabIndex = 2;
             btnAgregarProfesor.Text = "Agregar Profesor";
             btnAgregarProfesor.UseVisualStyleBackColor = true;
@@ -68,9 +70,10 @@
             // 
             // btnEditarProfesor
             // 
-            btnEditarProfesor.Location = new Point(205, 303);
+            btnEditarProfesor.Location = new Point(293, 505);
+            btnEditarProfesor.Margin = new Padding(4, 5, 4, 5);
             btnEditarProfesor.Name = "btnEditarProfesor";
-            btnEditarProfesor.Size = new Size(111, 23);
+            btnEditarProfesor.Size = new Size(159, 38);
             btnEditarProfesor.TabIndex = 3;
             btnEditarProfesor.Text = "Editar Profesor";
             btnEditarProfesor.UseVisualStyleBackColor = true;
@@ -78,9 +81,10 @@
             // 
             // btnEliminarProfesor
             // 
-            btnEliminarProfesor.Location = new Point(370, 303);
+            btnEliminarProfesor.Location = new Point(529, 505);
+            btnEliminarProfesor.Margin = new Padding(4, 5, 4, 5);
             btnEliminarProfesor.Name = "btnEliminarProfesor";
-            btnEliminarProfesor.Size = new Size(117, 23);
+            btnEliminarProfesor.Size = new Size(167, 38);
             btnEliminarProfesor.TabIndex = 4;
             btnEliminarProfesor.Text = "Eliminar Profesor";
             btnEliminarProfesor.UseVisualStyleBackColor = true;
@@ -88,9 +92,10 @@
             // 
             // btnAgregarCurso
             // 
-            btnAgregarCurso.Location = new Point(584, 303);
+            btnAgregarCurso.Location = new Point(834, 505);
+            btnAgregarCurso.Margin = new Padding(4, 5, 4, 5);
             btnAgregarCurso.Name = "btnAgregarCurso";
-            btnAgregarCurso.Size = new Size(173, 23);
+            btnAgregarCurso.Size = new Size(247, 38);
             btnAgregarCurso.TabIndex = 5;
             btnAgregarCurso.Text = "Agregar Curso en Profesor";
             btnAgregarCurso.UseVisualStyleBackColor = true;
@@ -98,57 +103,64 @@
             // 
             // txtNombre
             // 
-            txtNombre.Location = new Point(157, 30);
+            txtNombre.Location = new Point(224, 50);
+            txtNombre.Margin = new Padding(4, 5, 4, 5);
             txtNombre.Name = "txtNombre";
             txtNombre.PlaceholderText = "Nombre";
-            txtNombre.Size = new Size(100, 23);
+            txtNombre.Size = new Size(141, 31);
             txtNombre.TabIndex = 6;
             // 
             // txtApellido
             // 
-            txtApellido.Location = new Point(157, 86);
+            txtApellido.Location = new Point(224, 143);
+            txtApellido.Margin = new Padding(4, 5, 4, 5);
             txtApellido.Name = "txtApellido";
             txtApellido.PlaceholderText = "Apellido";
-            txtApellido.Size = new Size(100, 23);
+            txtApellido.Size = new Size(141, 31);
             txtApellido.TabIndex = 7;
             // 
             // txtDni
             // 
-            txtDni.Location = new Point(303, 30);
+            txtDni.Location = new Point(433, 50);
+            txtDni.Margin = new Padding(4, 5, 4, 5);
             txtDni.Name = "txtDni";
             txtDni.PlaceholderText = "DNI";
-            txtDni.Size = new Size(100, 23);
+            txtDni.Size = new Size(141, 31);
             txtDni.TabIndex = 8;
             // 
             // txtDireccion
             // 
-            txtDireccion.Location = new Point(303, 86);
+            txtDireccion.Location = new Point(433, 143);
+            txtDireccion.Margin = new Padding(4, 5, 4, 5);
             txtDireccion.Name = "txtDireccion";
             txtDireccion.PlaceholderText = "Direccion";
-            txtDireccion.Size = new Size(100, 23);
+            txtDireccion.Size = new Size(141, 31);
             txtDireccion.TabIndex = 9;
             // 
             // txtCorreo
             // 
-            txtCorreo.Location = new Point(479, 30);
+            txtCorreo.Location = new Point(684, 50);
+            txtCorreo.Margin = new Padding(4, 5, 4, 5);
             txtCorreo.Name = "txtCorreo";
             txtCorreo.PlaceholderText = "Correo";
-            txtCorreo.Size = new Size(100, 23);
+            txtCorreo.Size = new Size(141, 31);
             txtCorreo.TabIndex = 10;
             // 
             // txtTelefono
             // 
-            txtTelefono.Location = new Point(479, 86);
+            txtTelefono.Location = new Point(684, 143);
+            txtTelefono.Margin = new Padding(4, 5, 4, 5);
             txtTelefono.Name = "txtTelefono";
             txtTelefono.PlaceholderText = "Telefono";
-            txtTelefono.Size = new Size(100, 23);
+            txtTelefono.Size = new Size(141, 31);
             txtTelefono.TabIndex = 11;
             // 
             // btnRegistrarProfesor
             // 
-            btnRegistrarProfesor.Location = new Point(271, 378);
+            btnRegistrarProfesor.Location = new Point(387, 630);
+            btnRegistrarProfesor.Margin = new Padding(4, 5, 4, 5);
             btnRegistrarProfesor.Name = "btnRegistrarProfesor";
-            btnRegistrarProfesor.Size = new Size(153, 23);
+            btnRegistrarProfesor.Size = new Size(219, 38);
             btnRegistrarProfesor.TabIndex = 12;
             btnRegistrarProfesor.Text = "Registrar Profesor";
             btnRegistrarProfesor.UseVisualStyleBackColor = true;
@@ -158,27 +170,31 @@
             // 
             dtgProfesores.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dtgProfesores.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dtgProfesores.Location = new Point(33, 129);
+            dtgProfesores.Location = new Point(13, 215);
+            dtgProfesores.Margin = new Padding(4, 5, 4, 5);
             dtgProfesores.Name = "dtgProfesores";
+            dtgProfesores.RowHeadersWidth = 62;
             dtgProfesores.RowTemplate.Height = 25;
             dtgProfesores.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            dtgProfesores.Size = new Size(678, 150);
+            dtgProfesores.Size = new Size(1107, 250);
             dtgProfesores.TabIndex = 13;
             dtgProfesores.CellClick += dtgProfesores_CellClick;
             // 
             // txtEspecializacion
             // 
-            txtEspecializacion.Location = new Point(653, 58);
+            txtEspecializacion.Location = new Point(933, 97);
+            txtEspecializacion.Margin = new Padding(4, 5, 4, 5);
             txtEspecializacion.Name = "txtEspecializacion";
             txtEspecializacion.PlaceholderText = "Especializacion";
-            txtEspecializacion.Size = new Size(100, 23);
+            txtEspecializacion.Size = new Size(141, 31);
             txtEspecializacion.TabIndex = 14;
             // 
             // btnGuardar
             // 
-            btnGuardar.Location = new Point(303, 332);
+            btnGuardar.Location = new Point(433, 553);
+            btnGuardar.Margin = new Padding(4, 5, 4, 5);
             btnGuardar.Name = "btnGuardar";
-            btnGuardar.Size = new Size(75, 23);
+            btnGuardar.Size = new Size(107, 38);
             btnGuardar.TabIndex = 15;
             btnGuardar.Text = "Guardar";
             btnGuardar.UseVisualStyleBackColor = true;
@@ -186,9 +202,9 @@
             // 
             // FrmGestionarProfesores
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1143, 750);
             Controls.Add(btnGuardar);
             Controls.Add(txtEspecializacion);
             Controls.Add(dtgProfesores);
@@ -204,6 +220,7 @@
             Controls.Add(btnEditarProfesor);
             Controls.Add(btnAgregarProfesor);
             Controls.Add(btnSalir);
+            Margin = new Padding(4, 5, 4, 5);
             Name = "FrmGestionarProfesores";
             Text = "FrmGestionarProfesores";
             Load += FrmGestionarProfesores_Load;
