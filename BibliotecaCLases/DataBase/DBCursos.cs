@@ -73,7 +73,6 @@ namespace BibliotecaCLases.DataBase
             }
             catch (Exception ex)
             {
-                // Manejo de excepciones
             }
             finally
             {

@@ -52,6 +52,39 @@ namespace BibliotecaCLases.Modelo
             }
             return "Email entregado";
         }
+        public static bool EnviarNotificacion(Estudiante estudiante,string reporte)
+        {
+            string host = ConfigurationManager.AppSettings["mailgunHost"]!;
+            string password = ConfigurationManager.AppSettings["mailgunPassword"]!;
+            MimeMessage mail = new MimeMessage();
+            mail.From.Add(new MailboxAddress("Sistema Sysacad", $"foo@{host}"));
+            mail.To.Add(new MailboxAddress($"{estudiante.Apellido},{estudiante.Nombre}", estudiante.Correo));
+            mail.Subject = "Notificacion Importante";
+            mail.Body = new TextPart("plain")
+            {
+                Text = @$"{reporte}",
+            };
+            try
+            {
+                using (var client = new MailKit.Net.Smtp.SmtpClient())
+                {
+                    client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+
+                    client.Connect("smtp.mailgun.org", 587, false);
+                    client.AuthenticationMechanisms.Remove("XOAUTH2");
+                    client.Authenticate($"postmaster@{host}", password);
+
+                    client.Send(mail);
+                    client.Disconnect(true);
+                }
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+            return true;
+        }
     }
 }
 
