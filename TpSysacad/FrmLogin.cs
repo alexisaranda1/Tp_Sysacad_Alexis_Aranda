@@ -59,8 +59,16 @@ namespace Formularios
             string password = ConfigurationManager.AppSettings["estudiantePassword"]!;
             textUsuario.Text = usuario;
             textContraseña.Text = password;
-            
 
+
+        }
+
+        private void btnProfesor_Click(object sender, EventArgs e)
+        {
+            string usuario = ConfigurationManager.AppSettings["profesorUsuario"]!;
+            string password = ConfigurationManager.AppSettings["profesorPassword"]!;
+            textUsuario.Text = usuario;
+            textContraseña.Text = password;
         }
     }
 }

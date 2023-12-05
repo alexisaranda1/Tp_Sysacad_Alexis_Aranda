@@ -40,6 +40,7 @@
             btnGestionarRequisitos = new Button();
             btnGestionarProfesor = new Button();
             bttnGenerarReporte = new Button();
+            btnVerCursos = new Button();
             SuspendLayout();
             // 
             // btnRegistrarEstudiante
@@ -167,11 +168,22 @@
             bttnGenerarReporte.UseVisualStyleBackColor = true;
             bttnGenerarReporte.Click += bttnGenerarReporte_Click;
             // 
+            // btnVerCursos
+            // 
+            btnVerCursos.Location = new Point(357, 198);
+            btnVerCursos.Name = "btnVerCursos";
+            btnVerCursos.Size = new Size(75, 23);
+            btnVerCursos.TabIndex = 11;
+            btnVerCursos.Text = "Ver Cursos";
+            btnVerCursos.UseVisualStyleBackColor = true;
+            btnVerCursos.Click += btnVerCursos_Click;
+            // 
             // FormPanelUsuario
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(560, 270);
+            Controls.Add(btnVerCursos);
             Controls.Add(bttnGenerarReporte);
             Controls.Add(btnGestionarProfesor);
             Controls.Add(btnGestionarRequisitos);
@@ -205,5 +217,6 @@
         private Button btnGestionarRequisitos;
         private Button btnGestionarProfesor;
         private Button bttnGenerarReporte;
+        private Button btnVerCursos;
     }
 }

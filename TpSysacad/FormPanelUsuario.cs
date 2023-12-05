@@ -143,5 +143,12 @@ namespace Formularios
             formGenerarReportes.Show();
             this.Hide();
         }
+
+        private void btnVerCursos_Click(object sender, EventArgs e)
+        {
+            FrmCursosAcargo frmAgregarCurso = new(_usuario);
+            frmAgregarCurso.Show();
+            this.Hide();
+        }
     }
 }

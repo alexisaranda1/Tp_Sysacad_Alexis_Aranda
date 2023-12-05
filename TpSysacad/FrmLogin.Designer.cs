@@ -35,6 +35,7 @@
             textContraseña = new TextBox();
             BtnEstudiante = new Button();
             BtnAdministrador = new Button();
+            btnProfesor = new Button();
             SuspendLayout();
             // 
             // label1
@@ -107,11 +108,22 @@
             BtnAdministrador.UseVisualStyleBackColor = true;
             BtnAdministrador.Click += BtnAdministrador_Click;
             // 
+            // btnProfesor
+            // 
+            btnProfesor.Location = new Point(43, 401);
+            btnProfesor.Name = "btnProfesor";
+            btnProfesor.Size = new Size(104, 23);
+            btnProfesor.TabIndex = 7;
+            btnProfesor.Text = "Profesor";
+            btnProfesor.UseVisualStyleBackColor = true;
+            btnProfesor.Click += btnProfesor_Click;
+            // 
             // FrmLogin
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnProfesor);
             Controls.Add(BtnAdministrador);
             Controls.Add(BtnEstudiante);
             Controls.Add(textContraseña);
@@ -135,5 +147,6 @@
         private TextBox textContraseña;
         private Button BtnEstudiante;
         private Button BtnAdministrador;
+        private Button btnProfesor;
     }
 }

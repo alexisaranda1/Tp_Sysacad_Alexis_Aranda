@@ -14,6 +14,7 @@ namespace BibliotecaCLases.Controlador
         private DBGeneric dBGeneric = new DBGeneric();
         private DBEstudiantes dBEstudiante = new DBEstudiantes();
         private DBAdministrador dBAdministrador = new DBAdministrador();
+        private DBProfesor DBProfesor = new DBProfesor();
         Serializador serializador = new Serializador();
         private Usuario? _usuario;
         private readonly List<Usuario> listaUsuarios;
@@ -47,12 +48,20 @@ namespace BibliotecaCLases.Controlador
                 _usuario = dBEstudiante.TraeEstudiantePorDNI(dni);
                 return true;
             }
+            else if (dBGeneric.AutenticarUsuario(dni, "Administrador"))
+            {
+                
+                _usuario = dBAdministrador.VerificaDni(dni);
+                return true;
+                
+            }
             else
             {
-                if (dBGeneric.AutenticarUsuario(dni, "Administrador"))
+                if (dBGeneric.AutenticarUsuario(dni, "Profesor"))
                 {
-                    _usuario = dBAdministrador.VerificaDni(dni);
+                    _usuario = DBProfesor.VerificaDni(dni);
                     return true;
+
                 }
             }
             return false;
