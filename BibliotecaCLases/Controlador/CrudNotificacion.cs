@@ -17,31 +17,44 @@ namespace BibliotecaCLases.Controlador
 
         }
 
-        public void EnviaNotificacionMesPago()
+        public async Task enviar()
         {
-            StringBuilder reporte = GeneraReporteMes();
-            List<Estudiante> listEstudiante = _dBEstudiante.ObtenerTodosLosEstudiantes();
-            foreach(Estudiante estudiante in listEstudiante)
-            {
-                bool valid = Email.EnviarNotificacion(estudiante, reporte.ToString());
-                if (!valid ) 
-                {
-                    GuardarMailNoEnviados(estudiante.Legajo);
-                }
-            }
+            await EnviaNotificacionMesPagoAsync();
+            await EnviaNotificacionInicioClasesAsync();
         }
-        public void EnviaNotificacionInicioClases()
+        public async Task EnviaNotificacionMesPagoAsync()
         {
-            StringBuilder reporte = GeneraReporteInicioClases();
-            List<Estudiante> listEstudiante = _dBEstudiante.ObtenerTodosLosEstudiantes();
-            foreach (Estudiante estudiante in listEstudiante)
+            await Task.Run(() =>
             {
-                bool valid = Email.EnviarNotificacion(estudiante, reporte.ToString());
-                if (!valid)
+                StringBuilder reporte = GeneraReporteMes();
+                List<Estudiante> listEstudiante = _dBEstudiante.ObtenerTodosLosEstudiantes();
+
+                Parallel.ForEach(listEstudiante, estudiante =>
                 {
-                    GuardarMailNoEnviados(estudiante.Legajo);
-                }
-            }
+                    bool valid = Email.EnviarNotificacion(estudiante, reporte.ToString());
+                    if (!valid)
+                    {
+                        GuardarMailNoEnviados(estudiante.Legajo);
+                    }
+                });
+            });
+        }
+        public async Task EnviaNotificacionInicioClasesAsync()
+        {
+            await Task.Run(() =>
+            {
+                StringBuilder reporte = GeneraReporteInicioClases();
+                List<Estudiante> listEstudiante = _dBEstudiante.ObtenerTodosLosEstudiantes();
+
+                Parallel.ForEach(listEstudiante, estudiante =>
+                {
+                    bool valid = Email.EnviarNotificacion(estudiante, reporte.ToString());
+                    if (!valid)
+                    {
+                        GuardarMailNoEnviados(estudiante.Legajo);
+                    }
+                });
+            });
         }
         public void EnviaNotificacionInscripcionCurso()
         {

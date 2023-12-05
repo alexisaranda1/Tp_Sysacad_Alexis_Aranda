@@ -32,8 +32,12 @@ namespace BibliotecaCLases.Controlador
         /// </remarks>
         public ControlLogin()
         {
-            _crudNotificacion.EnviaNotificacionMesPago();
-            _crudNotificacion.EnviaNotificacionInicioClases();
+            InicializarAsync();
+        }
+
+        private async void InicializarAsync()
+        {
+            await _crudNotificacion.enviar();
         }
 
         /// <summary>
