@@ -73,8 +73,8 @@ namespace Formularios
             dtgProfesores.Columns.Add("legajo", "legajo");
             dtgProfesores.Columns.Add("Nombre", "Nombre");
             dtgProfesores.Columns.Add("Apellido", "Apellido");
-            dtgProfesores.Columns.Add("correo", "correo");
-            dtgProfesores.Columns.Add("Telefono", "Telefono");
+            //dtgProfesores.Columns.Add("correo", "correo");
+            //dtgProfesores.Columns.Add("Telefono", "Telefono");
             dtgProfesores.Columns.Add("especialización", "especialización");
             dtgProfesores.Columns.Add("cursos asignados", "cursos asignados");
             foreach (DataGridViewColumn columna in dtgProfesores.Columns)
@@ -85,15 +85,19 @@ namespace Formularios
 
         public void MostrarProfes()
         {
-            CrudProfesor crudProfesor = new CrudProfesor();
-            List<Profesor> profesores = _presentador.CargarListaProfesores();
-            foreach (Profesor profesor in profesores)
+            //CrudProfesor crudProfesor = new CrudProfesor();
+            List<Profesor> profesoress = _presentador.CargarListaProfesores();
+            Dictionary<int, Tuple<string, string, string, List<string>>> profesores = _presentador.CargarAsignaturasDeProfesor();
+            foreach (var kvp in profesores)
             {
-                if (profesor.Activo != "false")
-                {
-                    dtgProfesores.Rows.Add(profesor.Legajo, profesor.Nombre, profesor.Apellido, profesor.Correo, profesor.Telefono, profesor.Especializacion, profesor.ObtenerCursosAsignadosComoString());
-                }
-
+                var legajoProfesor = kvp.Key;
+                var nombreProfesor = kvp.Value.Item1;
+                var apellidoProfesor = kvp.Value.Item2;
+                var telefonoProfesor = kvp.Value.Item3;
+                var correoProfesor = kvp.Value.Item4;    
+                var especializacionProfesor = kvp.Value.Item1;  
+                var cursos = string.Join(", ", kvp.Value.Item4);
+                dtgProfesores.Rows.Add(legajoProfesor, nombreProfesor, apellidoProfesor,telefonoProfesor, cursos);
             }
 
         }
@@ -165,6 +169,7 @@ namespace Formularios
             {
                 FrmEditarProfesor frmEditarProfesor = new(_usuario, _presentador.LegajoObtenido);
                 frmEditarProfesor.Show();
+                this.Close();
             }
             else
             {
@@ -191,18 +196,18 @@ namespace Formularios
             CrudCurso crudCurso = new CrudCurso();
             List<Curso> cursos = crudCurso.ObtenerListaCursos();
             MostrarCursos(cursos);
-           
-           
-           
-            
+
+
+
+
 
 
         }
         public void RecargarPrograma()
         {
+            this.Close();
             FrmGestionarProfesores frmGestionRequisitos = new FrmGestionarProfesores(_usuario);
             frmGestionRequisitos.Show();
-            this.Close();
         }
 
         private void btnSalir_Click(object sender, EventArgs e)
@@ -234,7 +239,7 @@ namespace Formularios
                             _presentador.LegajoObtenido = int.Parse(valorPrimeraColumna);
                         }
 
-                      
+
                     }
                 }
             }

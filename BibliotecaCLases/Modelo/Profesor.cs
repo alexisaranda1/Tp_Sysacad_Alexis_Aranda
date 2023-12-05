@@ -28,10 +28,6 @@ namespace BibliotecaCLases.Modelo
         {
             return string.Join(", ", CursosAsignados.Select(c => c.ToString()));
         }
-        public void AgregarCurso(int codigoCurso)
-        {
-            CursosAsignados.Add(codigoCurso);
-        }
 
     }
 

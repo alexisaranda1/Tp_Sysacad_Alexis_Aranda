@@ -1,4 +1,5 @@
-﻿using BibliotecaCLases.Modelo;
+﻿using BibliotecaCLases.DataBase;
+using BibliotecaCLases.Modelo;
 using BibliotecaCLases.Utilidades;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace BibliotecaCLases.Controlador
         private List<Profesor> _listaProfesoresRegistrados;
         private Serializador _serializador = new();
         private CrudCurso _crudCurso;
+        private DBProfesor _dBProfesor = new DBProfesor();
 
         public CrudProfesor()
         {
@@ -30,31 +32,26 @@ namespace BibliotecaCLases.Controlador
 
         public string RegistrarProfesor(string nombre, string apellido, string dni, string correo, string direccion, string telefono,string especializacion)
         {
-            int legajo = ObtieneLegajo();
 
             string claveProvisional = GenerarContrasenaAleatoria(7, 12);
             string mensaje = Email.SendMessageSmtp(correo, claveProvisional, nombre, apellido);
             String contrasena = PasswordHashing.GetHash(claveProvisional.ToString());
             Profesor nuevoProfesor = new Profesor(nombre, apellido, dni, correo, direccion, telefono, contrasena, especializacion);
-            nuevoProfesor.Legajo = legajo;
-
-            _listaProfesoresRegistrados.Add(nuevoProfesor);
-
-            string path = PathManager.ObtenerRuta("Data", "DataUsuariosProfesores.json");
-            _serializador.ActualizarJson(_listaProfesoresRegistrados, path);
-
+            _dBProfesor.Guardar(nuevoProfesor);
             return mensaje;
+            
+
         }
         public string EliminarProfesor(int legajoProfesor)
         {
-            Profesor profesorAEliminar = _listaProfesoresRegistrados.FirstOrDefault(profesor => profesor.Legajo == legajoProfesor);
-
-            if (profesorAEliminar != null)
+            //Profesor profesorAEliminar = _listaProfesoresRegistrados.FirstOrDefault(profesor => profesor.Legajo == legajoProfesor);
+            bool profesorAEliminar = _dBProfesor.BorrarProfe(legajoProfesor);
+            if (profesorAEliminar)
             {
-                profesorAEliminar.Activo = "false";               
-                string path = PathManager.ObtenerRuta("Data", "DataUsuariosProfesores.json");
-                _serializador.ActualizarJson(_listaProfesoresRegistrados, path);
-                return $"El Profesor {profesorAEliminar.Nombre} {profesorAEliminar.Apellido} (Legajo: {profesorAEliminar.Legajo}) ha sido eliminado exitosamente.";
+                //profesorAEliminar.Activo = "false";               
+                //string path = PathManager.ObtenerRuta("Data", "DataUsuariosProfesores.json");
+                //_serializador.ActualizarJson(_listaProfesoresRegistrados, path);
+                return $"El Profesor ha sido eliminado exitosamente.";
 
             }
             return "No se pudo eliminar";
@@ -62,7 +59,7 @@ namespace BibliotecaCLases.Controlador
 
         public List<Profesor> ObtenerProfesoresRegistrados()
         {
-            _listaProfesoresRegistrados = _serializador.LeerJson<List<Profesor>>(_path) ?? new List<Profesor>();
+            _listaProfesoresRegistrados = _dBProfesor.ObtenerTodosLosProfesores();
 
             if (_listaProfesoresRegistrados.Any())
             {
@@ -73,10 +70,14 @@ namespace BibliotecaCLases.Controlador
                 return new List<Profesor>();
             }
         }
+        public Dictionary<int, Tuple<string, string, string, List<string>>> ObtenerAsignaturas()
+        {
+            return _dBProfesor.ObtenerInformacionTodosLosProfesoresConCursos();
+        }
 
         public Profesor ObtenerProfesorPorLegajo(int legajo)
         {
-            return _listaProfesoresRegistrados.FirstOrDefault(profesor => profesor.Legajo == legajo);
+            return _dBProfesor.TraeProfesorPorLegajo(legajo);
         }
         public int VerificarDatosProfesor(string correo, string dni)
         {
@@ -97,34 +98,21 @@ namespace BibliotecaCLases.Controlador
 
         public string ActualizarProfesor(int legajo, string nombre, string apellido, string dni, string correo, string direccion, string telefono,string nuevaEspecializacion)
         {
-            Profesor profesorAActualizar = ObtenerProfesorPorLegajo(legajo);
+            string mensejeError = "";
 
-            if (profesorAActualizar != null)
+            if (ValidarDatos(nombre, apellido, dni, correo, direccion, telefono, out mensejeError))
             {
-                string mensejeError = "";
+                _dBProfesor.ModificarProfesor(nombre, apellido, dni, direccion, correo, telefono, nuevaEspecializacion, legajo);
+                
 
-                if (ValidarDatos(nombre, apellido, dni, correo, direccion, telefono, out mensejeError))
-                {
-                    profesorAActualizar.Nombre = nombre;
-                    profesorAActualizar.Apellido = apellido;
-                    profesorAActualizar.Dni = dni;
-                    profesorAActualizar.Correo = correo;
-                    profesorAActualizar.Direccion = direccion;
-                    profesorAActualizar.Telefono = telefono;
-                    profesorAActualizar.Especializacion = nuevaEspecializacion;
-                    string path = PathManager.ObtenerRuta("Data", "DataUsuariosProfesores.json");
-                    _serializador.ActualizarJson(_listaProfesoresRegistrados, path);
-
-                    return $"Los datos del profesor {profesorAActualizar.Nombre} {profesorAActualizar.Apellido} (Legajo: {profesorAActualizar.Legajo}) han sido actualizados exitosamente.";
-                }
-                else
-                {
-                    return $"Los datos no son válidos. Error: {mensejeError}. Por favor, verifique la información proporcionada.";
-                }
+                return $"Los datos del profesor han sido actualizados exitosamente.";
             }
-
-            return "No se pudo encontrar el profesor.";
+            else
+            {
+                return $"Los datos no son válidos. Error: {mensejeError}. Por favor, verifique la información proporcionada.";
+            }
         }
+
 
         private bool ValidarDatos(string nombre, string apellido, string dni, string correo, string direccion, string telefono, out string mensejeError)
         {
@@ -136,35 +124,17 @@ namespace BibliotecaCLases.Controlador
 
         public bool AgregarCursoAProfesor(int legajoProfesor, int codigoCurso, out string mensajeError)
         {
-            Profesor profesor = ObtenerProfesorPorLegajo(legajoProfesor);
-
-            if (profesor != null)
+            if (_dBProfesor.GuardarElCurso(legajoProfesor,codigoCurso))
             {
-
-                if (!profesor.CursosAsignados.Contains(codigoCurso))
-                {
-                    profesor.AgregarCurso(codigoCurso);
-                    string path = PathManager.ObtenerRuta("Data", "DataUsuariosProfesores.json");
-                    _serializador.ActualizarJson(_listaProfesoresRegistrados, path);
-
-                    mensajeError = "Se agrego Curso con exito!";
-                    return true;
-                }
-                else
-                {
-                    mensajeError = "El curso esta asignado para ese profesor";
-                    return false;
-                }
-
-
-
+                mensajeError = "Se agrego Curso con exito!";
+                return true;
             }
-
-            mensajeError = "El profesor no se encontró.";
-            return false;
+            else
+            {
+                mensajeError = "El curso esta asignado para ese profesor";
+                return false;
+            }
         }
-
-
 
 
         private int ObtieneLegajo()
