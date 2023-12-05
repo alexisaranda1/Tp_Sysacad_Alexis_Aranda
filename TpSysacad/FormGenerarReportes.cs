@@ -49,12 +49,17 @@ namespace Formularios
             {
                 cBPeriodo.Items.Add(curso.Descripcion);
             }
+            foreach (Curso curso in _listCurso)
+            {
+                cBEspera.Items.Add(curso.Nombre);
+            }
         }
         private void btnGenerador_Click(object sender, EventArgs e)
         {
             string materia = cBCurso.SelectedItem?.ToString()!;
             string descripcion = cBPeriodo.SelectedItem?.ToString()!;
             string pago = cBPago.SelectedItem?.ToString()!;
+            string espera = cBEspera.SelectedItem?.ToString()!;
             if (cBCurso.Visible == true && materia != null)
             {
                 _valid = true;
@@ -65,14 +70,19 @@ namespace Formularios
                 _valid = true;
                 reporte = _crudReporte.GeneraReportePorMateriaPeriodo(_valid, descripcion);
             }
-            else if(cBPago.Visible == true && pago != null)
+            else if (cBPago.Visible == true && pago != null)
             {
                 _valid = true;
                 reporte = _crudReporte.GeneraReportePorPago(_valid, pago);
             }
-            if(reporte != null)
+            else if (cBEspera.Visible == true && espera != null)
             {
-                FormMostrarReporte formMostrarReporte = new FormMostrarReporte(this,reporte);
+                _valid = true;
+                reporte = _crudReporte.GeneraReportePorEspera(_valid, espera, _listCurso);
+            }
+            if (reporte != null)
+            {
+                FormMostrarReporte formMostrarReporte = new FormMostrarReporte(this, reporte);
                 formMostrarReporte.Show();
             }
         }
@@ -124,46 +134,28 @@ namespace Formularios
                 if (row.Cells["Check"].Value != null && (bool)row.Cells["Check"].Value == true)
                 {
                     int filaSeleccionadaIndex = dataGridViewReportes.SelectedCells[0].RowIndex;
-                    // El CheckBox en esta fila está marcado.
-                    // Puedes acceder a los datos de la fila y trabajar con ellos.
                     codigo = (dataGridViewReportes.Rows[filaSeleccionadaIndex].Cells["informe"].Value.ToString()!);
 
                     if (codigo == "Informe de inscripciones por período")
                     {
-                        //label1.Text = "Seleccione un periodo:";
-                        //label1.Visible = true;
                         cBPeriodo.Visible = true;
                         selecciono = true;
                     }
-                    //else
-                    //{
-                    //    label1.Visible = false;
-                    //    comboBox1.Visible = false;
-                    //}
-                    if (codigo == "Informe de estudiantes inscritos en un curso específico." || codigo == "Informe de listas de espera de cursos.")
+                    if (codigo == "Informe de estudiantes inscritos en un curso específico.")
                     {
-                        //label2.Text = "Seleccione el curso:";
-                        //label2.Visible = true;
                         cBCurso.Visible = true;
                         selecciono = true;
                     }
-                    //else
-                    //{
-                    //    label2.Visible = false;
-                    //    comboBox2.Visible = false;
-                    //}
+                    if (codigo == "Informe de listas de espera de cursos.")
+                    {
+                        cBEspera.Visible = true;
+                        selecciono = true;
+                    }
                     if (codigo == "Informe de ingresos por conceptos de pago.")
                     {
-                        //label3.Text = "Seleccione el consepto de pago:";
-                        //label3.Visible = true;
                         cBPago.Visible = true;
                         selecciono = true;
                     }
-                    //else
-                    //{
-                    //    label3.Visible = false;
-                    //    comboBox3.Visible = false;
-                    //}
 
                 }
             }
