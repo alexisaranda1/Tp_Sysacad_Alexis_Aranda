@@ -12,13 +12,15 @@ namespace BibliotecaCLases.Modelo
         public string Nombre { get; set; }
         public int Nota { get; set; }
         public int Legajo { get; set; }
+        public int Curso { get; set; }
 
 
-        public ConceptoNota(string tipoEvaluacion, int nota,int legajo)
+        public ConceptoNota(string tipoEvaluacion, int nota,int legajo, int codigoCurso)
         {
             Nombre = tipoEvaluacion;
             Nota = nota;
             Legajo = legajo;
+            Curso = codigoCurso;
         }
 
     }

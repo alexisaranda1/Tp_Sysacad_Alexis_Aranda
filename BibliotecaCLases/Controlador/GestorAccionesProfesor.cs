@@ -28,7 +28,17 @@ namespace BibliotecaCLases.Controlador
         public List<Estudiante> ObtenerEstudiantesIncriptos()
         {
             return _crudProfesor.ObtenerEstudiantesInscriptos(codigoCursoObtenido);
-        }  
+        }
 
+        public bool MandaAGuardarNotas(string tipoEvaluacion, int nota)
+        {
+            ConceptoNota concepto = new ConceptoNota(tipoEvaluacion, nota, LegajoAlumno, codigoCursoObtenido);
+            return _crudProfesor.GuardaLaNota(concepto);
+        }
+        public bool MandaAGuardarAsistencia(string estadoAsistencia)
+        {
+            ConceptoAsistencia conceptoAsistencia = new ConceptoAsistencia(estadoAsistencia, LegajoAlumno, codigoCursoObtenido);
+            return _crudProfesor.GuardaLaAsistencia(conceptoAsistencia);
+        }
     }
 }

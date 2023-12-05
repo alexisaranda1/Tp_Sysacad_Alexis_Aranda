@@ -223,23 +223,41 @@ namespace Formularios
         private void btnGuardarNota_Click(object sender, EventArgs e)
         {
             string nota = textBoxNota.Text;
-            if (Validacion.EsNumeroEnRango(nota, 1, 10))
+            string tipoEvaluacionSeleccionada = CbxTipoEvaluacion.SelectedItem?.ToString()!;
+            if (Validacion.EsNumeroEnRango(nota, 1, 10) && tipoEvaluacionSeleccionada != null)
             {
-                string tipoEvaluacionSeleccionada = CbxTipoEvaluacion.SelectedItem.ToString();
-                MostrarMensaje("Es valido");
-                RecargarPrograma();
+                int notaInt = int.Parse(nota);
+                if (_accionesProfesor.MandaAGuardarNotas(tipoEvaluacionSeleccionada, notaInt))
+                {
+                    MostrarMensaje("Guardado en la base de datos");
+                    RecargarPrograma();
+                }
             }
             else
             {
-                MostrarMensaje("No es valido");
+                MostrarMensaje("No es valido el rango del numero o la seleccion");
             }
 
         }
 
         private void btnGuardarAsistencia_Click(object sender, EventArgs e)
         {
-            string tipoAsistencia = cbxAsistencia.SelectedItem.ToString();
-            MostrarMensaje(tipoAsistencia);
+            string tipoAsistencia = cbxAsistencia.SelectedItem?.ToString()!;
+            if(tipoAsistencia != null)
+            {
+                if (_accionesProfesor.MandaAGuardarAsistencia(tipoAsistencia))
+                {
+                    MostrarMensaje("Guardado en la base de datos");
+                }
+                else
+                {
+                    MostrarMensaje("Error a guardar en la base de datos");
+                }
+            }
+            else
+            {
+                MostrarMensaje("Seleccion no valida");
+            }
         }
     }
 }

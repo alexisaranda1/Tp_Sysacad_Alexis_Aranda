@@ -30,6 +30,59 @@ namespace BibliotecaCLases.Controlador
                 }
             }
         }
+        public void EnviaNotificacionInicioClases()
+        {
+            StringBuilder reporte = GeneraReporteInicioClases();
+            List<Estudiante> listEstudiante = _dBEstudiante.ObtenerTodosLosEstudiantes();
+            foreach (Estudiante estudiante in listEstudiante)
+            {
+                bool valid = Email.EnviarNotificacion(estudiante, reporte.ToString());
+                if (!valid)
+                {
+                    GuardarMailNoEnviados(estudiante.Legajo);
+                }
+            }
+        }
+        public void EnviaNotificacionInscripcionCurso()
+        {
+            StringBuilder reporte = GeneraReporteInscripcionCurso();
+            List<Estudiante> listEstudiante = _dBEstudiante.ObtenerTodosLosEstudiantes();
+            foreach (Estudiante estudiante in listEstudiante)
+            {
+                bool valid = Email.EnviarNotificacion(estudiante, reporte.ToString());
+                if (!valid)
+                {
+                    GuardarMailNoEnviados(estudiante.Legajo);
+                }
+            }
+        }
+        public StringBuilder GeneraReporteInscripcionCurso()
+        {
+            StringBuilder reporte = new StringBuilder();
+            DateTime hoy = DateTime.Now;
+            if (DateTime.Now.Month == 3 || DateTime.Now.Month == 8)
+            {
+                reporte.AppendLine($"Aviso de inscripcion a curso el dia {hoy}");
+                reporte.AppendLine("Estimado alumno,\n\nEste es un aviso del Systema Sysacad de que se registro en una nueva materia.");
+                reporte.AppendLine("Si este mensaje llego por error o no se inscribio porfavor ignorar");
+                reporte.AppendLine("¡Gracias!");
+            }
+            return reporte;
+        }
+        public StringBuilder GeneraReporteInicioClases()
+        {
+            StringBuilder reporte = new StringBuilder();
+            DateTime hoy = DateTime.Now;
+            if (DateTime.Now.Month == 3 || DateTime.Now.Month == 8)
+            {
+                string mesActual = hoy.ToString("MMMM");
+                reporte.AppendLine($"Recordatorio de Inicio de Clases -{mesActual}");
+                reporte.AppendLine("Estimado alumno,\n\nEste es un recordatorio del Systema Sysacad de que el inicio de cuatrimestre se acerca.");
+                reporte.AppendLine("No olvide inscribirse a las materias requeridas");
+                reporte.AppendLine("¡Gracias!");
+            }
+            return reporte;
+        }
 
         public StringBuilder GeneraReporteMes()
         {
