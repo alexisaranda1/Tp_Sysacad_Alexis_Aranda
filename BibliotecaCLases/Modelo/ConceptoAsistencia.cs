@@ -14,7 +14,7 @@ namespace BibliotecaCLases.Modelo
 
         public int CodigoCurso { get; set; }
         
-        public ConceptoAsistencia(string estadoAsistencia,int legajo,int codigoCurso, string estado)
+        public ConceptoAsistencia(string estadoAsistencia,int legajo,int codigoCurso)
         {
             EstadoAsistencia = estadoAsistencia;
             Legajo = legajo;

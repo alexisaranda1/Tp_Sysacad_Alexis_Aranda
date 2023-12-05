@@ -20,6 +20,7 @@ namespace BibliotecaCLases.Controlador
         private readonly List<Usuario> listaUsuarios;
         private string _path;
         private bool _existeUsuario;
+        private CrudNotificacion _crudNotificacion = new CrudNotificacion();
 
         /// <summary>
         /// Inicializa una nueva instancia de la clase ControlLogin.
@@ -31,7 +32,8 @@ namespace BibliotecaCLases.Controlador
         /// </remarks>
         public ControlLogin()
         {
-
+            _crudNotificacion.EnviaNotificacionMesPago();
+            _crudNotificacion.EnviaNotificacionInicioClases();
         }
 
         /// <summary>

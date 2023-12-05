@@ -19,6 +19,8 @@ namespace BibliotecaCLases.Controlador
         private Serializador _serializador = new();
         private CrudCurso _crudCurso;
         private DBProfesor _dBProfesor = new DBProfesor();
+        private DBConceptoNota _dBConceptoNota = new DBConceptoNota();
+        private DBConceptoAsistencia _dBConceptoAsistencia = new DBConceptoAsistencia();
 
         public CrudProfesor()
         {
@@ -173,6 +175,15 @@ namespace BibliotecaCLases.Controlador
 
         }
 
+        public bool GuardaLaNota(ConceptoNota conceptoNota)
+        {
+            return _dBConceptoNota.Guardar(conceptoNota);
+        }
+
+        public bool GuardaLaAsistencia(ConceptoAsistencia conceptoAsistencia)
+        {
+            return _dBConceptoAsistencia.Guardar(conceptoAsistencia);
+        }
     }
 
 }

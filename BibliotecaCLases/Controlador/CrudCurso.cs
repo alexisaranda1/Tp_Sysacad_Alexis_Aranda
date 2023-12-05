@@ -16,6 +16,7 @@ namespace BibliotecaCLases.Controlador
         private GestionListasEspera _gestionListasEspera;
         DBCursos dBCurso = new DBCursos();
         DBCursosInscriptos _dBCursosInscriptos = new DBCursosInscriptos();
+        CrudNotificacion _crudNotificacion = new CrudNotificacion();
         /// <summary>
         /// Constructor de la clase CrudCurso.
         /// </summary>
@@ -135,6 +136,7 @@ namespace BibliotecaCLases.Controlador
                         curso.CuposDisponibles--;
                         if (_dBCursosInscriptos.AgregarCursosInscriptos(codigoCurso, legajo))
                         {
+                            _crudNotificacion.EnviaNotificacionInscripcionCurso();
                             return "Inscripción exitosa.";
                         }
                     }
