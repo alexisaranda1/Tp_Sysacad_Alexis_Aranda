@@ -12,7 +12,7 @@ public class GestorRegistroProfesores
     public GestorRegistroProfesores(Profesor profesor)
     {
         _profesor = profesor;
-        _validadorDatos = new ValidadorDatos(_profesor.Nombre, _profesor.Apellido, _profesor.Dni, _profesor.Correo, _profesor.Direccion, _profesor.Telefono, _profesor.Especializacion);
+        _validadorDatos = new ValidadorDatos(_profesor.Nombre, _profesor.Apellido, _profesor.Dni, _profesor.Correo, _profesor.Direccion, _profesor.Telefono);
 
         _validado = _validadorDatos.Validar(out string mensajeError);
 

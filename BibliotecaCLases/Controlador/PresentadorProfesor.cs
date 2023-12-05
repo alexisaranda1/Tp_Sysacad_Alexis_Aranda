@@ -13,6 +13,7 @@ namespace BibliotecaCLases.Controlador
     public class PresentadorProfesor
     {
         public int LegajoObtenido { get; set; }
+        public int codigoCursoObtenido { get; set; }
         private readonly IProfesorVista _profesorVista;
         private readonly CrudProfesor _crudProfesor;
 
@@ -33,11 +34,12 @@ namespace BibliotecaCLases.Controlador
                 List<Profesor> profesores = _crudProfesor.ObtenerProfesoresRegistrados();
             return profesores;
         }
-
-        private void IniciarEdicionProfesor()
+        public void AgregarCursoAProfesor()
         {
-            
-        }
+            string mensajeError = "Algo Salio mal!";
+            _crudProfesor.AgregarCursoAProfesor(LegajoObtenido,codigoCursoObtenido,out mensajeError);
+            _profesorVista.MostrarMensaje(mensajeError);
+        }    
         public void AgregarProfesor()
         {
 
