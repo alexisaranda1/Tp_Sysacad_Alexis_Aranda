@@ -43,22 +43,20 @@
             // 
             dtgvListaEspera.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dtgvListaEspera.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dtgvListaEspera.Location = new Point(116, 183);
-            dtgvListaEspera.Margin = new Padding(4, 5, 4, 5);
+            dtgvListaEspera.Location = new Point(81, 110);
             dtgvListaEspera.Name = "dtgvListaEspera";
             dtgvListaEspera.RowHeadersWidth = 62;
             dtgvListaEspera.RowTemplate.Height = 25;
             dtgvListaEspera.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dtgvListaEspera.Size = new Size(779, 272);
+            dtgvListaEspera.Size = new Size(545, 163);
             dtgvListaEspera.TabIndex = 2;
             dtgvListaEspera.CellClick += dtgvListaEspera_CellClick;
             // 
             // btnVerlista
             // 
-            btnVerlista.Location = new Point(391, 465);
-            btnVerlista.Margin = new Padding(4, 5, 4, 5);
+            btnVerlista.Location = new Point(274, 279);
             btnVerlista.Name = "btnVerlista";
-            btnVerlista.Size = new Size(269, 38);
+            btnVerlista.Size = new Size(188, 23);
             btnVerlista.TabIndex = 3;
             btnVerlista.Text = "Consultar Lista de Espera";
             btnVerlista.UseVisualStyleBackColor = true;
@@ -66,10 +64,9 @@
             // 
             // btnEliminarEstudiante
             // 
-            btnEliminarEstudiante.Location = new Point(669, 465);
-            btnEliminarEstudiante.Margin = new Padding(4, 5, 4, 5);
+            btnEliminarEstudiante.Location = new Point(468, 279);
             btnEliminarEstudiante.Name = "btnEliminarEstudiante";
-            btnEliminarEstudiante.Size = new Size(226, 38);
+            btnEliminarEstudiante.Size = new Size(158, 23);
             btnEliminarEstudiante.TabIndex = 4;
             btnEliminarEstudiante.Text = "Eliminar Estudiante";
             btnEliminarEstudiante.UseVisualStyleBackColor = true;
@@ -77,10 +74,9 @@
             // 
             // btnAgregarEstudiante
             // 
-            btnAgregarEstudiante.Location = new Point(116, 465);
-            btnAgregarEstudiante.Margin = new Padding(4, 5, 4, 5);
+            btnAgregarEstudiante.Location = new Point(81, 279);
             btnAgregarEstudiante.Name = "btnAgregarEstudiante";
-            btnAgregarEstudiante.Size = new Size(253, 38);
+            btnAgregarEstudiante.Size = new Size(177, 23);
             btnAgregarEstudiante.TabIndex = 5;
             btnAgregarEstudiante.Text = "Agregar Estudiante";
             btnAgregarEstudiante.UseVisualStyleBackColor = true;
@@ -88,10 +84,9 @@
             // 
             // btnAgregar
             // 
-            btnAgregar.Location = new Point(454, 465);
-            btnAgregar.Margin = new Padding(4, 5, 4, 5);
+            btnAgregar.Location = new Point(318, 279);
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(146, 38);
+            btnAgregar.Size = new Size(102, 23);
             btnAgregar.TabIndex = 6;
             btnAgregar.Text = "Agregar";
             btnAgregar.UseVisualStyleBackColor = true;
@@ -99,10 +94,9 @@
             // 
             // btnSalir
             // 
-            btnSalir.Location = new Point(17, 617);
-            btnSalir.Margin = new Padding(4, 5, 4, 5);
+            btnSalir.Location = new Point(12, 370);
             btnSalir.Name = "btnSalir";
-            btnSalir.Size = new Size(107, 38);
+            btnSalir.Size = new Size(75, 23);
             btnSalir.TabIndex = 7;
             btnSalir.Text = "Salir";
             btnSalir.UseVisualStyleBackColor = true;
@@ -110,27 +104,25 @@
             // 
             // label
             // 
-            label.Location = new Point(264, 40);
-            label.Margin = new Padding(4, 0, 4, 0);
+            label.Location = new Point(185, 24);
             label.Name = "label";
-            label.Size = new Size(377, 138);
+            label.Size = new Size(264, 83);
             label.TabIndex = 8;
             label.Text = "label";
             // 
             // lblAvisoListavacia
             // 
-            lblAvisoListavacia.Location = new Point(163, 212);
-            lblAvisoListavacia.Margin = new Padding(4, 0, 4, 0);
+            lblAvisoListavacia.Location = new Point(114, 127);
             lblAvisoListavacia.Name = "lblAvisoListavacia";
-            lblAvisoListavacia.Size = new Size(681, 202);
+            lblAvisoListavacia.Size = new Size(477, 121);
             lblAvisoListavacia.TabIndex = 9;
             lblAvisoListavacia.Text = "Aviso Lista vacia";
             // 
             // FrmGestionListaEspera
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1143, 750);
+            ClientSize = new Size(800, 421);
             Controls.Add(lblAvisoListavacia);
             Controls.Add(label);
             Controls.Add(btnSalir);
@@ -139,7 +131,6 @@
             Controls.Add(btnEliminarEstudiante);
             Controls.Add(btnVerlista);
             Controls.Add(dtgvListaEspera);
-            Margin = new Padding(4, 5, 4, 5);
             Name = "FrmGestionListaEspera";
             Text = "s";
             ((System.ComponentModel.ISupportInitialize)dtgvListaEspera).EndInit();

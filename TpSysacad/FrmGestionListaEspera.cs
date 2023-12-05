@@ -130,6 +130,7 @@ namespace Formularios
 
                     dtgvListaEspera.Rows.Add(estudiante.Legajo, estudiante.Nombre, estudiante.Apellido, estudiante.Correo, estudiante.Dni, fecha);
                 }
+
             }
             else
             {

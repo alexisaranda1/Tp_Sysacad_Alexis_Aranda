@@ -42,6 +42,7 @@
             btnRegistrarProfesor = new Button();
             dtgProfesores = new DataGridView();
             txtEspecializacion = new TextBox();
+            btnGuardar = new Button();
             ((System.ComponentModel.ISupportInitialize)dtgProfesores).BeginInit();
             SuspendLayout();
             // 
@@ -145,7 +146,7 @@
             // 
             // btnRegistrarProfesor
             // 
-            btnRegistrarProfesor.Location = new Point(260, 332);
+            btnRegistrarProfesor.Location = new Point(271, 378);
             btnRegistrarProfesor.Name = "btnRegistrarProfesor";
             btnRegistrarProfesor.Size = new Size(153, 23);
             btnRegistrarProfesor.TabIndex = 12;
@@ -155,12 +156,13 @@
             // 
             // dtgProfesores
             // 
+            dtgProfesores.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dtgProfesores.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dtgProfesores.Location = new Point(33, 129);
             dtgProfesores.Name = "dtgProfesores";
             dtgProfesores.RowTemplate.Height = 25;
             dtgProfesores.SelectionMode = DataGridViewSelectionMode.CellSelect;
-            dtgProfesores.Size = new Size(724, 150);
+            dtgProfesores.Size = new Size(678, 150);
             dtgProfesores.TabIndex = 13;
             dtgProfesores.CellClick += dtgProfesores_CellClick;
             // 
@@ -172,11 +174,22 @@
             txtEspecializacion.Size = new Size(100, 23);
             txtEspecializacion.TabIndex = 14;
             // 
+            // btnGuardar
+            // 
+            btnGuardar.Location = new Point(303, 332);
+            btnGuardar.Name = "btnGuardar";
+            btnGuardar.Size = new Size(75, 23);
+            btnGuardar.TabIndex = 15;
+            btnGuardar.Text = "Guardar";
+            btnGuardar.UseVisualStyleBackColor = true;
+            btnGuardar.Click += btnGuardar_Click;
+            // 
             // FrmGestionarProfesores
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnGuardar);
             Controls.Add(txtEspecializacion);
             Controls.Add(dtgProfesores);
             Controls.Add(btnRegistrarProfesor);
@@ -215,5 +228,6 @@
         private Button btnRegistrarProfesor;
         private DataGridView dtgProfesores;
         private TextBox txtEspecializacion;
+        private Button btnGuardar;
     }
 }

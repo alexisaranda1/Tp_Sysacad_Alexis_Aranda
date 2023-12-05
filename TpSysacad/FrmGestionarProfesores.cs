@@ -36,8 +36,9 @@ namespace Formularios
             txtDireccion.Visible = false;
             txtCorreo.Visible = false;
             txtTelefono.Visible = false;
-            txtEspecializacion.Visible = false; 
+            txtEspecializacion.Visible = false;
             btnRegistrarProfesor.Visible = false;
+            btnGuardar.Visible = false;
 
         }
 
@@ -112,13 +113,13 @@ namespace Formularios
         {
 
             if (cursos.Count > 0)
-            {          
+            {
                 CrearColumnasCursos();
                 foreach (Curso curso in cursos)
                 {
                     dtgProfesores.Rows.Add(curso.Codigo, curso.Nombre, curso.Descripcion, curso.CupoMaximo, curso.CuposDisponibles);
-                }               
-            }          
+                }
+            }
         }
 
 
@@ -131,11 +132,9 @@ namespace Formularios
         public void CargarListaProfesores(List<Profesor> profesores)
         {
 
-
         }
         private void btnAgregarProfesor_Click(object sender, EventArgs e)
         {
-
             dtgProfesores.Visible = false;
             txtNombre.Visible = true;
             txtApellido.Visible = true;
@@ -145,11 +144,11 @@ namespace Formularios
             txtTelefono.Visible = true;
             btnRegistrarProfesor.Visible = true;
             txtEspecializacion.Visible = true;
-
             btnEliminarProfesor.Visible = false;
             btnEditarProfesor.Visible = false;
             btnAgregarProfesor.Visible = false;
             btnAgregarCurso.Visible = false;
+
         }
         private void btnRegistrarProfesor_Click(object sender, EventArgs e)
         {
@@ -180,11 +179,15 @@ namespace Formularios
 
         private void btnAgregarCurso_Click(object sender, EventArgs e)
         {
+
+            btnEliminarProfesor.Visible = false;
+            btnEditarProfesor.Visible = false;
+            btnAgregarProfesor.Visible = false;
+            btnAgregarCurso.Visible = false;
+            btnGuardar.Visible = true;
             CrudCurso crudCurso = new CrudCurso();
-            List<Curso> cursos =crudCurso.ObtenerListaCursos();
+            List<Curso> cursos = crudCurso.ObtenerListaCursos();
             MostrarCursos(cursos);
-
-
         }
         public void RecargarPrograma()
         {
@@ -217,6 +220,10 @@ namespace Formularios
                     }
                 }
             }
+        }
+        private void btnGuardar_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
