@@ -85,8 +85,7 @@ namespace Formularios
 
         public void MostrarProfes()
         {
-            //CrudProfesor crudProfesor = new CrudProfesor();
-            List<Profesor> profesoress = _presentador.CargarListaProfesores();
+           
             Dictionary<int, Tuple<string, string, string, List<string>>> profesores = _presentador.CargarAsignaturasDeProfesor();
             foreach (var kvp in profesores)
             {
@@ -117,6 +116,7 @@ namespace Formularios
         }
         public void MostrarCursos(List<Curso> cursos)
         {
+            
 
             if (cursos.Count > 0)
             {

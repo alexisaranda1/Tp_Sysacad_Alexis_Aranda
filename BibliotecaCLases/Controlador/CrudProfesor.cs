@@ -162,8 +162,16 @@ namespace BibliotecaCLases.Controlador
 
             return contrasena.ToString();
         }
+        public List<Curso> ObtenerCursosACargo(int legajo )
+        {
+            return _dBProfesor.ObtenerCursosDeProfesor(legajo);
+        }
 
+        public List<Estudiante> ObtenerEstudiantesInscriptos(int codigoCurso)
+        {
+            return _dBProfesor.ObtenerEstudiantesInscriptosEnCurso(codigoCurso);
 
+        }
 
     }
 

@@ -21,19 +21,11 @@ namespace BibliotecaCLases.Controlador
         {
             _profesorVista = profesorVista;
             _crudProfesor = new();
-            CargarListaProfesores();
+       
             profesorVista.OnEliminarProfesorSolicitada += () => EliminarProfesor();
 
 
-        }
-
-
-
-        public List<Profesor> CargarListaProfesores()
-        {            
-                List<Profesor> profesores = _crudProfesor.ObtenerProfesoresRegistrados();
-            return profesores;
-        }
+        }  
         public Dictionary<int, Tuple<string, string, string, List<string>>> CargarAsignaturasDeProfesor()
         {
             return _crudProfesor.ObtenerAsignaturas();

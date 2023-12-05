@@ -14,6 +14,47 @@ namespace BibliotecaCLases.DataBase
         {
 
         }
+
+        public Profesor VerificaDni(string dni)
+        {
+            Profesor profesorEncontrado = null;
+            try
+            {
+                _conexion.Open();
+                var query = $"SELECT * FROM Profesor WHERE DNI = '{dni}' AND Estado = 'true'";
+                _comando.CommandText = query;
+
+                _comando.Parameters.AddWithValue("@Dni", dni);
+
+                using (SqlDataReader reader = _comando.ExecuteReader())
+                {
+                 
+                    if (reader.Read())
+                    {
+                         int legajo = Convert.ToInt16(reader["Legajo"])!;
+                        string nombre = Convert.ToString(reader["Nombre"])!;
+                        string apellido = Convert.ToString(reader["Apellido"])!;
+                        string dniEncontrado = Convert.ToString(reader["DNI"])!;
+                        string correo = Convert.ToString(reader["Correo"])!;
+                        string direccion = Convert.ToString(reader["Direccion"])!;
+                        string telefono = Convert.ToString(reader["Telefono"])!;
+                        string contraseña = Convert.ToString(reader["Clave"])!;
+                        string especializacion = Convert.ToString(reader["Especializacion"])!;
+                        profesorEncontrado = new Profesor(nombre, apellido, dniEncontrado, correo, direccion, telefono, contraseña, especializacion);
+                        profesorEncontrado.Legajo = legajo;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones
+            }
+            finally
+            {
+                _conexion.Close();
+            }
+            return profesorEncontrado;
+        }
         public List<Profesor> ObtenerTodosLosProfesores()
         {
             List<Profesor> profesores = new List<Profesor>();
@@ -242,7 +283,8 @@ namespace BibliotecaCLases.DataBase
                 var query = @"SELECT P.Legajo, P.Nombre, P.Apellido, P.Telefono, P.Correo, P.Especializacion, ISNULL(C.Nombre, 'Sin Curso Asignado') AS NombreCurso
                       FROM Profesor P
                       LEFT JOIN CursoAsignado CA ON P.Legajo = CA.LegajoProfesor
-                      LEFT JOIN Cursos C ON CA.CodigoCurso = C.Codigo";
+                      LEFT JOIN Cursos C ON CA.CodigoCurso = C.Codigo
+                      WHERE P.Estado = 'true'";
 
                 _comando.CommandText = query;
                 _comando.Parameters.Clear();
@@ -279,5 +321,112 @@ namespace BibliotecaCLases.DataBase
 
             return resultados;
         }
+
+        public List<Curso> ObtenerCursosDeProfesor(int legajoProfesor)
+        {
+            List<Curso> cursos = new List<Curso>();
+
+            try
+            {
+                _conexion.Open();
+
+                var query = @"SELECT C.*
+                      FROM Profesor P
+                      JOIN CursoAsignado CA ON P.Legajo = CA.LegajoProfesor
+                      JOIN Cursos C ON CA.CodigoCurso = C.Codigo
+                      WHERE P.Legajo = @LegajoProfesor";
+
+                _comando.CommandText = query;
+                _comando.Parameters.Clear();
+                _comando.Parameters.AddWithValue("@LegajoProfesor", legajoProfesor);
+
+                using (var lector = _comando.ExecuteReader())
+                {
+                    while (lector.Read())
+                    {
+
+                        string Codigo = lector["Codigo"].ToString();
+                        string Nombre = lector["Nombre"].ToString();
+                        string Descripcion = lector["Descripcion"].ToString();
+                        string CupoMaximo = lector["CupoMaximo"].ToString();
+                        int CuposDisponibles = Convert.ToInt32(lector["CuposDisponibles"]);
+                        string Activo = lector["Activo"].ToString();
+                        string Dia = lector["Dia"].ToString();
+                        string Horario = lector["Horario"].ToString();
+                        string Aula = lector["Aula"].ToString();
+                        string Correlativas = lector["Correlativas"].ToString();
+                        string PromedioRequerido = lector["PromedioRequerido"].ToString();
+                        string CreditosRequeridos = lector["CreditosRequeridos"].ToString();                     
+                        Curso curso = new Curso(Nombre,Codigo,Descripcion,CupoMaximo,Dia,Horario,Aula,Correlativas,PromedioRequerido,CreditosRequeridos);
+                        curso.CuposDisponibles = CuposDisponibles;
+                        curso.Activo = Activo;
+                        cursos.Add(curso);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                
+            }
+            finally
+            {
+                _conexion.Close();
+            }
+
+            return cursos;
+        }
+
+
+        public List<Estudiante> ObtenerEstudiantesInscriptosEnCurso(int codigoCurso)
+        {
+            List<Estudiante> estudiantes = new List<Estudiante>();
+
+            try
+            {
+                _conexion.Open();
+
+                var query = @"SELECT E.Legajo, E.Nombre, E.Apellido, E.DNI, E.Correo, E.Direccion, E.Telefono, E.Clave, E.DebeCambiar
+                      FROM Estudiante E
+                      JOIN CursosInscriptos CI ON E.Legajo = CI.LegajoEstudiante
+                      WHERE CI.CodigoCurso = @CodigoCurso";
+
+                _comando.CommandText = query;
+                _comando.Parameters.Clear();
+                _comando.Parameters.AddWithValue("@CodigoCurso", codigoCurso);
+
+                using (SqlDataReader reader = _comando.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int legajoEncontrado = Convert.ToInt32(reader["Legajo"]);
+                        string nombre = Convert.ToString(reader["Nombre"]);
+                        string apellido = Convert.ToString(reader["Apellido"]);
+                        string dniAEstudiante = Convert.ToString(reader["DNI"]);
+                        string correo = Convert.ToString(reader["Correo"]);
+                        string direccion = Convert.ToString(reader["Direccion"]);
+                        string telefono = Convert.ToString(reader["Telefono"]);
+                        string contraseña = Convert.ToString(reader["Clave"]);
+                        int debeCambiar = Convert.ToInt32(reader["DebeCambiar"]);
+
+                        // Crear una instancia de la clase Estudiante con los datos de la fila encontrada
+                        Estudiante estudianteEncontrado = new Estudiante(nombre, apellido, dniAEstudiante, correo, direccion, telefono, contraseña, debeCambiar);
+                        estudianteEncontrado.Legajo = legajoEncontrado;
+                        estudiantes.Add(estudianteEncontrado);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Manejo de excepciones
+            }
+            finally
+            {
+                _conexion.Close();
+            }
+
+            return estudiantes;
+        }
+
+
     }
 }
